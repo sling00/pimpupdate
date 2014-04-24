@@ -12,6 +12,7 @@ PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 #Wget progress filter 
+
 #DOWNLOADFUNCTION
 function download()
 {
