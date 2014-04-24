@@ -1,0 +1,292 @@
+#!/bin/bash
+#pmupdate - Created by sling00  irc.freenode.net #pimp
+#Thanks to # FWishbringer 04/12/13 for the bulk of the download function that gives the sexy fluid progress bars ;).
+
+#VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
+SCRIPT_VERSION=1.0.3
+PIMP_VERSION=`sed -n '2,2p' /etc/version`
+CURL2='/usr/bin/curl'
+PMUPDATEVERURL="http://hackin.yourshell.net/pmupdate/version"
+CURLARGS="-f -s -S -k"
+PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
+SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
+THELINE='echo -====================================================================-'
+#Wget progress filter 
+#DOWNLOADFUNCTION
+function download()
+{
+local URL=$2
+local destin=$1
+#local CLEANURL=`echo $URL | sed -r 's#.*\/([^.]+).*#\1#'`
+local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
+echo "Downloading $CLEANURL"
+wget -O $destin  "$URL" 2>&1 | awk -v bsc=`tput cub1` '/[.] +[0-9]{2}?[0-9]?%/ {
+percentage = substr($0,63,3)
+byfour = percentage / 4
+printf "["
+for (i=1; i<=25; i++)
+{
+  if (i <= byfour)
+     printf "="
+  else
+     printf " "
+}
+printf "] %3d%%",percentage
+for (i=1; i<= 32; i++) {printf bsc}
+}
+END {printf "[=========================] 100%%\n"}'
+}
+function doinstall.version() {
+if grep -wqs pimp /etc/version ; then
+#	if [[ sed -n '2,2p' /etc/version ]]; then
+	$THELINE
+	echo "Pimp $PIMP_VERSION detected Continuing installation"
+	case $PIMP_VERSION in
+	 	1.0 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+		    download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.0.tbz2
+			doinstall.pimp
+			;;
+		1.1 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.1.tbz2
+			doinstall.pimp
+			;;
+		1.2 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.2.tbz2
+			doinstall.pimp
+			;;
+		1.3.1 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.1.tbz2
+			doinstall.pimp
+			;;
+		1.3.7h )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.7h.tbz2
+			doinstall.pimp
+			;;
+		1.3.7t )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.7t.tbz2
+			doinstall.pimp
+			;;
+		1.4-amd-12.8 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-12.8.tbz2
+			doinstall.pimp
+			;;
+		1.4-amd-13.12 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-13.12.tbz2
+			doinstall.pimp
+			;;
+		9.9.9 )
+			echo DEV VERSION DETECTED
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.dev.tbz2
+			doinstall.pimp
+			;;
+	esac	
+	else echo "Unable to find pimp version sorry"
+	exit 1
+fi
+}
+
+function doinstall.pimp(){
+cd /opt/pimp/
+echo "moving old /opt/pimp/pminstall install directory....."
+sleep 2
+rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
+mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
+echo "Extracting new pool manager.... Everyone thank LILY!!!!"
+sleep 2
+unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
+#git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
+echo "Installing new poolmanager"
+sleep 2
+cd /opt/pimp/pminstall/Linux-PoolManager-master/
+ ./install-pm.pl -q
+echo "Setting permissions on poolmanager.conf just incase these are wrong.."
+chown www-data.root /opt/ifmi/poolmanager.conf
+echo "Successfully installed updated poolmanager"
+$THELINE
+}
+
+
+
+
+
+function pmprofiles() {
+echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
+echo "Note this will reset your active mining profile to scrypt, as well as remove any email notification settings"
+echo "Install updated profiles? Y/N:"
+	read PMPROFILES
+	if [ $PMPROFILES == y ]; then
+	    echo "Backing up old poolmanager.conf to /opt/ifmi/poolmanager.conf.bak"
+	    if [[ -e /opt/ifmi/poolmanager.conf ]]; then
+	    	mv /opt/ifmi/poolmanager.conf /opt/ifmi/poolmanager.conf.bak
+	    	tar jxvf /tmp/poolmanager.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log
+	    	chown www-data.root /opt/ifmi/poolmanager.conf
+	    	sleep 2
+	    else echo "No poolmanager.conf found to back up...Continuing..."
+		fi
+		echo "PiMP Updated default algorithm profiles installed...Enjoy!"
+		echo "Remember to reconfigure your email alert settings after using this feature"
+		rm /tmp/poolmanager.conf.tbz2
+		rm /tmp/poolmanager.zip
+		echo "Restarting mining..... (May take 30-45 seconds!)"
+		/etc/init.d/mine start
+		echo "Done..."
+		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
+		exit 0
+	else echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
+exit 0
+fi
+}
+# Mine stop function
+}
+function minestop() {
+echo "Stopping mining....."
+/etc/init.d/mine stop
+}
+#Nodm installation function
+function doinstall.nodm() {
+$THELINE
+echo "Updating Premine scripts to latest version..."
+echo "Downloading latest nodm.tar from patch site..."
+download /tmp/nodm.tar http://hackin.yourshell.net/nodm.tar
+echo "Backing up old /etc/init.d/nodm to /root/nodm.bak"
+cp /etc/init.d/nodm /root/nodm.bak
+echo "Extracting new /etc/init.d/nodm....."
+tar xvf /tmp/nodm.tar -C /etc/init.d/
+chmod +x /etc/init.d/nodm
+
+(update-rc.d nodm remove)
+(update-rc.d nodm defaults)
+
+}
+#Menu function
+function pimpmenu() {
+$THELINE
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Install updated poolmanager profiles"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Install updated seedmanager profiles"
+local PMSELECT_5="5. Install nodm update"
+local PMSELECT_6="6. install wicd wifi fix."
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo "or q to exit"
+echo -n "Which one? 1-6: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.version
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 )
+		doinstall.nodm
+		;;
+		6 )
+		doinstall.wicdfix
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+	exit 1 
+fi
+fi
+
+
+#Installer function-Pimp
+
+#SUPER BADASSERY THERE!
+
+
+#Work begins below#
+clear
+if [ "$UID" -ne 0 ]
+  then echo "ERROR: Please run as root"
+  else
+$THELINE
+echo -e '\E[00;34m'"\033[1mPoolmanager update & Profile update for PiMP /universal Version $SCRIPT_VERSION\033[0m"
+echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
+$THELINE
+echo -e '\E[00;31m'"\033[1mNOTE: Installation on BAMT or OTHER OS IS EXPERIMENTAL!\033[0m"
+#sleep 5
+echo -n "Do you wish to continue Enter y/n: "
+	read PMUPDATE_CONTINUE
+	if [ $PMUPDATE_CONTINUE == y ]; then
+		echo "Getting latest version of pmupdate"
+#Is pmupdate up to date?! Updater code below...		
+	echo "Checking if pmupdate script is up to date........"
+	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
+	then
+	echo -n "pmupdate script is out of date! Would you like it to update itself? y/n: "
+	read PMUPDATE_UPDATE
+	if [ $PMUPDATE_UPDATE == y ]; then
+		echo "Getting latest version of updatepm"
+		download /tmp/pmupdate.tar http://hackin.yourshell.net/pmupdate.tar
+		tar xvf /tmp/pmupdate.tar -C /opt/pimp/ > /tmp/pmupdate.log
+		echo "Update completed. Please rerun this script to continue."
+		rm /tmp/pmupdate.tar
+		exit 0
+	else
+
+	echo "not updating...Continue at your own risk....."
+	$THELINE
+fi
+	else 
+	echo "Script up to date! Commencing..."
+	$THELINE
+	pimpmenu
+	fi
+    
+fi
+#Work begins below
+#Installer Function-Pimp
+
+#else
+#$THELINE
+fi
+
+#if [[ sed -n '2,2p' /etc/version ]] 
+
+#else
+#	echo "Error: Not updating because the user didn't answer y when prompted."
+#	exit 1
+#fi
