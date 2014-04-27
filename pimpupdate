@@ -41,8 +41,8 @@ for (i=1; i<= 32; i++) {printf bsc}
 END {printf "[=========================] 100%%\n"}'
 }
 function doinstall.version() {
-if grep -wqs pimp /etc/version ; then
-#	if [[ sed -n '2,2p' /etc/version ]]; then
+#if grep -wqs pimp /etc/version ; then
+	if [[ sed -n '2,2p' /etc/version ]]; then
 	$THELINE
 	echo "Pimp $PIMP_VERSION detected Continuing installation"
 	case $PIMP_VERSION in
@@ -152,9 +152,10 @@ rm /tmp/poolmanager.zip
 $THELINE
 }
 function checkupdates(){
+	 incomplete
 }
 #these two should be moved to the installer.
-function f.pimpupdateskel
+function f.pimpupdateskel() {
 	if [ ! -e /opt/pimp/pimpupdatefiles ]
 		then
 		echo "Unable to locate /opt/pimp/pimpupdatefiles creating directory structure"
@@ -164,7 +165,7 @@ function f.pimpupdateskel
 	else 
 		echo "Looks like this has been installed before, continuing..."
 fi
-
+}
 function f.backupfolder(){
 	if [ ! -e /opt/pimp/pimpupdatefiles/backups ]
 }
