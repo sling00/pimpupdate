@@ -276,7 +276,7 @@ exit 0
 fi
 }
 # Mine stop function
-}
+#}
 function minestop() {
 echo "Stopping mining....."
 /etc/init.d/mine stop
