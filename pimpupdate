@@ -232,7 +232,7 @@ echo "Note this will reset your email notification settings"
 echo "Install updated profile? Y/N:"
 	read SMPROFILES
 	if [ $SMPROFILES == y ]; then
-		/opt/ifmi/smcontrol stop 2&>/dev/null
+		/opt/ifmi/smcontrol stop 2>/dev/null
 		echo "Downloading latest seedmanager.conf"
 		download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/smupdate/seedmanager.conf.tbz2
 
@@ -362,10 +362,11 @@ fi
 fi
 }
 #Work begins below#
-clear
 if [ "$UID" -ne 0 ]
   then echo "ERROR: Please run as root"
   else
+f.pimpupdateskel  
+clear
 $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
