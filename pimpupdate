@@ -42,7 +42,7 @@ END {printf "[=========================] 100%%\n"}'
 }
 function doinstall.version() {
 #if grep -wqs pimp /etc/version ; then
-	if [[ sed -n '2,2p' /etc/version ]]; then
+#	if [[ sed -n '2,2p' /etc/version ]]; then
 	$THELINE
 	echo "Pimp $PIMP_VERSION detected Continuing installation"
 	case $PIMP_VERSION in
@@ -102,9 +102,9 @@ function doinstall.version() {
 			doinstall.pimp
 			;;
 	esac	
-	else echo "Unable to find pimp version sorry"
-	exit 1
-fi
+#	else echo "Unable to find pimp version sorry"
+#	exit 1
+#fi
 }
 #Seedmanager Installation function
 function doinstall.seedmanager(){
@@ -166,9 +166,9 @@ function f.pimpupdateskel() {
 		echo "Looks like this has been installed before, continuing..."
 fi
 }
-function f.backupfolder(){
-	if [ ! -e /opt/pimp/pimpupdatefiles/backups ]
-}
+#function f.backupfolder(){
+#	if [ ! -e /opt/pimp/pimpupdatefiles/backups ]
+#}
 function doinstall.wicdfix() {
 	#wireless_interface = wlan0 
 	#sed -i -e 's/wireless_interface = None/wireless_interface = wlan0/g' /etc/wicd/manager-settings.conf
@@ -216,9 +216,10 @@ function doinstall.wicdfix() {
 		9.9.9 )
 			echo DEV VERSION DETECTED
 			echo "Gathering files for PiMP $PIMP_VERSION....."
-			;;
-	esac	
-	else echo "This fix is not applicable to $PIMP_VERSION"
+			;;	
+	* ) 
+	echo "This fix is not applicable to $PIMP_VERSION"
+esac
 }
 function doinstall.smprofiles() {
 echo "Update seedmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
