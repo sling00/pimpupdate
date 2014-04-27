@@ -17,8 +17,7 @@ THELINE='echo -=================================================================
 #Wget progress filter 
 
 #DOWNLOADFUNCTION
-function download()
-{
+function download() {
 local URL=$2
 local destin=$1
 #local CLEANURL=`echo $URL | sed -r 's#.*\/([^.]+).*#\1#'`
@@ -107,7 +106,7 @@ function doinstall.version() {
 #fi
 }
 #Seedmanager Installation function
-function doinstall.seedmanager(){
+function doinstall.seedmanager() {
 echo "Gathering files for PiMP $PIMP_VERSION....."
 download /tmp/seedmanager.zip $SMURL
 cd /opt/pimp/
@@ -131,7 +130,7 @@ rm /tmp/seedmanager.zip
 }
 
 #Installer function-Pimp
-function doinstall.pimp(){
+function doinstall.pimp() {
 cd /opt/pimp/
 echo "moving old /opt/pimp/pminstall install directory....."
 sleep 2
@@ -151,7 +150,7 @@ echo "Successfully installed updated poolmanager"
 rm /tmp/poolmanager.zip
 $THELINE
 }
-function checkupdates(){
+function checkupdates() {
 	 incomplete
 }
 #these two should be moved to the installer.
@@ -349,7 +348,7 @@ echo -n "Which one? 1-6: "
 	exit 1 
 fi
 fi
-
+}
 #Work begins below#
 clear
 if [ "$UID" -ne 0 ]
