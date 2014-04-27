@@ -18,7 +18,7 @@ THELINE='echo -=================================================================
 
 #DOWNLOADFUNCTION
 function download() {
-local URL=$2
+local URL=$
 local destin=$1
 #local CLEANURL=`echo $URL | sed -r 's#.*\/([^.]+).*#\1#'`
 local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
@@ -233,6 +233,9 @@ echo "Install updated profile? Y/N:"
 	read SMPROFILES
 	if [ $SMPROFILES == y ]; then
 		/opt/ifmi/smcontrol stop 2&>/dev/null
+		echo "Downloading latest seedmanager.conf"
+		download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/smupdate/seedmanager.conf.tbz2
+
 	    echo "Backing up old seedmanager.conf to /opt/ifmi/seedmanager.conf.bak"
 	    if [[ -e /opt/ifmi/seedmanager.conf ]]; then
 	    	mv /opt/ifmi/seedmanager.conf /opt/ifmi/seedmanager.conf.bak
