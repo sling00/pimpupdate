@@ -1,11 +1,12 @@
 #!/bin/bash
 #pimpupdate - Created by sling00  irc.freenode.net #pimp
+#Report issues/submit fixes to: https://github.com/sling00/pimpupdate
 #Thanks to # FWishbringer 04/12/13 for the bulk of the download function that gives the sexy fluid progress bars ;).
 #No warranty whatsoever expressed or implied, if this breaks your couch in half and launches you with an airbag, its not my fault. 
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.0.5
+SCRIPT_VERSION=1.0.6
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -156,8 +157,10 @@ echo "Successfully installed updated poolmanager"
 rm /tmp/poolmanager.zip
 $THELINE
 }
+#This will be used later.
 function checkupdates() {
-	 incomplete
+	# incomplete 
+	echo this should never display.
 }
 #these two should be moved to the installer.
 function f.pimpupdateskel() {
