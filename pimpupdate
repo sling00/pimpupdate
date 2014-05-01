@@ -355,8 +355,8 @@ function doinstall.check.sgminer() {
 	$THELINE
 	case $PIMP_VERSION in 
 		1.4-amd-12.8 )
-		;;
 		doinstall.sgminer
+		;;
 		1.4-amd-13.12 )
 		doinstall.sgminer
 		;;
