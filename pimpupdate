@@ -16,7 +16,7 @@ SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
-exec > >(tee /opt/pimpupdatefiles/logs/pimpupdate.log)
+exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Wget progress filter 
 if [ $DEV != 0 ];
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/dev-version"
