@@ -378,8 +378,27 @@ function doinstall.check.sgminer() {
 function doinstall.bfgminer() {
 	clear
 	$THELINE
-	echo "wee"
+	echo "Pimp 1.4 BFGMINER installer for gridseed ASIC support."
 	$THELINE
+	echo "Currently ONLY for 1.4, Full 1.x support coming soon."
+	echo "This will replace the defunct bfgminer located in /opt/bfgminer"
+	echo "Ok to continue? y/n:" 
+	read BFG_CONTINUE
+	if [ $BFG_CONTINUE = y ]
+		then
+			$THELINE
+			echo "Removing old bfgminer...."
+			rm -rf /opt/bfgminer
+			echo "Downloading bfgminer binary tarball.."
+			download /tmp/bfgminer-gridseed.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-bfgminer/bfgminer-gridseed.tbz2
+			echo "Extracting new bfgminer..."
+			tar jxvpf /tmp/bfgminer-gridseed.tbz2 -C /opt/
+			echo "Done, remember to update seedmanager & profiles for a full working setup!"
+			exit 0
+		else
+			echo "Returning to the main menu..."
+			pimpmenu
+	fi 
 }
 #Manualstart manual miner starting menu system.
 function doinstall.manualstart() {
