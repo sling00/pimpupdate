@@ -319,10 +319,11 @@ chmod +x /etc/init.d/nodm
 }
 function doinstall.sgminer() {
 		local SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
+		$THELINE
 	echo "Checking sgminer version...."
 		local SGMINERVER=`/opt/sgminer/sgminer --version` 
 		echo $SGMINERVER "detected.."
-		if [ `/opt/sgminer/sgminer --version | grep -c 4.1.272` = 1 ];
+		if [ `/opt/sgminer/sgminer --version | grep -c 4.1.271-4-g3d71` = 1 ];
 		then
 		$THELINE 
 		echo "Your sgminer version is 4.1.272, this version needs to be rolled back to 4.1.242"
@@ -346,6 +347,7 @@ function doinstall.sgminer() {
 			pimpmenu
 		fi
 	else echo "Your version of sgminer does not need to be changed."
+		$THELINE
 		pimpmenu
 	fi
 }
