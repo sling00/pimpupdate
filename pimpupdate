@@ -13,6 +13,7 @@ PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
 CURLARGS="-f -s -S -k"
 PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
+SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
@@ -318,7 +319,6 @@ chmod +x /etc/init.d/nodm
 (update-rc.d nodm defaults)
 }
 function doinstall.sgminer() {
-		SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
 		$THELINE
 	echo "Checking sgminer version...."
 		local SGMINERVER=`/opt/sgminer/sgminer --version` 
