@@ -17,7 +17,7 @@ SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
-exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
+#exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Wget progress filter 
 if [ $DEV != 0 ];
 then
@@ -27,7 +27,29 @@ else
 fi
 
 #DOWNLOADFUNCTION
-function download() {
+function download()
+{
+local URL=$2
+local destin=$1
+local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
+echo "Downloading $CLEANURL"
+wget -O $destin  "$URL" 2>&1 | awk -v bsc=`tput cub1` '/[.] +[0-9]{2}?[0-9]?%/ {
+percentage = substr($0,63,3)
+byfour = percentage / 4
+printf "["
+for (i=1; i<=25; i++)
+{
+  if (i <= byfour)
+     printf "="
+  else
+     printf " "
+}
+printf "] %3d%%",percentage
+for (i=1; i<= 32; i++) {printf bsc}
+}
+END {printf "[=========================] 100%%\n"}'
+}
+function download2() {
 local URL=$2
 local destin=$1
 #local CLEANURL=`echo $URL | sed -r 's#.*\/([^.]+).*#\1#'`
@@ -382,7 +404,7 @@ function doinstall.bfgminer() {
 	$THELINE
 	echo "Currently ONLY for 1.4, Full 1.x support coming soon."
 	echo "This will replace the defunct bfgminer located in /opt/bfgminer"
-	echo "Ok to continue? y/n:" 
+	echo -n "Ok to continue? y/n:" 
 	read BFG_CONTINUE
 	if [ $BFG_CONTINUE = y ]
 		then
@@ -411,7 +433,7 @@ function doinstall.manualstart() {
 	echo "As well as being able to use your conf or the default for testing"
 	echo "Does not replace your conf file!"
 	echo "If manualstart is already installed, this will simple reinstall it."
-	echo "Ok to continue? y/n:" 
+	echo -n "Ok to continue? y/n:" 
 	read MS_CONTINUE
 	if [ $MS_CONTINUE = y ];
 		then
