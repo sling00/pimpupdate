@@ -392,7 +392,7 @@ function doinstall.bfgminer() {
 			echo "Downloading bfgminer binary tarball.."
 			download /tmp/bfgminer-gridseed.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-bfgminer/bfgminer-gridseed.tbz2
 			echo "Extracting new bfgminer..."
-			tar jxvpf /tmp/bfgminer-gridseed.tbz2 -C /opt/
+			tar jxpf /tmp/bfgminer-gridseed.tbz2 -C /opt/
 			echo "Done, remember to update seedmanager & profiles for a full working setup!"
 			exit 0
 		else
@@ -421,7 +421,7 @@ function doinstall.manualstart() {
 			echo "Downloading Manualstart tarball.."
 			download /tmp/manualstart.tar.gz https://github.com/sling00/manualstart/archive/1.0.tar.gz
 			echo "Extracting new bfgminer..."
-			tar jxvpf /tmp/bfgminer-gridseed.tbz2 -C /tmp
+			tar zxvpf /tmp/manualstart.tar.gz -C /tmp
 			echo "Moving manualstart to /opt/pimp..."
 			mv /tmp/manualstart-1.0/manualstart /opt/pimp/
 			mv /tmp/manualstart-1.0/manualstart.conf /opt/pimp
