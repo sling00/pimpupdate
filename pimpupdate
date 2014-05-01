@@ -28,7 +28,7 @@ fi
 
 #DOWNLOADFUNCTION
 function download() {
-local URL=$
+local URL=$2
 local destin=$1
 #local CLEANURL=`echo $URL | sed -r 's#.*\/([^.]+).*#\1#'`
 local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
@@ -321,6 +321,7 @@ chmod +x /etc/init.d/nodm
 function doinstall.sgminer() {
 		$THELINE
 	echo "Checking sgminer version...."
+		local SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
 		local SGMINERVER=`/opt/sgminer/sgminer --version` 
 		echo $SGMINERVER "detected.."
 		if [ `/opt/sgminer/sgminer --version | grep -c 4.1.271-4-g3d71` = 1 ];
@@ -335,9 +336,9 @@ function doinstall.sgminer() {
 			then  
 			f.minestop
 			
-			download /tmp/sgminer-4.1.242.tbz2 http://hackin.yourshell.net/pimpupdate/fixes/sgminer4.1.242.tbz2
+			download /tmp/sgminer-4.1.242.tbz2 $SGFILE
 			echo "Backing up old sgminer to /opt/sgminer-4.1.272"
-			mv /opt/sgminer /opt/sgminer-4.1.271
+			mv /opt/sgminer /opt/sgminer-4.1.271 
 			echo "Extracting new sgminer to /opt/sgminer"
 			tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
 			echo "Finished"
