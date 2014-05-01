@@ -404,8 +404,33 @@ function doinstall.bfgminer() {
 function doinstall.manualstart() {
 	clear
 	$THELINE
-	echo "notes"
+	echo "Manualstart 1.0 installer for pimp."
 	$THELINE
+	echo "Currently ONLY for 1.3.1/1.4, Full 1.x support coming soon."
+	echo "This will replace manualrun with manualstart. Multi algorithm support"
+	echo "As well as being able to use your conf or the default for testing"
+	echo "Does not replace your conf file!"
+	echo "If manualstart is already installed, this will simple reinstall it."
+	echo "Ok to continue? y/n:" 
+	read MS_CONTINUE
+	if [ $MS_CONTINUE = y ];
+		then
+			$THELINE
+			echo "Moving /opt/pimp/manualrun to /opt/pimp/manualrun.bak..."
+			mv /opt/pimp/manualrun /opt/pimp/manualrun.bak
+			echo "Downloading Manualstart tarball.."
+			download /tmp/manualstart.tar.gz https://github.com/sling00/manualstart/archive/1.0.tar.gz
+			echo "Extracting new bfgminer..."
+			tar jxvpf /tmp/bfgminer-gridseed.tbz2 -C /tmp
+			echo "Moving manualstart to /opt/pimp..."
+			mv /tmp/manualstart-1.0/manualstart /opt/pimp/
+			mv /tmp/manualstart-1.0/manualstart.conf /opt/pimp
+			echo "Done, remember stop mining before using this!"
+			exit 0
+		else
+			echo "Returning to the main menu..."
+			pimpmenu
+	fi 
 }
 #Menu function
 function pimpmenu() {
