@@ -420,7 +420,7 @@ function doinstall.manualstart() {
 			mv /opt/pimp/manualrun /opt/pimp/manualrun.bak
 			echo "Downloading Manualstart tarball.."
 			download /tmp/manualstart.tar.gz https://github.com/sling00/manualstart/archive/1.0.tar.gz
-			echo "Extracting new bfgminer..."
+			echo "Extracting manualstart"
 			tar zxvpf /tmp/manualstart.tar.gz -C /tmp
 			echo "Moving manualstart to /opt/pimp..."
 			mv /tmp/manualstart-1.0/manualstart /opt/pimp/
