@@ -19,6 +19,7 @@ DEV=0
 exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Wget progress filter 
 if [ $DEV != 0 ];
+then
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/dev-version"
 else
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
