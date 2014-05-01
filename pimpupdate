@@ -335,7 +335,7 @@ function doinstall.sgminer() {
 			then  
 			f.minestop
 			
-			download /tmp/sgminer-4.1.242.tbz2 http://hackin.yourshell.net/pimpupdate/fixes/sgminer-4.1.242.tbz2
+			download /tmp/sgminer-4.1.242.tbz2 http://hackin.yourshell.net/pimpupdate/fixes/sgminer4.1.242.tbz2
 			echo "Backing up old sgminer to /opt/sgminer-4.1.272"
 			mv /opt/sgminer /opt/sgminer-4.1.271
 			echo "Extracting new sgminer to /opt/sgminer"
