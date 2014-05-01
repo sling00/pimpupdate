@@ -36,18 +36,18 @@ echo "Downloading $CLEANURL"
 wget -O $destin  "$URL" 2>&1 | awk -v bsc=`tput cub1` '/[.] +[0-9]{2}?[0-9]?%/ {
 percentage = substr($0,63,3)
 byfour = percentage / 4
-printf "["
+echo -n "["
 for (i=1; i<=25; i++)
 {
   if (i <= byfour)
-     printf "="
+     echo -n "="
   else
-     printf " "
+     echo -n " "
 }
-printf "] %3d%%",percentage
+echo -n  "] %3d%%",percentage
 for (i=1; i<= 32; i++) {printf bsc}
 }
-END {printf "[=========================] 100%%\n"}'
+END {echo -n "[=========================] 100%%\n"}'
 }
 function download2() {
 local URL=$2
