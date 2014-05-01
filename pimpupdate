@@ -6,7 +6,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.0.6
+SCRIPT_VERSION=1.0.7
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -15,7 +15,14 @@ PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
+DEV=0
+exec > >(tee /opt/pimpupdatefiles/logs/pimpupdate.log)
 #Wget progress filter 
+if [ $DEV != 0 ];
+	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/dev-version"
+else
+	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
+fi
 
 #DOWNLOADFUNCTION
 function download() {
@@ -309,6 +316,74 @@ chmod +x /etc/init.d/nodm
 (update-rc.d nodm remove)
 (update-rc.d nodm defaults)
 }
+function doinstall.sgminer() {
+		local SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
+	echo "Checking sgminer version...."
+		local SGMINERVER=`/opt/sgminer/sgminer --version` 
+		echo $SGMINERVER "detected.."
+		if [ `/opt/sgminer/sgminer --version | grep -c 4.1.272` = 1 ];
+		then
+		$THELINE 
+		echo "Your sgminer version is 4.1.272, this version needs to be rolled back to 4.1.242"
+		echo "Due to an sgminer bug adding erroneous commas in the config file upon api save."
+		echo "Note, the old sgminer version will be saved in /opt/sgminer-4.1.272"
+		echo "Continue? y/n: "
+		read SGMINER_CONTINUE
+		if [ $SGMINER_CONTINUE = y ];
+			then  
+			f.minestop
+			echo "Downloading SGMiner 4.1.242..."
+			download /tmp/sgminer-4.1.242.tbz2 $SGFILE
+			echo "Backing up old sgminer to /opt/sgminer-4.1.272"
+			mv /opt/sgminer /opt/sgminer-4.1.272
+			echo "Extracting new sgminer to /opt/sgminer"
+			tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
+			echo "Finished"
+			f.minestart
+		else
+			echo "Going back to the main menu..." 
+			pimpmenu
+		fi
+	else echo "Your version of sgminer does not need to be changed."
+		pimpmenu
+	fi
+}
+#SGMINER ROLLBACK TO FIX BAD CONF ON POOL ADD
+function doinstall.check.sgminer() {
+	clear
+	$THELINE
+	case $PIMP_VERSION in 
+		1.4-amd-12.8 )
+		;;
+		doinstall.sgminer
+		1.4-amd-13.12 )
+		doinstall.sgminer
+		;;
+		1.4-amd-14.4 )
+		doinstall.sgminer
+		;;
+		* )
+		echo "Your version of PiMP does not need this fix applied."
+		pimpmenu
+		;;
+	esac
+	echo "wee"
+	$THELINE
+}
+#BFGMINER Gridseed fix.
+function doinstall.bfgminer() {
+	clear
+	$THELINE
+	echo "wee"
+	$THELINE
+}
+#Manualstart manual miner starting menu system.
+function doinstall.manualstart() {
+	clear
+	$THELINE
+	echo "notes"
+	$THELINE
+}
 #Menu function
 function pimpmenu() {
 $THELINE
@@ -318,6 +393,9 @@ local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Install nodm update"
 local PMSELECT_6="6. install wicd wifi fix."
+local PMSELECT_7="7. Install Pimp 1.4 SGMINER rollback fix"
+local PMSELECT_8="8. Install BFGMINER fix for gridseeds"
+local PMSELECT_9="9. Install manualstart command line miner starting tool."
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -325,6 +403,9 @@ echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
 echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo $PMSELECT_9
 echo "or q to exit"
 echo -n "Which one? 1-6: "
 	read PMSELECTNUM
@@ -353,6 +434,15 @@ echo -n "Which one? 1-6: "
 		;;
 		6 )
 		doinstall.wicdfix
+		;;
+		7 )
+		doinstall.sgminer
+		;;
+		8 )
+		doinstall.bfgminer
+		;;
+		9 )
+		doinstall.manualstart
 		;;
 	esac
 	else
