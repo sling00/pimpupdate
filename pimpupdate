@@ -573,6 +573,7 @@ $THELINE
 echo -n "Do you wish to continue Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ $PMPUPDATE_CONTINUE == y ]; then
+		$THELINE
 		echo "Getting latest version of pimpupdate"
 #Is pimpupdate up to date?! Updater code below...		
 	echo "Checking if Pimpupdate is up to date........"
@@ -592,6 +593,7 @@ echo -n "Do you wish to continue Enter y/n: "
 	$THELINE
 fi
 	else 
+	$THELINE
 	echo "Script up to date! Commencing..."
 	$THELINE
 	pimpmenu
