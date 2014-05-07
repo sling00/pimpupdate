@@ -36,6 +36,10 @@ function download() {
   curl "$url" -o $destin -#
   $THELINE
 }
+function f.return() { 
+	echo "Returning to the main menu..."
+	pimpmenu
+}
 function old.download() {
 local URL=$2
 local destin=$1
@@ -152,12 +156,13 @@ chown www-data.root /opt/ifmi/seedmanager.conf
 echo "Successfully installed updated seedmanager"
 $THELINE
 rm /tmp/seedmanager.zip
+f.return
 }
 
 #Installer function-Pimp
 function doinstall.pimp() {
 cd /opt/pimp/
-echo "moving old /opt/pimp/pminstall install directory....."
+echo "Moving old /opt/pimp/pminstall install directory....."
 sleep 2
 rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
 mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
@@ -174,6 +179,7 @@ chown www-data.root /opt/ifmi/poolmanager.conf
 echo "Successfully installed updated poolmanager"
 rm /tmp/poolmanager.zip
 $THELINE
+f.return
 }
 #This will be used later.
 function checkupdates() {
@@ -271,9 +277,8 @@ echo -n "Install updated profile? Y/N:"
 		rm /tmp/seedmanager.conf.tbz2
 		echo "Restarting mining..... (May take 30-45 seconds!)"
 		/opt/ifmi/smcontrol start
-		echo "Done..."
 		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-		pimpmenu
+		f.return
 	else echo "Returning to menu, you didn't enter y to continue."
 	pimpmenu
 fi
@@ -294,15 +299,14 @@ echo -n "Install updated profiles? Y/N:"
 	    	sleep 2
 	    else echo "No poolmanager.conf found to back up...Continuing..."
 		fi
-		echo "PiMP Updated default algorithm profiles installed...Enjoy!"
 		echo "Remember to reconfigure your email alert settings after using this feature"
 		rm /tmp/poolmanager.conf.tbz2
 		f.minestart
 		echo "Done..."
 		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-		pimpmenu
+		f.return
 	else echo "Try again! you must enter y to continue."
-		pimpmenu
+		f.return
 fi
 }
 function f.minestart() {
@@ -311,8 +315,8 @@ function f.minestart() {
 }
 # Mine stop function
 function f.minestop() {
-echo "Stopping mining....."
-/etc/init.d/mine stop
+	echo "Stopping mining....."
+	/etc/init.d/mine stop
 }
 #Nodm installation function
 function doinstall.nodm() {
@@ -327,6 +331,7 @@ tar xvf /tmp/nodm.tar -C /etc/init.d/
 chmod +x /etc/init.d/nodm
 (update-rc.d nodm remove)
 (update-rc.d nodm defaults)
+f.return
 }
 function doinstall.sgminer() {
 		$THELINE
@@ -345,7 +350,6 @@ function doinstall.sgminer() {
 		if [ $SGMINER_CONTINUE = y ];
 			then  
 			f.minestop
-			
 			download /tmp/sgminer-4.1.242.tbz2 $SGFILE
 			echo "Backing up old sgminer to /opt/sgminer-4.1.271"
 			mv /opt/sgminer /opt/sgminer-4.1.271 
@@ -353,13 +357,13 @@ function doinstall.sgminer() {
 			tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
 			echo "Finished"
 			f.minestart
+			f.return
 		else
-			echo "Going back to the main menu..." 
-			pimpmenu
+			f.return
 		fi
 	else echo "Your version of sgminer does not need to be changed."
 		$THELINE
-		pimpmenu
+		f.return
 	fi
 }
 #SGMINER ROLLBACK TO FIX BAD CONF ON POOL ADD
@@ -411,16 +415,14 @@ function doinstall.lsockernels() {
 						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer/kernel"
 						cp /tmp/lsoc.cl /opt/sgminer/kernel/lsoc.cl
 						cp /tmp/lsoc3.cl /opt/sgminer/kernel/lsoc3.cl
-						echo "Done, returning to main menu"
-						pimpmenu
+						f.return
 			elif [ -e /opt/sgminer-4.1.0/kernel ];
 				then
 						echo "Sgminer kernel directory located at /opt/sgminer-4.1.0/kernel"
 						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer-4.1.0/kernel"
 						cp /tmp/lsoc.cl /opt/sgminer-4.1.0/kernel/lsoc.cl
 						cp /tmp/lsoc3.cl /opt/sgminer-4.1.0/kernel/lsoc.cl
-						echo "Done, returning to main menu"
-						pimpmenu
+						f.return
 			else 
 						echo "Cannot determine your sgminer directory, returning to main menu"
 						pimpmenu
@@ -450,9 +452,9 @@ function doinstall.bfgminer() {
 			echo "Extracting new bfgminer..."
 			tar jxpf /tmp/bfgminer-gridseed.tbz2 -C /opt/
 			echo "Done, remember to update seedmanager & profiles for a full working setup!"
-			exit 0
+			f.return
 		else
-			echo "Returning to the main menu..."
+			echo "RYou must enter y if you wish to continue...Returning to main menu"
 			pimpmenu
 	fi 
 }
@@ -481,11 +483,12 @@ function doinstall.manualstart() {
 			echo "Moving manualstart to /opt/pimp..."
 			mv /tmp/manualstart-1.0/manualstart /opt/pimp/
 			mv /tmp/manualstart-1.0/manualstart.conf /opt/pimp
+			ln -s /opt/pimp/manualstart /opt/pimp/manualrun
 			echo "Done, remember stop mining before using this!"
-			exit 0
+		    echo "Returning to the main menu..."
+		    f.return
 		else
-			echo "Returning to the main menu..."
-			pimpmenu
+			f.return
 	fi 
 }
 #Menu function
