@@ -33,7 +33,7 @@ function download() {
  echo "Downloading $CLEANURL"
  local url=$2
  local destin=$1
-  curl "$url" -o $destin -#
+  curl -# -o $destin "$url"
   $THELINE
 }
 function f.return() { 
