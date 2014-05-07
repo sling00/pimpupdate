@@ -31,9 +31,9 @@ function download() {
  local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
  $THELINE
  echo "Downloading $CLEANURL"
- local url=$2
+ local URL=$2
  local destin=$1
-  curl -# -o $destin "$url"
+  curl -# -o $destin $URL
   $THELINE
 }
 function f.return() { 
