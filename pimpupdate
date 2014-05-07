@@ -177,7 +177,7 @@ $THELINE
 }
 #This will be used later.
 function checkupdates() {
-	# incomplete 
+	# incomplete work in progress. 
 	echo this should never display.
 }
 #these two should be moved to the installer.
@@ -247,10 +247,11 @@ function doinstall.wicdfix() {
 	echo "This fix is not applicable to $PIMP_VERSION"
 esac
 }
+#Seedmanager profiles
 function doinstall.smprofiles() {
 echo "Update seedmanager.conf with the latest Seedmanager profile?"
 echo "Note this will reset your email notification settings"
-echo "Install updated profile? Y/N:"
+echo -n "Install updated profile? Y/N:"
 	read SMPROFILES
 	if [ $SMPROFILES == y ]; then
 		/opt/ifmi/smcontrol stop 2>/dev/null
@@ -272,16 +273,16 @@ echo "Install updated profile? Y/N:"
 		/opt/ifmi/smcontrol start
 		echo "Done..."
 		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-		exit 0
-	else echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-exit 0
+		pimpmenu
+	else echo "Returning to menu, you didn't enter y to continue."
+	pimpmenu
 fi
 }
-#PM Profiles
-function pmprofiles() {
+#Poolmanager Profiles
+function doinstall.pmprofiles() {
 echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
 echo "Note this will reset your active mining profile to scrypt, as well as remove any email notification settings"
-echo "Install updated profiles? Y/N:"
+echo -n "Install updated profiles? Y/N:"
 	read PMPROFILES
 	if [ $PMPROFILES == y ]; then
 		f.minestop
@@ -299,9 +300,9 @@ echo "Install updated profiles? Y/N:"
 		f.minestart
 		echo "Done..."
 		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-		exit 0
-	else echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
-exit 0
+		pimpmenu
+	else echo "Try again! you must enter y to continue."
+		pimpmenu
 fi
 }
 function f.minestart() {
@@ -339,7 +340,7 @@ function doinstall.sgminer() {
 		echo "Your sgminer version is 4.1.271.xxxx, this version needs to be rolled back to 4.1.242"
 		echo "Due to an sgminer bug adding erroneous commas in the config file upon api save."
 		echo "Note, the old sgminer version will be saved in /opt/sgminer-4.1.271"
-		echo "Continue? y/n: "
+		echo -n "Continue? y/n: "
 		read SGMINER_CONTINUE
 		if [ $SGMINER_CONTINUE = y ];
 			then  
@@ -380,8 +381,54 @@ function doinstall.check.sgminer() {
 		pimpmenu
 		;;
 	esac
-	echo "wee"
+	echo "..."
 	$THELINE
+}
+function doinstall.lsockernels() {
+	clear
+	$THELINE
+	echo "Pimp 1.4 installer for LSOC Scrypt/Scryptn Kernels"
+	$THELINE
+	echo "LSOC is an sgminer CL kernel by Soul_Keeper"
+	echo "It improves performance on most 78xx / 270(x) cards."
+	echo "You may need to increase your thread concurrency to see gains"
+	echo "Activate by changing the \"kernel\" line in cgminer.conf to lsoc or lsoc3"
+	echo "It works for Scrypt / Scrypt-n"
+	echo -n "Ok to continue? y/n:" 
+	read LSOC_CONTINUE
+	if [ $LSOC_CONTINUE = y ]
+		then
+			$THELINE
+			echo "Removing old bfgminer...."
+			rm -rf /opt/bfgminer
+			echo "Downloading bfgminer binary tarball.."
+			download /tmp/lsoc.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-lsoc/lsoc-5-6-2014.tbz2
+			echo "Extracting new bfgminer..."
+			tar jxpf /tmp/lsoc.tbz2 -C /tmp/
+			if [ -e /opt/sgminer/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer/kernel"
+						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer/kernel"
+						cp /tmp/lsoc.cl /opt/sgminer/kernel/lsoc.cl
+						cp /tmp/lsoc3.cl /opt/sgminer/kernel/lsoc3.cl
+						echo "Done, returning to main menu"
+						pimpmenu
+			elif [ -e /opt/sgminer-4.1.0/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer-4.1.0/kernel"
+						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer-4.1.0/kernel"
+						cp /tmp/lsoc.cl /opt/sgminer-4.1.0/kernel/lsoc.cl
+						cp /tmp/lsoc3.cl /opt/sgminer-4.1.0/kernel/lsoc.cl
+						echo "Done, returning to main menu"
+						pimpmenu
+			else 
+						echo "Cannot determine your sgminer directory, returning to main menu"
+						pimpmenu
+			fi
+		else
+			echo "Returning to the main menu..."
+			pimpmenu
+	fi
 }
 #BFGMINER Gridseed fix.
 function doinstall.bfgminer() {
@@ -507,7 +554,6 @@ echo -n "Which one? 1-9: "
 	echo "Invalid Selection,"
 	echo "Returning to menu"
 	pimpmenu
-	exit 1 
 fi
 fi
 }
@@ -521,7 +567,6 @@ $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
 $THELINE
-echo -e '\E[00;31m'"\033[1mNOTE: Installation on BAMT or OTHER OS IS EXPERIMENTAL!\033[0m"
 echo -n "Do you wish to continue Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ $PMPUPDATE_CONTINUE == y ]; then
