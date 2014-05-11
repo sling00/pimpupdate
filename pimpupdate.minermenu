@@ -92,13 +92,12 @@ echo -n "Which one? 1-6: "
 		clear
 		f.minermenu
 		;;
-	esac
-	else
-	$THELINE
-	echo "Invalid Selection,"
-	echo "Returning to menu"
-	pimpmenu
-fi
+		* )
+		echo "Invalid Selection,"
+		echo "Returning to menu"
+		pimpmenu
+		;;
+	esac	
 fi
 }
 function f.minermenu() {

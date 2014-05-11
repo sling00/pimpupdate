@@ -18,13 +18,13 @@ THELINE='echo -=================================================================
 DEV=1
 #exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
-if [ $DEV != 0 ];
+if [ "$DEV"ls != 0 ];
 then
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/dev-version"
 else
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
 fi
-if [ $DEV != 0 ];
+if [ "$DEV" != 0 ];
 	then
 		source /root/pimpupdate/pimpupdate.minermenu
 	else
@@ -642,6 +642,7 @@ echo -n "Which one? 1-12: "
 		;;
 		6 )
 		doinstall.lsockernels
+		;;
 		7 )
 		doinstall.wicdfix
 		;;
