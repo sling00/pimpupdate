@@ -50,6 +50,57 @@ function doinstall.sgminer2 () {
 	echo "Build of Sgminer $SGMINERVER done."
 	f.minestart
 }
+function minermenu.config() {
+local PMSELECT_1="1. Cflags"
+local PMSELECT_2="2. -O3"
+local PMSELECT_3="3. -march=native"
+local PMSELECT_4="4. Install updated seedmanager profiles"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install LSOC Kernel for R7850 /R9 270"
+echo "What would you like to do?"
+$THELINE
+echo "Choose a build source"
+echo $PMSELECT_1
+echo "Save git trees for miners built?"
+echo $PMSELECT_2
+$THELINE
+echo "Git build options" 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo "or q to exit"
+echo -n "Which one? 1-6: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	case $PMSELECTNUM in
+		1 )
+		doinstall.version
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
 function f.minermenu() {
 $THELINE
 echo "Miner build menu"
@@ -63,20 +114,20 @@ local MSELECT_6="6. Update Cgminer-3.7.2 (Ckolivas)"
 local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
-local MSELECT_10="10. Update sgminer-scryptjane"
 echo "What would you like to do?"
+echo "Only sgminer is finished currently sorry :( "
 echo $MSELECT_1
-echo $MSELECT_2 
-echo $MSELECT_3
-echo $MSELECT_4
-echo $MSELECT_5
-echo $MSELECT_6
-echo $MSELECT_7
-echo $MSELECT_8
-echo $MSELECT_9
-echo $MSELECT_10
+#echo $MSELECT_2 
+#echo $MSELECT_3
+#echo $MSELECT_4
+#echo $MSELECT_5
+#echo $MSELECT_6
+#echo $MSELECT_7
+#echo $MSELECT_8
+#echo $MSELECT_9
+#echo $MSELECT_10
 echo "or q to exit"
-echo -n "Which one? 1-10: "
+echo -n "Which one? 1-9: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -99,7 +150,7 @@ echo -n "Which one? 1-10: "
 		doinstall.yacminer
 		;;
 		5 )
-		doinstall.bfgminer
+		doinstall.bfgminersrc
 		;;
 		6 )
 		doinstall.cgminer
@@ -112,9 +163,6 @@ echo -n "Which one? 1-10: "
 		;;
 		9 )
 		doinstall.sgminer-jackpot
-		;;
-		10 )
-		doinstall.sgminer-scryptjane
 		;;
 	  esac
 	else
