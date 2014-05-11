@@ -1,7 +1,7 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
 MCFLAGS="-O2 -Wall -march=native"
-function doinstall.sgminer () {
+function doinstall.sgminer2 () {
 	local BUILDDIR="/root/minerbuild"
 	SGMINERVER=`cd $BUILDDIR && git describe`
 	$THELINE
@@ -60,7 +60,7 @@ echo -n "Which one? 1-10: "
 	then 
 	case $MINERSELECTNUM in
 		1 )
-		doinstall.sgminer
+		doinstall.sgminer2
 		;;
 		2 )
 		doinstall.sph-sgminer
