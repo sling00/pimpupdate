@@ -503,14 +503,16 @@ local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install LSOC Kernel for R7850 /R9 270"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
 echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
+echo $PMSELECT_6
 echo "or q to exit"
-echo -n "Which one? 1-5: "
+echo -n "Which one? 1-6: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -552,11 +554,12 @@ local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="6. Install nodm update"
+local PMSELECT_6="6. Install LSOC Kernel for R7850 /R9 270"
 local PMSELECT_7="7. install wicd wifi fix."
 local PMSELECT_8="8. Install Pimp 1.4 SGMINER rollback fix"
 local PMSELECT_9="9. Install BFGMINER fix for gridseeds"
 local PMSELECT_10="10. Install manualstart command line miner starting tool."
+local PMSELECT_11="11. Install nodm update"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -568,8 +571,9 @@ echo $PMSELECT_7
 echo $PMSELECT_8
 echo $PMSELECT_9
 echo $PMSELECT_10
+echo $PMSELECT_11
 echo "or q to exit"
-echo -n "Which one? 1-10: "
+echo -n "Which one? 1-11: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -609,6 +613,9 @@ echo -n "Which one? 1-10: "
 		;;
 		10 )
 		doinstall.manualstart
+		;;
+		11 )
+		doinstall.lsockernels
 		;;
 	esac
 	else
