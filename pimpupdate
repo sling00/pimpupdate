@@ -387,11 +387,46 @@ function doinstall.check.sgminer() {
 		;;
 		* )
 		echo "Your version of PiMP does not need this fix applied."
-		pimpmenu
+		f.return
 		;;
 	esac
 	echo "..."
 	$THELINE
+}
+function checkinstall.jackpot() {
+	clear
+	$THELINE
+	echo "Pimp 1.x Jackpot coin miner installer"
+	$THELINE
+	if [ -e /opt/sgminer-jackpot ];
+		then
+			echo -n "Jackpot coin miner already installed, reinstall? (y/n): "
+			read J_REINSTALL
+			if [ $J_REINSTALL = y ];
+				then
+				doinstall.jackpot
+			else 
+				f.return
+			fi
+	else 
+		doinstall.jackpot
+	fi
+	}
+function doinstall.jackpot() {
+	echo "This is a miner for the jackpotcoin algorithm."
+	echo "This will also replace your current poolmanager.conf"
+	echo "with one that has jackpotcoin in it. "
+	echo -n "Ok to continue? (y/n): "
+	read J_CONTINUE
+	if [ $J_CONTINUE = y ];
+		then
+			doinstall.jackpot1			
+		}
+		else
+			f.return
+	fi
+function doinstall.jackpot1() {
+	echo "INSTALLING JACKPOT WEEEEE"
 }
 function doinstall.lsockernels() {
 	clear
@@ -408,11 +443,9 @@ function doinstall.lsockernels() {
 	if [ $LSOC_CONTINUE = y ]
 		then
 			$THELINE
-			echo "Removing old bfgminer...."
-			rm -rf /opt/bfgminer
-			echo "Downloading bfgminer binary tarball.."
+			echo "Downloading lsoc kernel tarball.."
 			download /tmp/lsoc.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-lsoc/lsoc-5-6-2014.tbz2
-			echo "Extracting new bfgminer..."
+			echo "Extracting lsoc kernels to /tmp..."
 			tar jxpf /tmp/lsoc.tbz2 -C /tmp/
 			if [ -e /opt/sgminer/kernel ];
 				then
