@@ -567,6 +567,7 @@ echo $PMSELECT_6
 echo $PMSELECT_7
 echo $PMSELECT_8
 echo $PMSELECT_9
+echo $PMSELECT_10
 echo "or q to exit"
 echo -n "Which one? 1-10: "
 	read PMSELECTNUM
@@ -621,8 +622,11 @@ fi
 
 function pimpmenu() {
 PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
-	if [ '$PIMP_VERSION2' = '1.4.1' ];
+	   if [[ `sed -n '2,2p' /etc/version  | grep -c 1.4.1-amd` = 1 ]];
 		then
+    		pimpmenu141
+    	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.0-amd` = 1 ]];
+    	then
     		pimpmenu141
 		else
 			pimpmenu14
