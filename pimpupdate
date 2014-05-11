@@ -641,8 +641,7 @@ echo -n "Which one? 1-12: "
 		f.minermenu
 		;;
 		6 )
-		doinstall.nodm
-		;;
+		doinstall.lsockernels
 		7 )
 		doinstall.wicdfix
 		;;
@@ -656,7 +655,7 @@ echo -n "Which one? 1-12: "
 		doinstall.manualstart
 		;;
 		11 )
-		doinstall.lsockernels
+		doinstall.nodm
 		;;
 		12 )
 		checkinstall.jackpot
