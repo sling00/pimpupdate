@@ -1,0 +1,101 @@
+#!/bin/bash
+#This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
+MCFLAGS="-O2 -Wall -march=native"
+function doinstall.sgminer () {
+	local BUILDDIR="/root/minerbuild"
+	SGMINERVER=`cd $BUILDDIR && git describe`
+	$THELINE
+	f.minestop
+	echo "Preparing work directory.... (/root/minerbuild)"
+	mkdir /root/minerbuild
+	cd /root/minerbuild
+	git clone https://github.com/sgminer-dev/sgminer.git
+	echo "Preparing to build SGminer V $SGMINERVER"
+	cd sgminer
+	autoreconf -i
+	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/sgminer/ADL_SDK/
+	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/sgminer/ADL_SDK/
+	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/sgminer/ADL_SDK/
+	CFLAGS="$MCFLAGS" ./configure
+	make
+	echo "Backing up old sgminer..."
+	mv /opt/sgminer /root/sgminer-bak
+	echo "Moving new sgminer into place..."
+	mv /root/minerbuild/sgminer /opt/sgminer
+	echo "Build of Sgminer $SGMINERVER done."
+	f.minestart
+}
+function f.minermenu() {
+$THELINE
+local MSELECT_1="1. Update Sgminer (Scrypt/Scrypt-N)"
+local MSELECT_2="2. Update sph-sgminer (Many algos)"
+local MSELECT_3="3. Update cgminer_heavy (Heavy, Hefty, Sha3(Keccak), Skein, Scrypt)"
+local MSELECT_4="4. Update yacminer (Chacha, scrypt)"
+local MSELECT_5="5. Update BFGminer (ASIC, Gridseeds, scrypt)"
+local MSELECT_6="6. Update Cgminer-3.7.2 (Ckolivas)"
+local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
+local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
+local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
+local MSELECT_10="10. Update sgminer-scryptjane"
+echo "What would you like to do?"
+echo $MSELECT_1
+echo $MSELECT_2 
+echo $MSELECT_3
+echo $MSELECT_4
+echo $MSELECT_5
+echo $MSELECT_6
+echo $MSELECT_7
+echo $MSELECT_8
+echo $MSELECT_9
+echo $MSELECT_10
+echo "or q to exit"
+echo -n "Which one? 1-10: "
+	read MINERSELECTNUM
+	if [ $MINERSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $MSELECT_$MSELECTNUM Correct? Y/N: "
+	read MINERSELECT_CONTINUE
+	if [ $MINERSELECT_CONTINUE == y ];
+	then 
+	case $MSELECTNUM in
+		1 )
+		doinstall.sgminer
+		;;
+		2 )
+		doinstall.sph-sgminer
+		;;
+		3 )
+		doinstall.cgminer_heavy
+		;;
+		4 )
+		doinstall.yacminer
+		;;
+		5 )
+		doinstall.bfgminer
+		;;
+		6 )
+		doinstall.cgminer
+		;;
+		7 )
+		doinstall.kalroth
+		;;
+		8 )
+		doinstall.dmaxl-cgminer
+		;;
+		9 )
+		doinstall.sgminer-jackpot
+		;;
+		10 )
+		doinstall.sgminer-scryptjane
+		;;
+	  esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+	fi
+fi
+}
+doinstall.sgminer
