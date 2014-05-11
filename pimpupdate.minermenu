@@ -102,7 +102,7 @@ fi
 }
 function f.minermenu() {
 $THELINE
-echo "Miner build menu"
+echo "			Miner build menu"
 $THELINE
 local MSELECT_1="1. Update Sgminer (Scrypt/Scrypt-N)"
 local MSELECT_2="2. Update sph-sgminer (Many algos)"
