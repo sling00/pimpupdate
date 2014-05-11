@@ -624,9 +624,9 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4'`
 function pimpmenu() {
 	if [ "$PIMP_VERSION2" = "1.4.1" ];
 		then
-    		pimpmenu14
+    		pimpmenu141
 		else
-			pimpmenu141
+			pimpmenu14
 	fi
 }
 #Work begins below#
