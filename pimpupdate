@@ -422,7 +422,6 @@ function doinstall.jackpot() {
 	if [ $J_CONTINUE = y ];
 		then
 			doinstall.jackpot1			
-		}
 		else
 			f.return
 	fi
