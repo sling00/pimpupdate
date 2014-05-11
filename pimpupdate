@@ -498,7 +498,6 @@ function doinstall.manualstart() {
 }
 #Menu function for pimp 1.4.1/1.5
 function pimpmenu141() {
-$THELINE
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
@@ -548,7 +547,6 @@ fi
 }
 #Menu function for pimp 1.4
 function pimpmenu14() {
-$THELINE
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
@@ -620,7 +618,7 @@ echo -n "Which one? 1-10: "
 fi
 fi
 }
-PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4'`
+PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 function pimpmenu() {
 	if [ "$PIMP_VERSION2" = "1.4.1" ];
 		then
