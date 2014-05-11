@@ -20,7 +20,7 @@ function doinstall.sgminer2 () {
 		echo "You already have a build directory for Sgminer "
 		echo "1. Pull (Update your existing build directory)"
 		echo "2. Clone (Remove existing build directory and clone fresh)"
-		echo -n "Would you like to pull it up to date or clone a fresh version?"
+		echo -n "Would you like to pull it up to date or clone a fresh version? (1/2): "
 		read PULLORCLONESG
 		if [ $PULLORCLONESG = 1 ];
 			then 
@@ -46,14 +46,13 @@ function doinstall.sgminer2 () {
 	echo "Backing up old sgminer..."
 	mv /opt/sgminer /root/sgminer-bak
 	echo "Moving new sgminer into place..."
-	mv /root/minerbuild/sgminer /opt/sgminer
+	cp -R /root/minerbuild/sgminer /opt/sgminer
 	echo "Build of Sgminer $SGMINERVER done."
 	f.minestart
 }
 function f.minermenu() {
-clear
 $THELINE
-Miner build menu 
+echo "Miner build menu"
 $THELINE
 local MSELECT_1="1. Update Sgminer (Scrypt/Scrypt-N)"
 local MSELECT_2="2. Update sph-sgminer (Many algos)"

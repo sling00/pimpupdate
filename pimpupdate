@@ -316,6 +316,7 @@ fi
 }
 function f.minestart() {
 	echo "Restarting mining..... (May take 30-45 seconds!)"
+	cd /opt/ifmi/
 	/etc/init.d/mine start
 }
 # Mine stop function
@@ -543,6 +544,7 @@ echo -n "Which one? 1-10: "
 		doinstall.smprofiles
 		;;
 		5 ) 
+		clear
 		f.minermenu
 		;;
 		6 )
