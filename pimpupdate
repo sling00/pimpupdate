@@ -622,7 +622,7 @@ fi
 }
 $PIMP_VERSION2=`echo $PIMPVERSION`
 function pimpmenu() {
-	if [ $PIMP_VERSION < 1.4.1 ];
+	if [ $PIMP_VERSION2 < 1.4.1 ];
 		then
     		pimpmenu14
 		else
