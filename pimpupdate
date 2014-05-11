@@ -13,7 +13,6 @@ PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
 CURLARGS="-f -s -S -k"
 PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
-
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
@@ -25,7 +24,12 @@ then
 else
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
 fi
-
+if [ $DEV != 0 ];
+	then
+		source ./pimpupdate.minermenu
+	else
+		source /opt/pimp/pimpupdate.minermenu
+fi
 #DOWNLOADFUNCTION
 function download() {
  local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
@@ -186,6 +190,7 @@ function checkupdates() {
 	# incomplete work in progress. 
 	echo this should never display.
 }
+
 #these two should be moved to the installer.
 function f.pimpupdateskel() {
 	if [ ! -e /opt/pimp/pimpupdatefiles ]
