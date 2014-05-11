@@ -425,6 +425,7 @@ function doinstall.jackpot() {
 		else
 			f.return
 	fi
+}
 function doinstall.jackpot1() {
 	echo "INSTALLING JACKPOT WEEEEE"
 }
