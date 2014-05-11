@@ -58,7 +58,7 @@ echo -n "Which one? 1-10: "
 	read MINERSELECT_CONTINUE
 	if [ $MINERSELECT_CONTINUE == y ];
 	then 
-	case $MSELECTNUM in
+	case $MINERSELECTNUM in
 		1 )
 		doinstall.sgminer
 		;;
@@ -98,4 +98,4 @@ echo -n "Which one? 1-10: "
 	fi
 fi
 }
-doinstall.sgminer
+#doinstall.sgminer
