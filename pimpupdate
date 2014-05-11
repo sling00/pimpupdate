@@ -620,6 +620,7 @@ echo -n "Which one? 1-10: "
 fi
 fi
 }
+$PIMP_VERSION2=`echo $PIMPVERSION`
 function pimpmenu() {
 	if [ $PIMP_VERSION < 1.4.1 ];
 		then
