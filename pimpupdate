@@ -503,11 +503,12 @@ local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
-local PMSELECT_5="5. Install nodm update"
-local PMSELECT_6="6. install wicd wifi fix."
-local PMSELECT_7="7. Install Pimp 1.4 SGMINER rollback fix"
-local PMSELECT_8="8. Install BFGMINER fix for gridseeds"
-local PMSELECT_9="9. Install manualstart command line miner starting tool."
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install nodm update"
+local PMSELECT_7="7. install wicd wifi fix."
+local PMSELECT_8="8. Install Pimp 1.4 SGMINER rollback fix"
+local PMSELECT_9="9. Install BFGMINER fix for gridseeds"
+local PMSELECT_10="10. Install manualstart command line miner starting tool."
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -519,7 +520,7 @@ echo $PMSELECT_7
 echo $PMSELECT_8
 echo $PMSELECT_9
 echo "or q to exit"
-echo -n "Which one? 1-9: "
+echo -n "Which one? 1-10: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -541,19 +542,22 @@ echo -n "Which one? 1-9: "
 		4 )
 		doinstall.smprofiles
 		;;
-		5 )
-		doinstall.nodm
+		5 ) 
+		f.minermenu
 		;;
 		6 )
-		doinstall.wicdfix
+		doinstall.nodm
 		;;
 		7 )
-		doinstall.sgminer
+		doinstall.wicdfix
 		;;
 		8 )
-		doinstall.bfgminer
+		doinstall.sgminer
 		;;
 		9 )
+		doinstall.bfgminer
+		;;
+		10 )
 		doinstall.manualstart
 		;;
 	esac
