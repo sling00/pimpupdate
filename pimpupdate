@@ -618,9 +618,10 @@ echo -n "Which one? 1-10: "
 fi
 fi
 }
-PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
+
 function pimpmenu() {
-	if [ "$PIMP_VERSION2" = "1.4.1" ];
+PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
+	if [ '$PIMP_VERSION2' = '1.4.1' ];
 		then
     		pimpmenu141
 		else
