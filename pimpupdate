@@ -15,7 +15,7 @@ PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
-DEV=0
+DEV=1
 #exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Wget progress filter 
 if [ $DEV != 0 ];
@@ -135,24 +135,24 @@ function doinstall.version() {
 }
 #Seedmanager Installation function
 function doinstall.seedmanager() {
-echo "Gathering files for PiMP $PIMP_VERSION....."
-download /tmp/seedmanager.zip $SMURL
-cd /opt/pimp/
-echo "moving old /opt/pimp/sminstall install directory....."
-sleep 2
-rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
-mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
-echo "Extracting new seed manager.... Everyone thank LILY!!!!"
-sleep 2
-unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
+	echo "Gathering files for PiMP $PIMP_VERSION....."
+	download /tmp/seedmanager.zip $SMURL
+	cd /opt/pimp/
+	echo "moving old /opt/pimp/sminstall install directory....."
+	sleep 2
+	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
+	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
+	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
+	sleep 2
+	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
 #git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
-echo "Installing new seedmanager"
-sleep 2
-cd /opt/pimp/sminstall/Linux-SeedManager-master/
- ./install-sm.pl -q
-echo "Setting permissions on seedmanager.conf just incase these are wrong.."
-chown www-data.root /opt/ifmi/seedmanager.conf
-echo "Successfully installed updated seedmanager"
+	echo "Installing new seedmanager"
+	sleep 2
+	cd /opt/pimp/sminstall/Linux-SeedManager-master/
+	 ./install-sm.pl -q
+	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/seedmanager.conf
+	echo "Successfully installed updated seedmanager"
 $THELINE
 rm /tmp/seedmanager.zip
 f.return
@@ -160,25 +160,25 @@ f.return
 
 #Installer function-Pimp
 function doinstall.pimp() {
-cd /opt/pimp/
-echo "Moving old /opt/pimp/pminstall install directory....."
-sleep 2
-rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
-mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
-echo "Extracting new pool manager.... Everyone thank LILY!!!!"
-sleep 2
-unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
+	cd /opt/pimp/
+	echo "Moving old /opt/pimp/pminstall install directory....."
+	sleep 2
+	rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
+	mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
+	echo "Extracting new pool manager.... Everyone thank LILY!!!!"
+	sleep 2
+	unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
 #git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
-echo "Installing new poolmanager"
-sleep 2
-cd /opt/pimp/pminstall/Linux-PoolManager-master/
- ./install-pm.pl -q
-echo "Setting permissions on poolmanager.conf just incase these are wrong.."
-chown www-data.root /opt/ifmi/poolmanager.conf
-echo "Successfully installed updated poolmanager"
-rm /tmp/poolmanager.zip
-$THELINE
-f.return
+	echo "Installing new poolmanager"
+	sleep 2
+	cd /opt/pimp/pminstall/Linux-PoolManager-master/
+ 	./install-pm.pl -q
+	echo "Setting permissions on poolmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Successfully installed updated poolmanager"
+	rm /tmp/poolmanager.zip
+	$THELINE
+	f.return
 }
 #This will be used later.
 function checkupdates() {
@@ -309,8 +309,9 @@ echo -n "Install updated profiles? Y/N:"
 		echo "Done..."
 		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
 		f.return
-	else echo "Try again! you must enter y to continue."
-		f.return
+	else 
+	echo "Try again! you must enter y to continue."
+	f.return
 fi
 }
 function f.minestart() {
@@ -344,35 +345,35 @@ function doinstall.sgminer() {
 		local SGFILE="http://hackin.yourshell.net/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
 		local SGMINERVER=`/opt/sgminer/sgminer --version` 
 		echo $SGMINERVER "detected.."
-		if [ `/opt/sgminer/sgminer --version | grep -c 4.1.271` = 1 ];
-		then
-		$THELINE 
-		echo "Your sgminer version is 4.1.271.xxxx, this version needs to be rolled back to 4.1.242"
-		echo "Due to an sgminer bug adding erroneous commas in the config file upon api save."
-		echo "Note, the old sgminer version will be saved in /opt/sgminer-4.1.271"
-		echo -n "Continue? y/n: "
-		read SGMINER_CONTINUE
-		if [ $SGMINER_CONTINUE = y ];
-			then  
-			f.minestop
-			download /tmp/sgminer-4.1.242.tbz2 $SGFILE
-			echo "Backing up old sgminer to /opt/sgminer-4.1.271"
-			mv /opt/sgminer /opt/sgminer-4.1.271 
-			echo "Extracting new sgminer to /opt/sgminer"
-			tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
-			echo "Finished"
-			f.minestart
+			if [ `/opt/sgminer/sgminer --version | grep -c 4.1.271` = 1 ];
+			then
+			$THELINE 
+			echo "Your sgminer version is 4.1.271.xxxx, this version needs to be rolled back to 4.1.242"
+			echo "Due to an sgminer bug adding erroneous commas in the config file upon api save."
+			echo "Note, the old sgminer version will be saved in /opt/sgminer-4.1.271"
+			echo -n "Continue? y/n: "
+			read SGMINER_CONTINUE
+			if [ $SGMINER_CONTINUE = y ];
+				then  
+				f.minestop
+				download /tmp/sgminer-4.1.242.tbz2 $SGFILE
+				echo "Backing up old sgminer to /opt/sgminer-4.1.271"
+				mv /opt/sgminer /opt/sgminer-4.1.271 
+				echo "Extracting new sgminer to /opt/sgminer"
+				tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
+				echo "Finished"
+				f.minestart
+				f.return
+				else
+					f.return
+				fi
+			else echo "Your version of sgminer does not need to be changed."
+			$THELINE
 			f.return
-		else
-			f.return
-		fi
-	else echo "Your version of sgminer does not need to be changed."
-		$THELINE
-		f.return
 	fi
 }
 #SGMINER ROLLBACK TO FIX BAD CONF ON POOL ADD
-function doinstall.check.sgminer() {
+function checkinstall.sgminer() {
 	clear
 	$THELINE
 	case $PIMP_VERSION in 
@@ -642,7 +643,7 @@ echo -n "Which one? 1-12: "
 		doinstall.wicdfix
 		;;
 		8 )
-		doinstall.sgminer
+		checkinstall.sgminer
 		;;
 		9 )
 		doinstall.bfgminer
