@@ -497,7 +497,7 @@ function doinstall.manualstart() {
 	fi 
 }
 #Menu function for pimp 1.4.1/1.5
-function pimpmenu1.4.1() {
+function pimpmenu141() {
 $THELINE
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
@@ -547,7 +547,7 @@ fi
 fi
 }
 #Menu function for pimp 1.4
-function pimpmenu1.4() {
+function pimpmenu14() {
 $THELINE
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
@@ -623,9 +623,9 @@ fi
 function pimpmenu() {
 	if [ $PIMP_VERSION < 1.4.1 ];
 		then
-    		pimpmenu1.4
+    		pimpmenu14
 		else
-			pimpmenu1.4.1
+			pimpmenu141
 	fi
 }
 #Work begins below#
