@@ -26,7 +26,7 @@ else
 fi
 if [ $DEV != 0 ];
 	then
-		source ./pimpupdate.minermenu
+		source /root/pimpupdate/pimpupdate.minermenu
 	else
 		source /opt/pimp/pimpupdate.minermenu
 fi
