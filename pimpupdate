@@ -407,7 +407,7 @@ function checkinstall.jackpot() {
 				then
 				doinstall.jackpot
 			else 
-				f.return
+				pimpmenu
 			fi
 	else 
 		doinstall.jackpot
@@ -428,6 +428,9 @@ function doinstall.jackpot() {
 }
 function doinstall.jackpot1() {
 	echo "INSTALLING JACKPOT WEEEEE"
+	#download /tmp/sgminer-jackpot.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-jackpot/sgminer-jackpot.tbz2
+	#download /tmp/cgminer.jackpot.conf.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-jackpot/cgminer.jackpot.conf.tbz2
+
 }
 function doinstall.lsockernels() {
 	clear
