@@ -593,6 +593,7 @@ local PMSELECT_8="8. Install Pimp 1.4 SGMINER rollback fix"
 local PMSELECT_9="9. Install BFGMINER fix for gridseeds"
 local PMSELECT_10="10. Install manualstart command line miner starting tool."
 local PMSELECT_11="11. Install nodm update"
+local PMSELECT_12="12. Install jackpotcoin miner"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -605,8 +606,9 @@ echo $PMSELECT_8
 echo $PMSELECT_9
 echo $PMSELECT_10
 echo $PMSELECT_11
+echo $PMSELECT_12
 echo "or q to exit"
-echo -n "Which one? 1-11: "
+echo -n "Which one? 1-12: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -649,6 +651,9 @@ echo -n "Which one? 1-11: "
 		;;
 		11 )
 		doinstall.lsockernels
+		;;
+		12 )
+		checkinstall.jackpot
 		;;
 	esac
 	else
