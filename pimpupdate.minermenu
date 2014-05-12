@@ -13,7 +13,7 @@ function doinstall.sgminer4 {
 	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/sgminer/ADL_SDK/
 	CFLAGS="$MCFLAGS" ./configure
 	make
-	if [ -x $BUILDDIR\\sgminer ];
+	if [ -x /root/minerbuild/sgminer/sgminer ];
 		then
 		echo "Compile completed successfully."
 		echo "Removing old minerbuild/sgminer.bak directory..."
