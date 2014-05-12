@@ -1,6 +1,45 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
 MCFLAGS="-O2 -Wall -march=native"
+function doinstall.sgminer4 {
+	if [ -e /root/minerbuild/sgminer ];
+	then
+	echo "Preparing to build SGminer V $SGMINERVER"
+	cd sgminer
+	autoreconf -i
+	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/sgminer/ADL_SDK/
+	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/sgminer/ADL_SDK/
+	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/sgminer/ADL_SDK/
+	CFLAGS="$MCFLAGS" ./configure
+	if [ `make` ];
+		then
+		echo "Compile completed successfully."
+		echo "Removing old minerbuild/sgminer-bak directory..."
+		rm -rf /root/minerbuild/sgminer-bak
+		echo "Backing up old sgminer to /root/minerbuild/sgminer-bak..."
+		mv /opt/sgminer /root/minerbuild/sgminer-bak
+		echo "Moving new sgminer into place..."
+		cp -R /root/minerbuild/sgminer /opt
+		echo "Build of Sgminer $SGMINERVER done."
+		f.minestart
+		else
+		echo "make did not complete successfully, failing not so gracefully!"
+		echo "BOOM!"
+		exit 1
+	fi 
+	else
+	echo "Can't find sgminer build directory, failing not so gracefully."
+	echo "BOOM!"
+	exit 1
+	fi 
+}
+function doinstall.sgminer3() {
+		if [ `git clone https://github.com/sgminer-dev/sgminer.git` ];
+			then doinstall.sgminer4
+		else "Error, git failed to clone the sgminer repo"
+		exit 1
+	fi
+}
 function doinstall.sgminer2 () {
 	local BUILDDIR="/root/minerbuild"
 	SGMINERVER=`cd $BUILDDIR && git describe`
@@ -13,6 +52,7 @@ function doinstall.sgminer2 () {
 			mkdir /root/minerbuild
 		else
 	    	echo "Found build directory, moving along..."
+	    	$THELINE
 	fi
 	cd /root/minerbuild
 	if [ -e /root/minerbuild/sgminer ];
@@ -26,39 +66,20 @@ function doinstall.sgminer2 () {
 			then 
 			cd sgminer
 			git pull
+			doinstall.sgminer4
 		elif [ $PULLORCLONESG = 2 ];
 			then
 			rm -rf sgminer
-			git clone https://github.com/sgminer-dev/sgminer.git
+			doinstall.sgminer3
 		else 
 		   echo "Invalid selection, returning to miner build menu"
 		   f.minermenu
 		fi
 		else 
-			git clone https://github.com/sgminer-dev/sgminer.git
+		doinstall.sgminer3
 	fi
-	if [ -e /root/minerbuild/sgminer ];
-	then
-	echo "Preparing to build SGminer V $SGMINERVER"
-	cd sgminer
-	autoreconf -i
-	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/sgminer/ADL_SDK/
-	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/sgminer/ADL_SDK/
-	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/sgminer/ADL_SDK/
-	CFLAGS="$MCFLAGS" ./configure
-	make
-	echo "Backing up old sgminer..."
-	mv /opt/sgminer /root/sgminer-bak
-	echo "Moving new sgminer into place..."
-	cp -R /root/minerbuild/sgminer /opt/sgminer
-	echo "Build of Sgminer $SGMINERVER done."
-	f.minestart
-	else
-	echo "Can't find sgminer build directory, failing not so gracefully."
-	echo "BOOM!"
-	exit 1
-	fi 
 }
+
 function doinstall.sphsgminer() {
 	echo "weeeee"
 }
@@ -143,7 +164,7 @@ echo -n "Which one? 1-9: "
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $MSELECT_$MSELECTNUM Correct? Y/N: "
+	echo -n "You selected $MSELECT_$MINERSELECTNUM Correct? Y/N: "
 	read MINERSELECT_CONTINUE
 	if [ $MINERSELECT_CONTINUE == y ];
 	then 
