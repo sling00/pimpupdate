@@ -18,7 +18,7 @@ THELINE='echo -=================================================================
 DEV=1
 #exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
-if [ "$DEV"ls != 0 ];
+if [ "$DEV" != 0 ];
 then
 	PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/dev-version"
 else
