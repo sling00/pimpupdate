@@ -34,7 +34,11 @@ function doinstall.sgminer2 () {
 		   echo "Invalid selection, returning to miner build menu"
 		   f.minermenu
 		fi
+		else 
+			git clone https://github.com/sgminer-dev/sgminer.git
 	fi
+	if [ -e /root/minerbuild/sgminer ];
+	then
 	echo "Preparing to build SGminer V $SGMINERVER"
 	cd sgminer
 	autoreconf -i
@@ -49,6 +53,14 @@ function doinstall.sgminer2 () {
 	cp -R /root/minerbuild/sgminer /opt/sgminer
 	echo "Build of Sgminer $SGMINERVER done."
 	f.minestart
+	else
+	echo "Can't find sgminer build directory, failing not so gracefully."
+	echo "BOOM!"
+	exit 1
+	fi 
+}
+function doinstall.sphsgminer() {
+	echo "weeeee"
 }
 function minermenu.config() {
 local PMSELECT_1="1. Cflags"
@@ -114,9 +126,9 @@ local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 echo "What would you like to do?"
-echo "Only sgminer is finished currently sorry :( "
+echo "Only sgminer/sph-sgminer is finished currently sorry :( "
 echo $MSELECT_1
-#echo $MSELECT_2 
+echo $MSELECT_2 
 #echo $MSELECT_3
 #echo $MSELECT_4
 #echo $MSELECT_5
@@ -140,7 +152,7 @@ echo -n "Which one? 1-9: "
 		doinstall.sgminer2
 		;;
 		2 )
-		doinstall.sph-sgminer
+		doinstall.sphsgminer
 		;;
 		3 )
 		doinstall.cgminer_heavy
