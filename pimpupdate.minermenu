@@ -4,6 +4,8 @@ MCFLAGS="-O2 -Wall -march=native"
 function doinstall.sgminer4 {
 	if [ -e /root/minerbuild/sgminer ];
 	then
+	local BUILDDIR="/root/minerbuild/sgminer"
+	SGMINERVER=`cd $BUILDDIR && git describe`
 	echo "Preparing to build SGminer V $SGMINERVER"
 	cd sgminer
 	autoreconf -i
@@ -19,7 +21,6 @@ function doinstall.sgminer4 {
 		echo "Backing up old sgminer to /root/minerbuild/sgminer.bak..."
 		mv /opt/sgminer /root/minerbuild/sgminer.bak
 		echo "Moving new sgminer into place..."
-
 		cp -R /root/minerbuild/sgminer /opt
 		echo "Build of Sgminer $SGMINERVER done."
 		f.minestart
@@ -42,8 +43,6 @@ function doinstall.sgminer3() {
 	fi
 }
 function doinstall.sgminer2 () {
-	local BUILDDIR="/root/minerbuild"
-	SGMINERVER=`cd $BUILDDIR && git describe`
 	$THELINE
 	f.minestop
 	echo "Preparing work directory.... (/root/minerbuild)"
