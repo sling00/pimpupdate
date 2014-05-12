@@ -181,9 +181,6 @@ function doinstall.sphsgminer () {
 		doinstall.sphsgminer3
 	fi
 }
-function doinstall.sphsgminer() {
-	echo "weeeee"
-}
 function minermenu.config() {
 local PMSELECT_1="1. Cflags"
 local PMSELECT_2="2. -O3"
