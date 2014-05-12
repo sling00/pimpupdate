@@ -14,11 +14,12 @@ function doinstall.sgminer4 {
 	if [ `make` ];
 		then
 		echo "Compile completed successfully."
-		echo "Removing old minerbuild/sgminer-bak directory..."
-		rm -rf /root/minerbuild/sgminer-bak
-		echo "Backing up old sgminer to /root/minerbuild/sgminer-bak..."
-		mv /opt/sgminer /root/minerbuild/sgminer-bak
+		echo "Removing old minerbuild/sgminer.bak directory..."
+		rm -rf /root/minerbuild/sgminer.bak
+		echo "Backing up old sgminer to /root/minerbuild/sgminer.bak..."
+		mv /opt/sgminer /root/minerbuild/sgminer.bak
 		echo "Moving new sgminer into place..."
+
 		cp -R /root/minerbuild/sgminer /opt
 		echo "Build of Sgminer $SGMINERVER done."
 		f.minestart
