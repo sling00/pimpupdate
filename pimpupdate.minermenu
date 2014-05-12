@@ -1,6 +1,6 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
-MCFLAGS="-O2 -Wall -march=native"
+MCFLAGS="-O2 -w -march=native"
 function doinstall.sgminer4 {
 	if [ -e /root/minerbuild/sgminer ];
 	then
