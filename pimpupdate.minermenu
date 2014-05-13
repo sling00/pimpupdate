@@ -27,7 +27,7 @@ function buildminer.4 {
 	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
 	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
 	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
-	CFLAGS="$MCFLAGS" ./$MINERCONFIGCOMMAND '$MINERCONFIGFLAGS'
+	CFLAGS="$MCFLAGS" ./$MINERCONFIGCOMMAND $MINERCONFIGFLAGS
 	sleep 3
 	make
 	if [ -x /root/minerbuild/$MINERDIRNAME/$MINEREXECNAME ];
