@@ -10,6 +10,7 @@ function doinstall.sgminer4 {
 	echo "Preparing to build SGminer V $SGMINERVER"
 	echo "Making clean..."
 	make clean &> /dev/null
+	cd /root/minerbuild/sgminer
 	autoreconf -i
 	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/sgminer/ADL_SDK/
 	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/sgminer/ADL_SDK/
