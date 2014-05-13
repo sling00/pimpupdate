@@ -44,6 +44,7 @@ function doinstall.sgminer4 {
 				else
 				echo "..."
 				fi
+		/opt/ifmi/mcontrol stop
 		f.minestart
 		else
 		echo "make did not complete successfully, failing not so gracefully!"
@@ -124,6 +125,7 @@ function doinstall.sphsgminer4 {
 		echo "Moving new sph-sgminer into place..."
 		cp -R /root/minerbuild/sph-sgminer /opt
 		echo "Build of SPH-SGminer $SGMINERVER done."
+		/opt/ifmi/mcontrol stop
 		f.minestart
 		else
 		echo "make did not complete successfully, failing not so gracefully!"
