@@ -1,11 +1,11 @@
 #!/bin/bash
 #pimpupdate - Created by sling00  irc.freenode.net #pimp
 #Report issues/submit fixes to: https://github.com/sling00/pimpupdate
-#No warranty whatsoever expressed or implied, if this breaks your couch in half and launches you with an airbag, its not my fault. 
+#No warranty whatsoever expressed or implied, if this breaks your couch in half and then launches you with an airbag, its not my fault. 
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.1.1
+SCRIPT_VERSION=1.1.2
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -687,7 +687,10 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
     	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.0-amd` = 1 ]];
     	then
     		pimpmenu141
-		else
+    	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.1-amd` = 1 ]];
+    	then
+    		pimpmenu141
+    	else
 			pimpmenu14
 	fi
 }
@@ -710,13 +713,13 @@ echo -n "Do you wish to continue Enter y/n: "
 	echo "Checking if Pimpupdate is up to date........"
 	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
 	then
-	echo -n "pmupdate script is out of date! Would you like it to update itself? y/n: "
+	echo -n "pimpupdate script is out of date! Would you like it to update itself? y/n: "
 	read PMPUPDATE_UPDATE
 	if [ $PMPUPDATE_UPDATE == y ]; then
 		echo "Getting latest version of updatepm"
 		download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
-		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pmupdate.log
-		echo "Update completed. Please rerun this script to continue."
+		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
+		echo "Update completed. Please rerun pimpupdate to continue."
 		rm /tmp/pimpupdate.tar
 		exit 0
 	else
