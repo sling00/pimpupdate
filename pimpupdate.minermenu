@@ -105,10 +105,10 @@ function doinstall.sphsgminer4 {
 	echo "Preparing to build SPH-SGminer V $SPGMINERVER"
 	echo "Making clean..."
 	make clean &> /dev/null
-	autoreconf -i
 	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/sph-sgminer/ADL_SDK/
 	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/sph-sgminer/ADL_SDK/
 	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/sph-sgminer/ADL_SDK/
+	./autogen.sh
 	CFLAGS="$MCFLAGS" ./configure
 	sleep 3
 	make
