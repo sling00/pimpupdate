@@ -37,7 +37,7 @@ function doinstall.sgminer4 {
 				else
 				echo "..."
 			fi
-				if [ -e "/root/minerbuild/sgminer.bak/kernel/lsoc3.cl"];
+				if [ -e "/root/minerbuild/sgminer.bak/kernel/lsoc3.cl" ];
 				then 
 				echo "The script detected you had LSOC.cl kernel installed before building this new miner"
 				echo "So we're gonna drop it back in for you ;)"
