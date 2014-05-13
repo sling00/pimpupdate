@@ -57,11 +57,8 @@ function doinstall.sgminer4 {
 	fi 
 }
 function doinstall.sgminer3() {
-		if `git clone https://github.com/sgminer-dev/sgminer.git`;
-			then doinstall.sgminer4
-		else echo "Error, git failed to clone the sgminer repo"
-		exit 1
-	fi
+		git clone https://github.com/sgminer-dev/sgminer.git
+		doinstall.sgminer4
 }
 function doinstall.sgminer2 () {
 	$THELINE
@@ -139,13 +136,8 @@ function doinstall.sphsgminer4 {
 	fi 
 }
 function doinstall.sphsgminer3() {
-		
-		if `git clone https://github.com/prettyhatemachine/sph-sgminer.git` ;
-			then doinstall.sphgminer4
-		else 
-			echo "Error, git failed to clone the sph-sgminer repo"
-		exit 1
-	fi
+		git clone https://github.com/prettyhatemachine/sph-sgminer.git
+		doinstall.sphgminer4
 }
 function doinstall.sphsgminer () {
 	$THELINE
