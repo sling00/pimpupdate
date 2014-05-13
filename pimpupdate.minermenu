@@ -57,9 +57,10 @@ function doinstall.sgminer4 {
 	fi 
 }
 function doinstall.sgminer3() {
-		if [ `git clone https://github.com/sgminer-dev/sgminer.git` ];
+		git clone https://github.com/sgminer-dev/sgminer.git
+		if [ `git pull` ];
 			then doinstall.sgminer4
-		else "Error, git failed to clone the sgminer repo"
+		else echo "Error, git failed to clone the sgminer repo"
 		exit 1
 	fi
 }
@@ -119,7 +120,7 @@ function doinstall.sphsgminer4 {
 		then 
 		echo "Compile completed successfully."
 		f.minestop
-		echo "Removing old minerbuild/sph-sgminer.bak directory..."
+		echo "Removlsing old minerbuild/sph-sgminer.bak directory..."
 		rm -rf /root/minerbuild/sph-sgminer.bak
 		echo "Backing up old sph-sgminer to /root/minerbuild/sph-sgminer.bak..."
 		mv /opt/sph-sgminer /root/minerbuild/sph-sgminer.bak
@@ -139,9 +140,11 @@ function doinstall.sphsgminer4 {
 	fi 
 }
 function doinstall.sphsgminer3() {
-		if [ `git clone https://github.com/prettyhatemachine/sph-sgminer.git` ];
+		git clone https://github.com/prettyhatemachine/sph-sgminer.git
+		if [ `git pull` ];
 			then doinstall.sphgminer4
-		else "Error, git failed to clone the sgminer repo"
+		else 
+			echo "Error, git failed to clone the sph-sgminer repo"
 		exit 1
 	fi
 }
@@ -181,6 +184,7 @@ function doinstall.sphsgminer () {
 		doinstall.sphsgminer3
 	fi
 }
+#End SPH-SGMiner build functions
 function minermenu.config() {
 local PMSELECT_1="1. Cflags"
 local PMSELECT_2="2. -O3"
@@ -246,6 +250,7 @@ local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 echo "What would you like to do?"
 echo "Only sgminer/sph-sgminer is finished currently sorry :( "
+echo "Support for the remaining miners coming soon, be on the lookout for pimpupdate updates. :D"
 echo $MSELECT_1
 echo $MSELECT_2 
 #echo $MSELECT_3
