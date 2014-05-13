@@ -1,7 +1,6 @@
 #!/bin/bash
 #pimpupdate - Created by sling00  irc.freenode.net #pimp
 #Report issues/submit fixes to: https://github.com/sling00/pimpupdate
-#Thanks to # FWishbringer 04/12/13 for the bulk of the download function that gives the sexy fluid progress bars ;).
 #No warranty whatsoever expressed or implied, if this breaks your couch in half and launches you with an airbag, its not my fault. 
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
@@ -16,6 +15,7 @@ SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=1
+#Turn on logging?
 #exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
 if [ "$DEV" != 0 ];
@@ -262,7 +262,7 @@ echo -n "Install updated profile? Y/N:"
 	if [ $SMPROFILES == y ]; then
 		/opt/ifmi/smcontrol stop 2>/dev/null
 		echo "Downloading latest seedmanager.conf"
-		download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/smupdate/seedmanager.conf.tbz2
+		download /tmp/seedmanager.conf.tbz2 http://hackin.yourshell.net/smupdate/seedmanager.conf.tbz2
 
 	    echo "Backing up old seedmanager.conf to /opt/ifmi/seedmanager.conf.bak"
 	    if [[ -e /opt/ifmi/seedmanager.conf ]]; then
