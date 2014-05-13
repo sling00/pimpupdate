@@ -349,7 +349,7 @@ function doinstall.bfgminersrc(){
 	MINERCONFIGFLAGS="--enable-gridseed --enable-scrypt"
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS ="clone"
+	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
 	buildminer.2
 }
@@ -373,7 +373,7 @@ echo $MSELECT_1
 echo $MSELECT_2 
 #echo $MSELECT_3
 #echo $MSELECT_4
-#echo $MSELECT_5
+echo $MSELECT_5
 #echo $MSELECT_6
 #echo $MSELECT_7
 #echo $MSELECT_8
