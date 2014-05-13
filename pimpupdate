@@ -542,14 +542,12 @@ local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="6. Install LSOC Kernel for R7850 /R9 270"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
 echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
-echo $PMSELECT_6
 echo "or q to exit"
 echo -n "Which one? 1-6: "
 	read PMSELECTNUM
