@@ -702,6 +702,9 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 	   if [[ `sed -n '2,2p' /etc/version  | grep -c 1.4.1-amd` = 1 ]];
 		then
     		pimpmenu141
+    	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.4.2-amd` = 1 ]];
+    	then
+    		pimpmenu141
     	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.0-amd` = 1 ]];
     	then
     		pimpmenu141
