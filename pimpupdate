@@ -42,7 +42,7 @@ function f.return() {
 	echo "Returning to the main menu..."
 	pimpmenu
 }
-
+}
 function doinstall.version() {
 #if grep -wqs pimp /etc/version ; then
 #	if [[ sed -n '2,2p' /etc/version ]]; then
