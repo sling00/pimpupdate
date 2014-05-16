@@ -8,12 +8,45 @@ MCFLAGS="-O2 -w -march=native"
 #MINERDIRNAME2="The directory the miner gets installed into"
 #MINEREXECNAME="sgminer yacminer or cgminer"
 #MINERUSELSOC="can this miner use LSOC kernels?"
+#MINERPRECONFIGURECOMMAND="Autogen.sh or autoreconf -i or echo for miners that use autogen.sh for the main configure script/neither."
 #MINERCONFIGFLAGS="Configure flags for cgminer / BFGminer"
 #MINERCONFIGCOMMAND="configure"
 #MINERGETMETHOD="wget or git?"
 #MINERGETMETHODFLAGS ="clone"
 #MINERGITURL="git url for miner"
-
+function buildminer.checkadl() {
+	if [ $MINERDIRNAME != "bfgminer" ];
+	then
+	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
+	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
+	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
+	else
+	echo "BFGMiner doesn't need the ADL sdk, not copying."
+fi 
+}
+function buldminer.checklsoc() {
+if [ '$MINERUSELSOC' = "yes" ];
+	then
+	if [ -e "/root/minerbuild/$MINERDIRNAME.bak/kernel/lsoc.cl" ];
+				then
+				echo "The script detected you had LSOC.cl kernel installed before building this new miner"
+				echo "So we're gonna drop it back in for you ;)"
+				cp /root/minerbuild/$MINERDIRNAME.bak/kernel/lsoc.cl $MINERDIRNAME2/kernel/lsoc.cl
+				else
+				echo "..."
+			fi
+				if [ -e "/root/minerbuild/$MINERDIRNAME.bak/kernel/lsoc3.cl" ];
+				then 
+				echo "The script detected you had LSOC.cl kernel installed before building this new miner"
+				echo "So we're gonna drop it back in for you ;)"
+				cp /root/minerbuild/$MINERDIRNAME.bak/kernel/lsoc3.cl $MINERDIRNAME2/kernel/lsoc3.cl
+				else
+				echo "..."
+				fi
+	else
+	    echo "This isn't sgminer, not checking if lsoc kernels need to be put back in place..."
+fi
+}
 function buildminer.4 {
 	if [ -e /root/minerbuild/$MINERDIRNAME ];
 	then
@@ -23,9 +56,7 @@ function buildminer.4 {
 	echo "Making clean..."
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
-	cp /opt/ADL-SDK/adl_defines.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
-	cp /opt/ADL-SDK/adl_sdk.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
-	cp /opt/ADL-SDK/adl_structures.h /root/minerbuild/$MINERDIRNAME/ADL_SDK/
+	buildminer.checkadl
 	if [ '$MINERDIRNAME' = "sgminer" ];
 		then
 		autoreconf -i
@@ -39,29 +70,14 @@ function buildminer.4 {
 		then 
 		echo "Compile completed successfully."
 		f.minestop
-		echo "Removing old minerbuild/sgminer.bak directory..."
+		echo "Removing old minerbuild/$MINERDIRNAME.bak directory..."
 		rm -rf /root/minerbuild/$MINERDIRNAME.bak
-		echo "Backing up old sgminer to /root/minerbuild/sgminer.bak..."
-		mv /opt/$MINERDIRNAME2 /root/minerbuild/$MINERDIRNAME.bak
+		echo "Backing up old $MINERDIRNAME2 to /root/minerbuild/$MINERDIRNAME.bak..."
+		mv $MINERDIRNAME2 /root/minerbuild/$MINERDIRNAME.bak
 		echo "Moving new $MINERNAME into place..."
-		cp -R /root/minerbuild/$MINERDIRNAME /opt/$MINERDIRNAME2
+		cp -R /root/minerbuild/$MINERDIRNAME $MINERDIRNAME2
 		echo "Build of $MINERNAME $MINERVER done."
-			if [ -e "/root/minerbuild/sgminer.bak/kernel/lsoc.cl" ];
-				then
-				echo "The script detected you had LSOC.cl kernel installed before building this new miner"
-				echo "So we're gonna drop it back in for you ;)"
-				cp /root/minerbuild/sgminer.bak/kernel/lsoc.cl /opt/sgminer/kernel/lsoc.cl
-				else
-				echo "..."
-			fi
-				if [ -e "/root/minerbuild/sgminer.bak/kernel/lsoc3.cl" ];
-				then 
-				echo "The script detected you had LSOC.cl kernel installed before building this new miner"
-				echo "So we're gonna drop it back in for you ;)"
-				cp /root/minerbuild/sgminer.bak/kernel/lsoc3.cl /opt/sgminer/kernel/lsoc3.cl
-				else
-				echo "..."
-				fi
+		buildminer.checklsoc
 		/opt/ifmi/mcontrol stop
 		f.minestart
 		else
@@ -93,7 +109,7 @@ function buildminer.2() {
 	cd /root/minerbuild
 	if [ -e /root/minerbuild/$MINERDIRNAME ];
 		then
-		echo "You already have a build directory for Sgminer "
+		echo "You already have a build directory for $MINERNAME "
 		echo "1. Pull (Update your existing build directory)"
 		echo "2. Clone (Remove existing build directory and clone fresh)"
 		echo -n "Would you like to pull it up to date or clone a fresh version? (1/2): "
@@ -344,12 +360,26 @@ echo -n "Which one? 1-6: "
 	esac	
 fi
 }
-function doinstall.bfgminersrc(){
+function doinstall.bfgminersrc() {
 	MINERNAME="BFGMiner"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="bfgminer"
 	MINERDIRNAME2="/opt/bfgminer"
 	MINEREXECNAME="bfgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS="--enable-gridseed --enable-scrypt "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
+	buildminer.2
+}
+function doinstall.dmaxl-cgminer() {
+	MINERNAME="DMAXL\Cgminer 4.3.0 GRIDSEED fork"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="cgminer"
+	MINERDIRNAME2="/opt/cgminer-4.3.0-gridseed"
+	MINEREXECNAME="cgminer"
 	MINERUSELSOC="no"
 	MINERCONFIGFLAGS="--enable-gridseed --enable-scrypt "
 	MINERCONFIGCOMMAND="configure"

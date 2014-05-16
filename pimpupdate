@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.1.2
+SCRIPT_VERSION=1.1.4
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -14,7 +14,7 @@ PMURL="https://github.com/starlilyth/Linux-PoolManager/archive/master.zip"
 SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
-DEV=1
+DEV=0
 #Turn on logging?
 #exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
@@ -37,7 +37,7 @@ local destin=$1
 local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
 echo "Downloading $CLEANURL"
 wget -O $destin  "$URL"
-}
+
 function f.return() { 
 	echo "Returning to the main menu..."
 	pimpmenu
@@ -121,6 +121,24 @@ function doinstall.version() {
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.1-amd-14.4.tbz2
 			doinstall.pimp
 			;;
+		1.4.2-amd-12.8 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-12.8.tbz2
+			doinstall.pimp
+			;;
+		1.4.2-amd-13.12 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-13.12.tbz2
+			doinstall.pimp
+			;;
+		1.4.2-amd-14.4 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-14.4.tbz2
+			doinstall.pimp
+			;;	
 		9.9.9 )
 			echo DEV VERSION DETECTED
 			echo "Gathering files for PiMP $PIMP_VERSION....."
