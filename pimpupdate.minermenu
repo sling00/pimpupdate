@@ -57,10 +57,11 @@ function buildminer.4 {
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
-	if [ '$MINERDIRNAME' = "sgminer" ];
+	if [ '$MINEREXECNAME' = "sgminer" ];
 		then
 		autoreconf -i
-		else 
+	fi
+	if  [ '$MINEREXECNAME' = "bfgminer" ];
 		./autogen.sh
 	fi
 	CFLAGS="$MCFLAGS" ./$MINERCONFIGCOMMAND $MINERCONFIGFLAGS
@@ -388,6 +389,34 @@ function doinstall.dmaxl-cgminer() {
 	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
 	buildminer.2
 }
+function dobuild.x11mod() {
+	MINERNAME="SPH-SGminer_x11mod"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sph-sgminer_x11mod"
+	MINERDIRNAME2="/opt/sph-sgminer_x11mod"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/lasybear/sph-sgminer_x11mod.git"
+	buildminer.2
+}
+function dobuild.jackpot() {
+	MINERNAME="SPH-SGminer_x11mod"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sph-sgminer_x11mod"
+	MINERDIRNAME2="/opt/sph-sgminer_x11mod"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/lasybear/sph-sgminer_x11mod.git"
+	buildminer.2
+}
 function f.minermenu() {
 $THELINE
 echo "			Miner build menu"
@@ -401,6 +430,7 @@ local MSELECT_6="6. Update Cgminer-3.7.2 (Ckolivas)"
 local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
+local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 echo "What would you like to do?"
 echo "Only sgminer/sph-sgminer is finished currently sorry :( "
 echo "Support for the remaining miners coming soon, be on the lookout for pimpupdate updates. :D"
@@ -411,9 +441,9 @@ echo $MSELECT_2
 echo $MSELECT_5
 #echo $MSELECT_6
 #echo $MSELECT_7
-#echo $MSELECT_8
+echo $MSELECT_8
 #echo $MSELECT_9
-#echo $MSELECT_10
+echo $MSELECT_10
 echo "or q to exit"
 echo -n "Which one? 1-9: "
 	read MINERSELECTNUM
@@ -452,6 +482,8 @@ echo -n "Which one? 1-9: "
 		9 )
 		doinstall.sgminer-jackpot
 		;;
+		10 )
+		dobuild.x11mod
 	  esac
 	else
 	$THELINE

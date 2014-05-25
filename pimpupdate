@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.2.1
+SCRIPT_VERSION=1.2.2
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -468,7 +468,16 @@ function doinstall.x11mod() {
 	fi
 }
 function doinstall.x11mod1() {
-	download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod.tbz2
+	if [ $PIMP_VERSION = 1.5.2-amd-13.12 ]; then
+		download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod32.tbz2
+	elif [ $PIMP_VERSION = 1.5.3-amd-13.12 ]; then
+		download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod32.tbz2
+	elif [ $PIMP_VERSION = 1.5.3-amd-14.4 ]; then
+		download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod32.tbz2
+	else
+		download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod.tbz2
+	fi
+	#Get the right conf file
 	if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
 	elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
