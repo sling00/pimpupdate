@@ -481,7 +481,7 @@ function doinstall.x11mod1() {
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
 	tar jxpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
 	echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
-	sleep2 
+	sleep 2 
 	tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Finished"
