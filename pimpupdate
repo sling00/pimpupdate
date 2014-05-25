@@ -479,8 +479,9 @@ function doinstall.x11mod1() {
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
 	fi
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
-	tar jxvpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
-	echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
+	tar jxpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
+	echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
+	sleep2 
 	tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Finished"
@@ -527,7 +528,7 @@ function doinstall.jackpot1() {
 	echo "Extracting jackpotcoin miner to /opt/sgminer-jackpot"
 	tar jxvpf /tmp/sgminer-jackpot.tbz2 -C /opt/
 	echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
-	tar jxvpf /tmp/cgminer.jackpot.tbz2 -C /opt/ifmi/
+	tar jxpf /tmp/cgminer.jackpot.tbz2 -C /opt/ifmi/
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Finished"
 	f.minestart
