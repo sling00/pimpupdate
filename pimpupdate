@@ -685,6 +685,8 @@ echo $PMSELECT_2
 echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
+echo $PMSELECT_6
+
 echo "or q to exit"
 echo -n "Which one? 1-6: "
 	read PMSELECTNUM
@@ -732,14 +734,17 @@ local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Install open source x11 optimized miner"
+local PMSELECT_7="7. Install arebyp scrypt sgminer kernel"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
 echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
 echo "or q to exit"
-echo -n "Which one? 1-6: "
+echo -n "Which one? 1-7: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -865,6 +870,7 @@ echo -n "Which one? 1-14: "
 		;;
 		14 )
 		doinstall.arebypkernel
+		;;
 	esac
 	else
 	$THELINE
