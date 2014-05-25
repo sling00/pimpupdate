@@ -800,7 +800,7 @@ local PMSELECT_10="10. Install manualstart command line miner starting tool."
 local PMSELECT_11="11. Install nodm update"
 local PMSELECT_12="12. Install jackpotcoin miner"
 local PMSELECT_13="13. Install open source x11 optimized miner"
-local PMSELECT_14="Install arebyp optimized scrypt sgminer kernel"
+local PMSELECT_14="14. Install arebyp optimized scrypt sgminer kernel"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
