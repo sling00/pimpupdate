@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.2.0
+SCRIPT_VERSION=1.2.1
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -469,7 +469,11 @@ function doinstall.x11mod() {
 }
 function doinstall.x11mod1() {
 	download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod.tbz2
-	download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
+	if [ $PIMP_VERSION = 1.4 ]; then
+		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
+	else
+		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
+	fi
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
 	tar jxvpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
 	echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
@@ -713,9 +717,6 @@ echo -n "Which one? 1-6: "
 		5 ) 
 		clear
 		f.minermenu
-		;;
-		6 ) 
-		checkinstall.x11mod
 		;;
 	esac
 	else
