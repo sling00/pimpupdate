@@ -6,7 +6,7 @@ MCFLAGS="-O2 -w -march=native"
 #MINERVER="This gets set in the script"
 #MINERDIRNAME="the git name of the miner build dir"
 #MINERDIRNAME2="The directory the miner gets installed into"
-#MINEREXECNAME="sgminer yacminer or cgminer"
+#MINEREXECNAME="sgminer yacminer bfgminer or cgminer"
 #MINERUSELSOC="can this miner use LSOC kernels?"
 #MINERPRECONFIGURECOMMAND="Autogen.sh or autoreconf -i or echo for miners that use autogen.sh for the main configure script/neither."
 #MINERCONFIGFLAGS="Configure flags for cgminer / BFGminer"
@@ -57,11 +57,11 @@ function buildminer.4 {
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
-	if [ '$MINEREXECNAME' = "sgminer" ]; then
+	if [ "$MINEREXECNAME" = "sgminer" ]; then
 		echo "Running autoreconf -i"
 		autoreconf -i
 	fi
-	if  [ '$MINEREXECNAME' = "bfgminer" ]; then
+	if  [ "$MINEREXECNAME" = "bfgminer" ]; then
 		echo "Running autogen.sh"
 		./autogen.sh
 	fi
