@@ -480,14 +480,16 @@ function doinstall.x11mod1() {
 		download /tmp/sph-sgminer_x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/sph-sgminer_x11mod.tbz2
 	fi
 	#Get the right conf file
-	if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then
+	if [ ! -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
+		if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-	elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
+		elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-	elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
+		elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-	else
+		else
 		download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
+		fi
 	fi
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
 	tar jxpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
