@@ -24,7 +24,7 @@ function buildminer.checkadl() {
 	echo "BFGMiner doesn't need the ADL sdk, not copying."
 fi 
 }
-function buldminer.checklsoc() {
+function buildminer.checklsoc() {
 if [ '$MINERUSELSOC' = "yes" ];
 	then
 	if [ -e "/root/minerbuild/$MINERDIRNAME.bak/kernel/lsoc.cl" ];
@@ -43,6 +43,21 @@ if [ '$MINERUSELSOC' = "yes" ];
 				else
 				echo "..."
 				fi
+	else
+	    echo "This isn't sgminer, not checking if lsoc kernels need to be put back in place..."
+fi
+}
+function buildminer.checkarebyp() {
+if [ '$MINERUSELSOC' = "yes" ];
+	then
+	if [ -e "/root/minerbuild/$MINERDIRNAME.bak/kernel/arebyp.cl" ];
+				then
+				echo "The script detected you had arebyp.cl kernel installed before building this new miner"
+				echo "So we're gonna drop it back in for you ;)"
+				cp /root/minerbuild/$MINERDIRNAME.bak/kernel/arebyp.cl $MINERDIRNAME2/kernel/arebyp.cl
+				else
+				echo "..."
+			fi
 	else
 	    echo "This isn't sgminer, not checking if lsoc kernels need to be put back in place..."
 fi
