@@ -103,7 +103,7 @@ function buildminer.4 {
 		exit 1
 	fi 
 	else
-	echo "Can't find sgminer build directory, failing not so gracefully."
+	echo "Can't find $MINERDIRNAME build directory, failing not so gracefully."
 	echo "BOOM!"
 	exit 1
 	fi 
@@ -271,7 +271,7 @@ function doinstall.dmaxl-cgminer() {
 function dobuild.yacminer() {
 	MINERNAME="Thirtybird\yacminer"
 #	MINERVER="This gets set in the script"
-	MINERDIRNAME="yacminer"
+	MINERDIRNAME="YACMiner"
 	MINERDIRNAME2="/opt/yacminer"
 	MINEREXECNAME="yacminer"
 	MINERUSELSOC="no"
