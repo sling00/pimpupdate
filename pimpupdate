@@ -454,10 +454,12 @@ function doinstall.x11mod() {
 	$THELINE
 	echo "This is an optimized miner for the X11 algorithm."
 	echo "This is the open source version NOT the binary vesion"
+	if [ ! -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
 	echo "This will also replace your current poolmanager.conf"
 	echo "with one that has an x11 mod profile in it. "
 	echo "YOU WILL HAVE TO RE-ENTER EMAIL NOTIFICATION SETTINGS AFTER THIS!"
 	echo "AND ALSO ANY CUSTOM POOLMANAGER ALGORITHM PROFILES!"
+	fi
 	echo -n "Ok to continue? (y/n): "
 	read X11_CONTINUE
 	if [ $X11_CONTINUE = y ];
@@ -489,7 +491,7 @@ function doinstall.x11mod1() {
 	fi
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
 	tar jxpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
-	if [ !-f /opt/ifmi/cgminer.x11mod.conf ]; then
+	if [ ! -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
 	echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
 	sleep 2 
 	tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
