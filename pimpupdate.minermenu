@@ -58,9 +58,11 @@ function buildminer.4 {
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
 	if [ '$MINEREXECNAME' = "sgminer" ]; then
+		echo "Running autoreconf -i"
 		autoreconf -i
 	fi
 	if  [ '$MINEREXECNAME' = "bfgminer" ]; then
+		echo "Running autogen.sh"
 		./autogen.sh
 	fi
 	CFLAGS="$MCFLAGS" ./$MINERCONFIGCOMMAND $MINERCONFIGFLAGS
