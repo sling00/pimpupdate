@@ -43,10 +43,15 @@ function f.return() {
 	pimpmenu
 }
 function f.pimpupdatenews() {
-	echo "Latest changes - v1.2.3\n"
-	echo "Updated x11miner to new revision which fixes intensity above 15 causing HW errors."
+	$THELINE
+	echo "PiMPUpdate v1.2.3 Latest news:"
+	$THELINE
+	echo "Updated x11miner to new revision which fixes"
+	echo "The miners issue with intensity above 15 causing HW errors."
 	echo "Completed pimpupdate's minermenu build system."
 	echo "Added arebyp kernel.  Try it! Over 850kh on 280x!"
+	echo "Don't forget to visit us on IRC!"
+	echo "irc.freenode.net #PiMP"
 	sleep 3
 }
 function doinstall.version() {
