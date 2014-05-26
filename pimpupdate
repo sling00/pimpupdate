@@ -540,11 +540,15 @@ function doinstall.jackpot() {
 }
 function doinstall.jackpot1() {
 	download /tmp/sgminer-jackpot.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-jackpot/sgminer-jackpot.tbz2
-	download /tmp/cgminer.jackpot.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-jackpot/cgminer.jackpot.tbz2
+	if [ ! -f "/opt/ifmi/cgminer.jackpot.conf" ]; then
+		download /tmp/cgminer.jackpot.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-jackpot/cgminer.jackpot.tbz2
+	fi
 	echo "Extracting jackpotcoin miner to /opt/sgminer-jackpot"
-	tar jxvpf /tmp/sgminer-jackpot.tbz2 -C /opt/
-	echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
-	tar jxpf /tmp/cgminer.jackpot.tbz2 -C /opt/ifmi/
+	tar jxpf /tmp/sgminer-jackpot.tbz2 -C /opt/
+	if [ ! -f "/opt/ifmi/cgminer.jackpot.conf" ]; then
+		echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
+		tar jxpf /tmp/cgminer.jackpot.tbz2 -C /opt/ifmi/
+	fi
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Finished"
 	f.minestart
