@@ -271,7 +271,7 @@ function doinstall.sphsgminer4 {
 	fi 
 }
 function doinstall.sphsgminer3() {
-		git clone https://github.com/prettyhatemachine/sph-sgminer.git
+		git clone https://github.com/Kalroth/cgminer-3.7.2-kalroth.git
 		doinstall.sphsgminer4
 }
 function doinstall.sphsgminer () {
@@ -389,6 +389,20 @@ function doinstall.dmaxl-cgminer() {
 	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
 	buildminer.2
 }
+function dobuild.kalroth() {
+	MINERNAME="Kalroth\Cgminer-3.7.3"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="cgminer-3.7.2-kalroth"
+	MINERDIRNAME2="/opt/cgminer-3.7.2-kalroth"
+	MINEREXECNAME="cgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS="--enable-opencl --enable-scrypt --enable-ants1 --enable-avalon --enable-bflsc --enable-bitforce --enable-bitmine_A1 --enable-drillbit --enable-hashfast --enable-icarus --enable-klondike --enable-avalon2 --enable-modminer"
+	MINERCONFIGCOMMAND="autogen.sh"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/Kalroth/cgminer-3.7.2-kalroth.git"
+	buildminer.2
+}
 function dobuild.x11mod() {
 	MINERNAME="SPH-SGminer_x11mod"
 #	MINERVER="This gets set in the script"
@@ -404,17 +418,17 @@ function dobuild.x11mod() {
 	buildminer.2
 }
 function dobuild.jackpot() {
-	MINERNAME="SPH-SGminer_x11mod"
+	MINERNAME="PrettyHateMachine\jackpot-sgminer"
 #	MINERVER="This gets set in the script"
-	MINERDIRNAME="sph-sgminer_x11mod"
-	MINERDIRNAME2="/opt/sph-sgminer_x11mod"
+	MINERDIRNAME="jackpot-sgminer"
+	MINERDIRNAME2="/opt/sgminer-jackpot"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="no"
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
-	MINERGETURL="https://github.com/lasybear/sph-sgminer_x11mod.git"
+	MINERGETURL="https://github.com/prettyhatemachine/jackpot-sgminer.git"
 	buildminer.2
 }
 function f.minermenu() {
@@ -440,9 +454,9 @@ echo $MSELECT_2
 #echo $MSELECT_4
 echo $MSELECT_5
 #echo $MSELECT_6
-#echo $MSELECT_7
+echo $MSELECT_7
 echo $MSELECT_8
-#echo $MSELECT_9
+echo $MSELECT_9
 echo $MSELECT_10
 echo "or q to exit"
 echo -n "Which one? 1-9: "
@@ -459,28 +473,28 @@ echo -n "Which one? 1-9: "
 		doinstall.sgminer2
 		;;
 		2 )
-		doinstall.sphsgminer
+		dobuild.sphsgminer
 		;;
 		3 )
-		doinstall.cgminer_heavy
+		dobuild.cgminer_heavy
 		;;
 		4 )
-		doinstall.yacminer
+		dobuild.yacminer
 		;;
 		5 )
 		doinstall.bfgminersrc
 		;;
 		6 )
-		doinstall.cgminer
+		dobuild.cgminer
 		;;
 		7 )
-		doinstall.kalroth
+		dobuild.kalroth
 		;;
 		8 )
 		doinstall.dmaxl-cgminer
 		;;
 		9 )
-		doinstall.sgminer-jackpot
+		dobuild.jackpot
 		;;
 		10 )
 		dobuild.x11mod
