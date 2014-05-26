@@ -57,11 +57,10 @@ function buildminer.4 {
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
-	if [ '$MINEREXECNAME' = "sgminer" ];
-		then
+	if [ '$MINEREXECNAME' = "sgminer" ]; then
 		autoreconf -i
 	fi
-	if  [ '$MINEREXECNAME' = "bfgminer" ];
+	if  [ '$MINEREXECNAME' = "bfgminer" ]; then
 		./autogen.sh
 	fi
 	CFLAGS="$MCFLAGS" ./$MINERCONFIGCOMMAND $MINERCONFIGFLAGS
@@ -361,6 +360,48 @@ echo -n "Which one? 1-6: "
 	esac	
 fi
 }
+function dobuild.sgminer() {
+	MINERNAME="Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sgminer"
+	MINERDIRNAME2="/opt/sgminer"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	buildminer.2
+}
+function dobuild.sphsgminer() {
+	MINERNAME="DjStone\SPH-Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sph-sgminer"
+	MINERDIRNAME2="/opt/sph-sgminer"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/DJstone/sph-sgminer.git"
+	buildminer.2
+}
+function dobuild.cgminer_heavy() {
+	MINERNAME="Kalroth\cgminer_heavy"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="cgminer_heavy"
+	MINERDIRNAME2="/opt/cgminer_heavy"
+	MINEREXECNAME="cgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS="--enable-heavy --enable-opencl --enable-keccak --enable-skein --enable-scrypt --enable-hefty --enable-ants1 --enable-avalon --enable-bflsc --enable-bitforce --enable-drillbit --enable-hashfast --enable-icarus --enable-avalon2 --enable-modminer"
+	MINERCONFIGCOMMAND="autogen.sh"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/reorder/cgminer_heavy"
+	buildminer.2
+}
 function doinstall.bfgminersrc() {
 	MINERNAME="BFGMiner"
 #	MINERVER="This gets set in the script"
@@ -389,6 +430,34 @@ function doinstall.dmaxl-cgminer() {
 	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
 	buildminer.2
 }
+function dobuild.yacminer() {
+	MINERNAME="Thirtybird\yacminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="yacminer"
+	MINERDIRNAME2="/opt/yacminer"
+	MINEREXECNAME="yacminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS="--enable-scrypt --enable-opencl --enable-chacha --enable-avalon --enable-bfl --enable-bitforce --enable-icarus --enable-modminer --enable-ztex"
+	MINERCONFIGCOMMAND="autogen.sh"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/Thirtybird/YACMiner.git"
+	buildminer.2
+}
+function dobuild.cgminer() {
+	MINERNAME="Cgminer-3.7.2"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="cgminer"
+	MINERDIRNAME2="/opt/cgminer-3.7.2"
+	MINEREXECNAME="cgminer"
+	MINERUSELSOC="no"
+	MINERCONFIGFLAGS="--enable-opencl --enable-scrypt --enable-ants1 --enable-avalon --enable-bflsc --enable-bitforce --enable-drillbit --enable-hashfast --enable-icarus --enable-avalon2 "
+	MINERCONFIGCOMMAND="autogen.sh"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b 3.7"
+	MINERGETURL="https://github.com/ckolivas/cgminer"
+	buildminer.2
+}
 function dobuild.kalroth() {
 	MINERNAME="Kalroth\Cgminer-3.7.3"
 #	MINERVER="This gets set in the script"
@@ -396,7 +465,7 @@ function dobuild.kalroth() {
 	MINERDIRNAME2="/opt/cgminer-3.7.2-kalroth"
 	MINEREXECNAME="cgminer"
 	MINERUSELSOC="no"
-	MINERCONFIGFLAGS="--enable-opencl --enable-scrypt --enable-ants1 --enable-avalon --enable-bflsc --enable-bitforce --enable-bitmine_A1 --enable-drillbit --enable-hashfast --enable-icarus --enable-klondike --enable-avalon2 --enable-modminer"
+	MINERCONFIGFLAGS="--enable-opencl --enable-scrypt --enable-ants1 --enable-avalon --enable-bflsc --enable-bitforce --enable-drillbit --enable-hashfast --enable-icarus --enable-avalon2"
 	MINERCONFIGCOMMAND="autogen.sh"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
@@ -446,14 +515,14 @@ local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 echo "What would you like to do?"
-echo "Only sgminer/sph-sgminer is finished currently sorry :( "
-echo "Support for the remaining miners coming soon, be on the lookout for pimpupdate updates. :D"
+echo ""
+echo 
 echo $MSELECT_1
 echo $MSELECT_2 
-#echo $MSELECT_3
-#echo $MSELECT_4
+echo $MSELECT_3
+echo $MSELECT_4
 echo $MSELECT_5
-#echo $MSELECT_6
+echo $MSELECT_6
 echo $MSELECT_7
 echo $MSELECT_8
 echo $MSELECT_9
@@ -470,7 +539,7 @@ echo -n "Which one? 1-9: "
 	then 
 	case $MINERSELECTNUM in
 		1 )
-		doinstall.sgminer2
+		dobuild.sgminer
 		;;
 		2 )
 		dobuild.sphsgminer
