@@ -456,7 +456,7 @@ function checkinstall.x11mod() {
 			if [ $X11_REINSTALL = y ]; then #X11IF2
 				echo "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
 				read X11_OVERWRITE
-				if [ $X11_OVERWRITE = "y" ]; then #X11IF3
+				if [ $X11_OVERWRITE = y ]; then #X11IF3
 					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
 					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then #X11IF4
 						mv /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
@@ -479,7 +479,6 @@ function checkinstall.x11mod() {
 	else  #X11ELSE1
 		doinstall.x11mod
 	fi #X11FI1
-
 }
 function doinstall.x11mod() {
 	f.minestop
