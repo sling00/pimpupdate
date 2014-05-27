@@ -467,7 +467,7 @@ function checkinstall.x11mod() {
 					fi #X11FI4
 					fi #X11FI3
 			else #X11ELSE2
-			f.return
+			return
 			fi #X11FI2
 	else  #X11ELSE1
 		doinstall.x11mod
@@ -894,8 +894,11 @@ echo -n "Which one? 1-14: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
+	elif [[ $PMSELECTNUM == 5 ]]; then
+		clear; f.minermenu
 	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
 	read PMSELECT_CONTINUE
+	else
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
 	case $PMSELECTNUM in
