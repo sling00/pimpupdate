@@ -468,17 +468,20 @@ function checkinstall.x11mod() {
 						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
 							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
 							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
 						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
 							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
 							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/					
 						else #x11ELSE5
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
 							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
 							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
 						fi #X11FI5
-					else doinstall.x11mod
+						 doinstall.x11mod
 					fi #X11FI4
 						else #X11ELSE4
 						doinstall.x11mod
