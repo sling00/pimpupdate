@@ -449,16 +449,16 @@ function checkinstall.x11mod() {
 	$THELINE
 	echo "Pimp 1.x open source sph-sgminer_x11mod installer"
 	$THELINE
-	if [ -e /opt/sph-sgminer_x11mod ];
+	if [ -e /opt/sph-sgminer_x11mod ]; #X11IF1
 		then
 			echo -n "X11 mod miner already installed, reinstall? (y/n): "
 			read X11_REINSTALL
-			if [ $X11_REINSTALL = y ]; then
+			if [ $X11_REINSTALL = y ]; then #X11IF2
 				echo "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
 				read X11_OVERWRITE
-				if [ $X11_OVERWRITE = "y" ]; then
+				if [ $X11_OVERWRITE = "y" ]; then #X11IF3
 					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
-					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
+					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then #X11IF4
 						mv /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
 						if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
@@ -466,21 +466,21 @@ function checkinstall.x11mod() {
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
 						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-						else
+						else #x11ELSE4
 							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
-						fi
+						fi #X11FI4
 						doinstall.x11mod
-					fi
-					fi
-				else 
-				doinstall.x11mod
-			else 
+						else #X11ELSE3
+						doinstall.x11mod
+					fi #X11FI3
+			else #X11ELSE2
 				pimpmenu
-			fi
-	else 
+			fi #X11FI2
+	else  #X11ELSE1
 		doinstall.x11mod
-	fi
-	}
+	fi #X11FI1
+
+}
 function doinstall.x11mod() {
 	f.minestop
 	$THELINE
@@ -498,15 +498,15 @@ function doinstall.x11mod() {
 	read X11_CONTINUE
 	if [ $X11_CONTINUE = y ];
 		then
-	download /tmp/poolmanager.zip $PMURL
-	cd /opt/pimp/
-	echo "Moving old /opt/pimp/pminstall install directory....."
-	sleep 2
-	rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
-	mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
-	echo "Extracting new pool manager.... Everyone thank LILY!!!!"
-	sleep 2
-	unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
+		download /tmp/poolmanager.zip $PMURL
+		cd /opt/pimp/
+		echo "Moving old /opt/pimp/pminstall install directory....."
+		sleep 2
+		rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
+		mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
+		echo "Extracting new pool manager.... Everyone thank LILY!!!!"
+		sleep 2
+		unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
 #git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
 	echo "Installing new poolmanager"
 	sleep 2
