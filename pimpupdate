@@ -46,6 +46,8 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo "PiMPUpdate v1.2.3 Latest news:"
 	$THELINE
+	echo "URGENT: Fix for 500 error after x11-miner install!"
+	echo "Do pimpupdate #6 again."
 	echo "Updated x11miner to new revision which fixes"
 	echo "The miners issue with intensity above 15 causing HW errors."
 	echo "Completed pimpupdate's minermenu build system."
@@ -451,8 +453,25 @@ function checkinstall.x11mod() {
 		then
 			echo -n "X11 mod miner already installed, reinstall? (y/n): "
 			read X11_REINSTALL
-			if [ $X11_REINSTALL = y ];
-				then
+			if [ $X11_REINSTALL = y ]; then
+				echo "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
+				read X11_OVERWRITE
+				if [ $X11_OVERWRITE = "y" ]; then
+					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
+					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
+						mv /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
+						if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then
+							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
+						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
+							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
+						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
+							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
+						else
+							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
+						fi
+						doinstall.x11mod
+					fi
+				else 
 				doinstall.x11mod
 			else 
 				pimpmenu
