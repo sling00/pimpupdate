@@ -471,6 +471,7 @@ function checkinstall.x11mod() {
 						fi
 						doinstall.x11mod
 					fi
+					fi
 				else 
 				doinstall.x11mod
 			else 
