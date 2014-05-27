@@ -454,40 +454,20 @@ function checkinstall.x11mod() {
 			echo -n "X11 mod miner already installed, reinstall? (y/n): "
 			read X11_REINSTALL
 			if [ $X11_REINSTALL = y ]; then #X11IF2
-				echo -n "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
+				echo -n "Would you like to overwrite your existing poolmanager.conf/cgminer.x11mod.conf? (y/n):"
 				read X11_OVERWRITE
 				if [ $X11_OVERWRITE = y ]; then #X11IF3
 					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
 					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then #X11IF4
-						cp /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
-						if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then #X11IF5
-							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
-							sleep 2 
-							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
-							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
-							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
-							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
-							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/					
-						else #x11ELSE5
-							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x11mod.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
-							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
-						fi #X11FI5
-						 doinstall.x11mod
-					fi #X11FI4
-						else #X11ELSE4
+						mv /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
 						doinstall.x11mod
+					else 
+						echo "No existing cgminer.x11mod.conf found, continuing."
+						doinstall.x11mod
+					fi #X11FI4
 					fi #X11FI3
 			else #X11ELSE2
-				doinstall.x11mod
+			f.return
 			fi #X11FI2
 	else  #X11ELSE1
 		doinstall.x11mod
@@ -581,7 +561,7 @@ function checkinstall.jackpot() {
 				then
 				doinstall.jackpot
 			else 
-				pimpmenu
+				f.return
 			fi
 	else 
 		doinstall.jackpot
