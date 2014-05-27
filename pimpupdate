@@ -487,10 +487,10 @@ function checkinstall.x11mod() {
 						doinstall.x11mod
 					fi #X11FI3
 			else #X11ELSE2
-				pimpmenu
+				doinstall.x11mod
 			fi #X11FI2
 	else  #X11ELSE1
-		doinstall.x11mod
+		pimpmenu
 	fi #X11FI1
 }
 function doinstall.x11mod() {
