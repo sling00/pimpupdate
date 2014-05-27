@@ -894,8 +894,6 @@ echo -n "Which one? 1-14: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
-	elif [[ $PMSELECTNUM == 5 ]]; then
-		clear; f.minermenu
 	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
