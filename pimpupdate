@@ -459,6 +459,7 @@ function checkinstall.x11mod() {
 			read X11_REINSTALL
 			if [ $X11_REINSTALL = y ]; then #X11IF2
 				if [ ! -f "/opt/ifmi/cgminer.x13.conf" ]; then #IF 2.5
+					$THELINE
 					echo "You don't have cgminer.x13.conf, downloading & installing."
 					echo "This will also replace poolmanager.conf with a new one"
 					echo "which has an x13 profile.  Reenter your email notification settings..."
@@ -489,6 +490,7 @@ function checkinstall.x11mod() {
 							tar jxvpf /tmp/poolmanager.x13.tbz2 -C /opt/ifmi/
 						fi #X11FI2.75
 					fi #X11FI2.5
+				$THELINE
 				echo -n "Overwrite cgminer.x11mod.conf/cgminer.x13.conf/poolmanager.conf? (y/n): "
 #				echo -n "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
 				read X11_OVERWRITE
@@ -820,7 +822,7 @@ echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
 echo "or q to exit"
-echo -n "Which one? 1-6: "
+echo -n "Which one? 1-7: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -934,7 +936,7 @@ local PMSELECT_9="9. Install BFGMINER fix for gridseeds"
 local PMSELECT_10="10. Install manualstart command line miner starting tool."
 local PMSELECT_11="11. Install nodm update"
 local PMSELECT_12="12. Install jackpotcoin miner"
-local PMSELECT_13="13. Install open source x11 optimized miner"
+local PMSELECT_13="NEW: 13. Install open source x11/x13 optimized miner"
 local PMSELECT_14="14. Install arebyp optimized scrypt sgminer kernel"
 #local PMSELECT_15="15. Install updated /opt/pimp scripts."
 #local PMSELECT_16="16. Update .bashrc & supporting scripts for new prompt."
