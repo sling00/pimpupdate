@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.2.5
+SCRIPT_VERSION=1.2.6
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -46,10 +46,14 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo "PiMPUpdate v1.2.5 Latest news:"
 	$THELINE
+	echo "May 29:"
+	echo "Updated x11mod miner to x13 support & added poolmanager profile."
+	echo "May 27:"
 	echo "URGENT: Fix for 500 error after x11-miner install!"
 	echo "Do pimpupdate to install x11-mod again."
 	echo "Updated x11miner to new revision which fixes"
 	echo "The miners issue with intensity above 15 causing HW errors."
+	echo "May 26:"
 	echo "Completed pimpupdate's minermenu build system."
 	echo "Added arebyp kernel.  Try it! Over 850kh on 280x!"
 	echo "Don't forget to visit us on IRC!"
@@ -447,14 +451,44 @@ function checkinstall.sgminer() {
 function checkinstall.x11mod() {
 	clear
 	$THELINE
-	echo "Pimp 1.x open source sph-sgminer_x11mod installer"
+	echo "Pimp 1.x open source sph-sgminer_x11mod (X11mod/X13mod) installer"
 	$THELINE
 	if [ -e /opt/sph-sgminer_x11mod ]; #X11IF1
 		then
 			echo -n "X11 mod miner already installed, reinstall? (y/n): "
 			read X11_REINSTALL
 			if [ $X11_REINSTALL = y ]; then #X11IF2
-				echo -n "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
+				if [ ! -f "/opt/ifmi/cgminer.x13.conf" ]; then #IF 2.5
+					echo "You don't have cgminer.x13.conf, downloading & installing."
+					echo "This will also replace poolmanager.conf with a new one"
+					echo "which has an x13 profile.  Reenter your email notification settings..."
+					download /tmp/cgminer.x13.conf.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x13.conf.tbz2
+					tar xvjpf /tmp/cgminer.x13.conf.tbz2 -C /opt/ifmi/
+					echo "Done, downloading poolmanager.conf for x11mod/x13"
+					if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then #X11IF2.75
+							download /tmp/poolmanager.x13.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/poolmanager.x13.1.4.tbz2
+							echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
+							sleep 2 
+							tar jxvpf /tmp/poolmanager.x13.tbz2 -C /opt/ifmi/
+						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
+							download /tmp/cgminer.x11mod.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/poolmanager.x13.1.4.tbz2
+							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
+							tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
+						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
+							download /tmp/poolmanager.x13.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/poolmanager.x13.1.4.tbz2
+							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
+							tar jxvpf /tmp/poolmanager.x13.tbz2 -C /opt/ifmi/					
+						else #x11ELSE 2.75
+							download /tmp/poolmanager.x13.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/poolmanager.x13.tbz2
+							sleep 2 
+							echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
+							tar jxvpf /tmp/poolmanager.x13.tbz2-C /opt/ifmi/
+						fi #X11FI2.75
+					fi #X11FI2.5
+				echo -n "Overwrite cgminer.x11mod.conf/cgminer.x13.conf/poolmanager.conf? (y/n): "
+#				echo -n "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
 				read X11_OVERWRITE
 				if [ $X11_OVERWRITE = y ]; then #X11IF3
 					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
@@ -773,12 +807,16 @@ local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. NEW: Install open source x11/x13 optimized miner"
+local PMSELECT_7="7. Install arebyp scrypt sgminer kernel"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
 echo $PMSELECT_3
 echo $PMSELECT_4
-echo $PMSELECT_5s
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
 echo "or q to exit"
 echo -n "Which one? 1-6: "
 	read PMSELECTNUM
@@ -806,6 +844,12 @@ echo -n "Which one? 1-6: "
 		clear
 		f.minermenu
 		;;
+		6 ) 
+		checkinstall.x11mod
+		;;
+		7 )
+		doinstall.arebypkernel
+		;;
 	esac
 	else
 	$THELINE
@@ -822,7 +866,7 @@ local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Install updated seedmanager profiles"
 local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="6. Install open source x11 optimized miner"
+local PMSELECT_6="6. NEW: Install open source x11/x13 optimized miner"
 local PMSELECT_7="7. Install arebyp scrypt sgminer kernel"
 echo "What would you like to do?"
 echo $PMSELECT_1
