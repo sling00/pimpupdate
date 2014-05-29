@@ -462,6 +462,8 @@ function checkinstall.x11mod() {
 					echo "You don't have cgminer.x13.conf, downloading & installing."
 					echo "This will also replace poolmanager.conf with a new one"
 					echo "which has an x13 profile.  Reenter your email notification settings..."
+					echo "Continuing in 5 seconds.."
+					sleep 5
 					download /tmp/cgminer.x13.conf.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/cgminer.x13.conf.tbz2
 					tar xvjpf /tmp/cgminer.x13.conf.tbz2 -C /opt/ifmi/
 					echo "Done, downloading poolmanager.conf for x11mod/x13"
@@ -484,7 +486,7 @@ function checkinstall.x11mod() {
 							download /tmp/poolmanager.x13.tbz2 http://hackin.yourshell.net/pimpupdate/1.x-x11mod/poolmanager.x13.tbz2
 							sleep 2 
 							echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
-							tar jxvpf /tmp/poolmanager.x13.tbz2-C /opt/ifmi/
+							tar jxvpf /tmp/poolmanager.x13.tbz2 -C /opt/ifmi/
 						fi #X11FI2.75
 					fi #X11FI2.5
 				echo -n "Overwrite cgminer.x11mod.conf/cgminer.x13.conf/poolmanager.conf? (y/n): "
