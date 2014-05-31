@@ -366,7 +366,7 @@ echo $MSELECT_8
 echo $MSELECT_9
 echo $MSELECT_10
 echo "or q to exit"
-echo -n "Which one? 1-9: "
+echo -n "Which one? 1-10: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0

@@ -168,6 +168,24 @@ function doinstall.version() {
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-13.12.tbz2
 			doinstall.pimp
 			;;
+		1.5.3-amd-14.4 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-14.4.tbz2
+			doinstall.pimp
+			;;
+		1.5.4-amd-13.12 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.4-amd-13.12.tbz2
+			doinstall.pimp
+			;;
+		1.5.4-amd-14.4 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.4-amd-14.4.tbz2
+			doinstall.pimp
+			;;
 		1.6.0-amd-13.12 )
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
@@ -1060,7 +1078,7 @@ $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
 $THELINE
-f.pimpupdatenews
+
 echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ $PMPUPDATE_CONTINUE == y ]; then
@@ -1082,9 +1100,11 @@ echo -n "Do you wish to continue to the main menu Enter y/n: "
 	else
 	echo "not updating...Continue at your own risk....."
 	$THELINE
+	f.pimpupdatenews
 	pimpmenu
 fi
 	else 
+	f.pimpupdatenews
 	$THELINE
 	echo "Script up to date! Commencing..."
 	$THELINE
