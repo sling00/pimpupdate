@@ -265,7 +265,7 @@ $THELINE
 rm /tmp/seedmanager.zip
 f.return
 }
-function doinstall.prompt() {
+function doinstall.promptfix() {
 	echo "Downloading replacement bash prompt (~/.bashrc)..."
 	download /tmp/bashrc.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/bashrc.tbz2
 	echo "Unpacking replacement .bashrc"
