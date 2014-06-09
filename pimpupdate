@@ -46,7 +46,7 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo "PiMPUpdate v1.2.8 Latest news:"
 	$THELINE
-	echo "June 9: 1.5.6 Bootmining & bashprompt fix."
+	echo "June 9: 1.5.6 Bootmining & bashprompt fix. Should also help with graphing."
 	echo "June 9: SGminer5 release candidate added to pimpupdate miner menu (USE AT YOUR OWN RISK!)"
 	echo "June 9: Please rebuild x11/x13 mod miner if you are having issues with system hangs while mining x11mod/x13mod."
 	echo "May 29:"
@@ -266,8 +266,13 @@ rm /tmp/seedmanager.zip
 f.return
 }
 function doinstall.prompt() {
-	download /tmp/bashrc.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.x-promptfix/bashrc.tbz2
+	echo "Downloading replacement bash prompt (~/.bashrc)..."
+	download /tmp/bashrc.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/bashrc.tbz2
+	echo "Unpacking replacement .bashrc"
 	tar xvjpf /tmp/bashrc.tbz2 -C /root
+	echo "Done, installing fixed poolmanager..."
+	sleep 2
+	doinstall.version
 }
 #Installer function-Pimp
 function doinstall.pimp() {
