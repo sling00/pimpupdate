@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.2.8
+SCRIPT_VERSION=1.2.9
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -44,9 +44,9 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.2.8 Latest news:"
+	echo "PiMPUpdate v1.2.9 Latest news:"
 	$THELINE
-	echo "June 9: 1.5.6 Bootmining & bashprompt fix. Should also help with graphing."
+	echo "June 9: 1.5.5 Bootmining & bashprompt fix. Should also help with graphing."
 	echo "June 9: SGminer5 release candidate added to pimpupdate miner menu (USE AT YOUR OWN RISK!)"
 	echo "June 9: Please rebuild x11/x13 mod miner if you are having issues with system hangs while mining x11mod/x13mod."
 	echo "May 29:"
@@ -192,7 +192,9 @@ function doinstall.version() {
 			doinstall.pimp
 			;;
 		1.5.4-amd-13.12 )
-			echo "Applying crontab fix for 1.5.5"
+			echo "Applying crontab fix for 1.5.4/1.5.5"
+			echo "Crontab fix applied..."
+			sleep 2
 			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
@@ -200,8 +202,10 @@ function doinstall.version() {
 			doinstall.pimp
 			;;
 		1.5.4-amd-14.4 )
-			echo "Applying crontab fix for 1.5.5"
+			echo "Applying crontab fix for 1.5.4/1.5.5"
 			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
+			echo "Crontab fix applied..."
+			sleep 2
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.4-amd-14.4.tbz2
@@ -210,6 +214,8 @@ function doinstall.version() {
 		1.5.5-amd-13.12 )
 			echo "Applying crontab fix for 1.5.5"
 			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
+			echo "Crontab fix applied..."
+			sleep 2
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-13.12.tbz2
@@ -218,6 +224,8 @@ function doinstall.version() {
 		1.5.5-amd-14.4 )
 			echo "Applying crontab fix for 1.5.5"
 			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
+			echo "Crontab fix applied..."
+			sleep 2
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-14.4.tbz2
