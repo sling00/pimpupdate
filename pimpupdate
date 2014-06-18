@@ -1256,6 +1256,9 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
     	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.51-amd` = 1 ]];
     	then
     		pimpmenu156
+    	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.6-amd` = 1 ]];
+    	then
+    		pimpmenu156
     	else
 			pimpmenu14
 	fi
