@@ -235,7 +235,19 @@ function doinstall.version() {
 		1.5.51-amd-14.4 )
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-14.4.tbz2
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-14.4.tbz2
+			doinstall.pimp
+			;;
+		1.5.6-amd-13.12 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-13.12.tbz2
+			doinstall.pimp
+			;;
+		1.5.6-amd-14.4 )
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-14.4.tbz2
 			doinstall.pimp
 			;;
 		1.6.0-amd-13.12 )
