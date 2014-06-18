@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.2.9
+SCRIPT_VERSION=1.3.0
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -44,8 +44,9 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.2.9 Latest news:"
+	echo "PiMPUpdate v1.3.0 Latest news:"
 	$THELINE
+	echo "June 17: 1.5.6 added to pimpupdate, Public release coming SOON! :) :) :)"
 	echo "June 9: 1.5.5 Bootmining & bashprompt fix. Should also help with graphing."
 	echo "June 9: SGminer5 release candidate added to pimpupdate miner menu (USE AT YOUR OWN RISK!)"
 	echo "June 9: Please rebuild x11/x13 mod miner if you are having issues with system hangs while mining x11mod/x13mod."
@@ -226,6 +227,12 @@ function doinstall.version() {
 			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
 			echo "Crontab fix applied..."
 			sleep 2
+			echo "Gathering files for PiMP $PIMP_VERSION....."
+			download /tmp/poolmanager.zip $PMURL
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-14.4.tbz2
+			doinstall.pimp
+			;;
+		1.5.51-amd-14.4 )
 			echo "Gathering files for PiMP $PIMP_VERSION....."
 			download /tmp/poolmanager.zip $PMURL
 			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-14.4.tbz2
@@ -879,6 +886,55 @@ function doinstall.manualstart() {
 	fi 
 }
 #Menu function for pimp 1.5.2+/1.6.0+
+function pimpmenu156() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo "or q to exit"
+echo -n "Which one? 1-6: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.version
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
+#Menu function for pimp 1.5.2+/1.6.0+
 function pimpmenu16() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
@@ -1185,6 +1241,9 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
     	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.6.0-amd` = 1 ]];
     	then
     		pimpmenu16
+    	elif [[ `sed -n '2,2p' /etc/version  | grep -c 1.5.51-amd` = 1 ]];
+    	then
+    		pimpmenu156
     	else
 			pimpmenu14
 	fi
