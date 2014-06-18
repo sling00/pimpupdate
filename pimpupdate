@@ -911,7 +911,7 @@ echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
 echo "or q to exit"
-echo -n "Which one? 1-6: "
+echo -n "Which one? 1-5: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
