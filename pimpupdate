@@ -302,8 +302,10 @@ function doinstall.promptfix() {
 	echo "Unpacking replacement .bashrc"
 	tar xvjpf /tmp/bashrc.tbz2 -C /root
 	echo "Unpacking replacement crontab"
-	tar xvjpf /tmp/crontab /etc/
+	tar xvjpf /tmp/crontab.tbz2 -C /etc/
 	echo "Restarting crontab..."
+	echo "Setting file permissions for crontab"..
+	chown root.root /etc/crontab
 	/etc/init.d/cron stop
 	/etc/init.d/cron start
 	echo "Done, installing fixed poolmanager..."
