@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.0
+SCRIPT_VERSION=1.3.2
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://hackin.yourshell.net/pimpupdate/version"
@@ -44,10 +44,11 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.3.0 Latest news:"
+	echo "PiMPUpdate v1.3.2 Latest news:"
 	$THELINE
+	echo "June 19: 1.5.5 Bootmining & bashprompt fix UPDATED. Should also help with graphing bootmining issue should now be fixed for good.."
+	echo "June 18: applied superlimes fixes for SPH-SGminer_x11mod miner build."
 	echo "June 17: 1.5.6 added to pimpupdate, Public release coming SOON! :) :) :)"
-	echo "June 9: 1.5.5 Bootmining & bashprompt fix. Should also help with graphing."
 	echo "June 9: SGminer5 release candidate added to pimpupdate miner menu (USE AT YOUR OWN RISK!)"
 	echo "June 9: Please rebuild x11/x13 mod miner if you are having issues with system hangs while mining x11mod/x13mod."
 	echo "May 29:"
@@ -268,6 +269,7 @@ function doinstall.version() {
 #	exit 1
 #fi
 }
+
 #Seedmanager Installation function
 function doinstall.seedmanager() {
 	echo "Gathering files for PiMP $PIMP_VERSION....."
@@ -292,11 +294,18 @@ $THELINE
 rm /tmp/seedmanager.zip
 f.return
 }
+#Pimp 1.5.5 promptfix
 function doinstall.promptfix() {
-	echo "Downloading replacement bash prompt (~/.bashrc)..."
+	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
 	download /tmp/bashrc.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/bashrc.tbz2
+	download /tmp/crontab.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/crontab.tbz2
 	echo "Unpacking replacement .bashrc"
 	tar xvjpf /tmp/bashrc.tbz2 -C /root
+	echo "Unpacking replacement crontab"
+	tar xvjpf /tmp/crontab /etc/
+	echo "Restarting crontab..."
+	/etc/init.d/cron stop
+	/etc/init.d/cron start
 	echo "Done, installing fixed poolmanager..."
 	sleep 2
 	doinstall.version
@@ -946,7 +955,7 @@ echo -n "Which one? 1-5: "
 fi
 fi
 }
-#Menu function for pimp 1.5.2+/1.6.0+
+
 function pimpmenu16() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"

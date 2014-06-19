@@ -66,15 +66,15 @@ function buildminer.4 {
 	if [ -e /root/minerbuild/$MINERDIRNAME ];
 	then
 	local BUILDDIR="/root/minerbuild/$MINERDIRNAME"
-	MINERVER=`cd $BUILDDIR && git describe`
+	MINERVER=`cd $BUILDDIR && git describe --always`
 	echo "Preparing to build $MINERNAME V $MINERVER"
 	echo "Making clean..."
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
 	if [ "$MINEREXECNAME" = "sgminer" ]; then
-		echo "Running autoreconf -i"
-		autoreconf -i
+		echo "Running autoreconf -ivf"
+		autoreconf -ivf
 	fi
 	if  [ "$MINEREXECNAME" = "bfgminer" ]; then
 		echo "Running autogen.sh"
@@ -133,12 +133,12 @@ function buildminer.2() {
 		read PULLORCLONESG
 		if [ $PULLORCLONESG = 1 ];
 			then 
-			cd sgminer
+			cd $MINERDIRNAME
 			git pull
 			buildminer.4
 		elif [ $PULLORCLONESG = 2 ];
 			then
-			rm -rf sgminer
+			rm -rf $MINERDIRNAME
 			buildminer.3
 		else 
 		   echo "Invalid selection, returning to miner build menu"
@@ -204,12 +204,26 @@ function dobuild.sgminer() {
 	MINERDIRNAME="sgminer"
 	MINERDIRNAME2="/opt/sgminer"
 	MINEREXECNAME="sgminer"
-	MINERUSELSOC="no"
+	MINERUSELSOC="yes"
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	buildminer.2
+}
+function dobuild.sgminer5ystar() {
+	MINERNAME="Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sgminer"
+	MINERDIRNAME2="/opt/sgminer5"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b v5_0"
+	MINERGETURL="https://github.com/ystarnaud/sgminer.git"
 	buildminer.2
 }
 function dobuild.sphsgminer() {
@@ -352,6 +366,7 @@ local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
+local MSELECT_11="11. SGminer5 (ystarnaud fork) ALPHA TESTING"
 echo "What would you like to do?"
 echo ""
 echo 
@@ -365,8 +380,9 @@ echo $MSELECT_7
 echo $MSELECT_8
 echo $MSELECT_9
 echo $MSELECT_10
+echo $MSELECT_11
 echo "or q to exit"
-echo -n "Which one? 1-10: "
+echo -n "Which one? 1-11: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -405,6 +421,10 @@ echo -n "Which one? 1-10: "
 		;;
 		10 )
 		dobuild.x11mod
+		;;
+		11 )
+		dobuild.SGminer5ystar
+		;;
 	  esac
 	else
 	$THELINE
