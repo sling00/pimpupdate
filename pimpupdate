@@ -1344,6 +1344,9 @@ if [ -z $1 ]; then
 	$THELINE
 	f.pimpupdatenews
 else
+		echo "Checking if Pimpupdate is up to date........"
+	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
+		then
 		echo "Getting latest version of PiMPUpdate"
 		download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
 		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
@@ -1352,6 +1355,9 @@ else
 		PROGNAME=$0
 		shift; "$PROGNAME" $* ) | grep $1
 		exit 0
+	else 
+		echo "Script up to date, running the command you requested."
+	fi
 }
 #Work begins below#
 if [ "$UID" -ne 0 ]
