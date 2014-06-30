@@ -1319,6 +1319,7 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 			pimpmenu14
 	fi
 }
+
 function f.pimpupdateupdate() {
 if [ -z $1 ]; then 
 
@@ -1343,11 +1344,11 @@ if [ -z $1 ]; then
 	echo "not updating...Continue at your own risk....."
 	$THELINE
 	f.pimpupdatenews
+	fi
 fi
 if [ ! -z $1 ]; then 
 		echo "Checking if Pimpupdate is up to date........"
-	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
-		then
+	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ]; then
 		echo "Getting latest version of PiMPUpdate"
 		download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
 		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
