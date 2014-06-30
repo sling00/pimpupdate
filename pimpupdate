@@ -1358,6 +1358,7 @@ else
 	else 
 		echo "Script up to date, running the command you requested."
 	fi
+fi
 }
 #Work begins below#
 if [ "$UID" -ne 0 ]
