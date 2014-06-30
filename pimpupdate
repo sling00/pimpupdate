@@ -1329,8 +1329,7 @@ if [ -z $1 ]; then
 		echo "Getting latest version of pimpupdate"
 	#Is pimpupdate up to date?! Updater code below...		
 	echo "Checking if Pimpupdate is up to date........"
-	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
-	then
+	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ]; then
 	echo -n "pimpupdate script is out of date! Would you like it to update itself? y/n: "
 	read PMPUPDATE_UPDATE
 	if [ $PMPUPDATE_UPDATE == y ]; then
@@ -1380,12 +1379,12 @@ if [ $1 = "1" ]; then
 	doinstall.version
 fi
 if [ $1 = "update" ]; then
-	f.updatepimpupdate
+#	f.updatepimpupdate
 fi
 fi #endif arg
 
 echo -n "Do you wish to continue to the main menu Enter y/n: "
-	f.updatepimpupdate
+#	f.updatepimpupdate
 	pimpmenu
 fi
 	else 
