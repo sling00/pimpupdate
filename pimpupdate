@@ -39,13 +39,13 @@ echo "Downloading $CLEANURL"
 wget -O $destin  "$URL"
 }
 function f.return() { 
-	if [ -z $1 ]; then
+	#if [ -z $1 ]; then
 		echo "Done."
 		exit 0
-	else 
-	echo "Returning to the main menu..."
-	pimpmenu
-	fi
+	#else 
+	#echo "Returning to the main menu..."
+	#pimpmenu
+	#fi
 }
 function f.pimpupdatenews() {
 	$THELINE
