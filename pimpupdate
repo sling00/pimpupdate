@@ -1319,27 +1319,9 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 			pimpmenu14
 	fi
 }
-#Work begins below#
-if [ "$UID" -ne 0 ]
-  then echo "ERROR: Please run as root"
-  else
-f.pimpupdateskel  
-clear
-$THELINE
-echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
-echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
-$THELINE
-#Additions belown
-if [ ! -z "$1" ]; then 
-if [ $1 = "1" ]; then
-	doinstall.version
-fi
-if [ $1 = "update" ]; then
-	doinstall.updatepimpupdate
-fi
-fi
+function f.pimpupdateupdate() {
+if [ -z $1 ]; then 
 
-echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ $PMPUPDATE_CONTINUE == y ]; then
 		$THELINE
@@ -1361,6 +1343,40 @@ echo -n "Do you wish to continue to the main menu Enter y/n: "
 	echo "not updating...Continue at your own risk....."
 	$THELINE
 	f.pimpupdatenews
+else
+		echo "Getting latest version of PiMPUpdate"
+		download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
+		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
+		echo "Update completed. rerunning pimpupdate."
+		rm /tmp/pimpupdate.tar
+		PROGNAME=$0
+		shift; "$PROGNAME" $* ) | grep $1
+		exit 0
+}
+#Work begins below#
+if [ "$UID" -ne 0 ]
+  then echo "ERROR: Please run as root"
+  else
+f.pimpupdateskel  
+clear
+$THELINE
+echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
+echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
+$THELINE
+#Additions belown
+#Do we have an argument?
+if [ ! -z "$1" ]; then #If arg
+if [ $1 = "?"]
+if [ $1 = "1" ]; then
+	doinstall.version
+fi
+if [ $1 = "update" ]; then
+	f.updatepimpupdate
+fi
+fi #endif arg
+
+echo -n "Do you wish to continue to the main menu Enter y/n: "
+	f.updatepimpupdate
 	pimpmenu
 fi
 	else 
