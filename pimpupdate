@@ -1343,7 +1343,8 @@ if [ -z $1 ]; then
 	echo "not updating...Continue at your own risk....."
 	$THELINE
 	f.pimpupdatenews
-else
+fi
+if [ ! -z $1 ]; then 
 		echo "Checking if Pimpupdate is up to date........"
 	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ];
 		then
