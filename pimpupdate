@@ -1329,12 +1329,12 @@ $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
 $THELINE
-#Additions below
-if [ -z $1 ]; then 
-if [ x$1 = x1 ]; then
+#Additions belown
+if [ -z "$1" ]; then 
+if [ $1 = "1" ]; then
 	doinstall.version
 fi
-if [ x$1 = xupdate ]; then
+if [ $1 = "update" ]; then
 	doinstall.updatepimpupdate
 fi
 fi
