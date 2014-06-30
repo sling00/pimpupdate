@@ -423,7 +423,7 @@ echo -n "Which one? 1-11: "
 		dobuild.x11mod
 		;;
 		11 )
-		dobuild.SGminer5ystar
+		dobuild.sgminer5ystar
 		;;
 	  esac
 	else

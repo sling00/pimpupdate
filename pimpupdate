@@ -908,6 +908,46 @@ function doinstall.manualstart() {
 			f.return
 	fi 
 }
+#Pimp 1.5.x to 1.5.6 upgrader
+function pimp15xto156() {
+ 	echo "Redoing prompt fix just to be sure it was done!"
+	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
+	download /tmp/bashrc.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/bashrc.tbz2
+	download /tmp/crontab.tbz2 http://hackin.yourshell.net/pimpupdate/1.5.5-promptfix/crontab.tbz2
+	echo "Unpacking replacement .bashrc"
+	tar xvjpf /tmp/bashrc.tbz2 -C /root/
+	echo "Unpacking replacement crontab"
+	tar xvjpf /tmp/crontab.tbz2 -C /etc/
+	echo "Setting file permissions for crontab"..
+	chown root.root /etc/crontab
+	echo "Restarting crontab..."
+	/etc/init.d/cron stop
+	/etc/init.d/cron start
+	#Install MOTDgen and update motd.
+	echo "Installing motd generator..."
+	rm /etc/motd
+	ln -s /tmp/motd.tail /etc/motd
+	download /tmp/motdgen.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/motdgen.tbz2
+	tar xvjpf /tmp/motdgen.tbz2 /opt/pimp/
+	#Unpack new bashrc.
+	echo "Getting new bashrc (profile)...."
+	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
+	echo "extracting new bash profile.."
+	tar xvjpf /tmp/bashrc.tbz2 -C /root/
+	#Get the groestl miner / conf file.
+	echo "Downloading new groestl miner..."
+	download /tmp/sph-sgminer_groestl.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_groestl.tbz2
+	echo "Extracting new groestl miner..."
+	tar xvjpf /tmp/sph-sgminer_groestl.tbz2 -C /opt/
+	echo "Downloading groestl conf file...."
+	download /tmp/cgminer.groestl.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.groestl.conf
+	echo "saving existing cgminer.groestl.conf to /root/cgminer.groestl.conf"
+	mv /optifmi/cgminer.groestl.conf /root/
+	echo "Installing new groestl conf....restore pools from your backup if you had changed this file."
+	mv /tmp/cgminer.groestl.conf /opt/ifmi/cgminer.groestl.conf
+	echo "Downloading nist5 (Talkcoin) conf file..."
+	download /tmp/cgminer.nist5.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5.conf
+}
 #Menu function for pimp 1.5.2+/1.6.0+
 function pimpmenu156() {
 local PMSELECT_1="1. Update Poolmanager"
@@ -1284,7 +1324,10 @@ $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
 $THELINE
-
+#Additions below
+if [ $0 == 1 ]; then
+	doinstall.version
+fi
 echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ $PMPUPDATE_CONTINUE == y ]; then
