@@ -1321,30 +1321,40 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 }
 
 function f.pimpupdateupdate() {
-if [ -z $1 ]; then 
-
+if [ -z "$1" ]; then 
+	echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
-	if [ $PMPUPDATE_CONTINUE == y ]; then
-		$THELINE
-		echo "Getting latest version of pimpupdate"
+	if [ "$PMPUPDATE_CONTINUE" == y ]; then
 	#Is pimpupdate up to date?! Updater code below...		
 	echo "Checking if Pimpupdate is up to date........"
-	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ]; then
-	echo -n "pimpupdate script is out of date! Would you like it to update itself? y/n: "
-	read PMPUPDATE_UPDATE
-	if [ $PMPUPDATE_UPDATE == y ]; then
-		echo "Getting latest version of PiMPUpdate"
-		download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
-		tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
-		echo "Update completed. Please rerun pimpupdate to continue."
-		rm /tmp/pimpupdate.tar
-		exit 0
-	else
-	echo "not updating...Continue at your own risk....."
+		if [ "$SCRIPT_NEW_VERSION" \> "$SCRIPT_VERSION" ]; then
+			echo -n "pimpupdate script is out of date! Would you like it to update itself? y/n: "
+			read PMPUPDATE_UPDATE
+			if [ "$PMPUPDATE_UPDATE" == y ]; then
+				echo "Getting latest version of PiMPUpdate"
+				download /tmp/pimpupdate.tar http://hackin.yourshell.net/pimpupdate/pimpupdate.tar
+				tar xvf /tmp/pimpupdate.tar -C /opt/pimp/ > /tmp/pimpupdate.log
+				echo "Update completed. Please rerun pimpupdate to continue."
+				rm /tmp/pimpupdate.tar
+				exit 0
+			else
+				echo "not updating...Continue at your own risk....."
+				$THELINE
+				f.pimpupdatenews
+				pimpmenu
+			fi
+		else 
+			echo "Script up to date, Continuing to the menu."
+		fi
 	$THELINE
 	f.pimpupdatenews
+	pimpmenu
+	else
+	echo "Error: Stopping because the user didn't answer y when prompted."
+	exit 1
 	fi
 fi
+
 if [ ! -z $1 ]; then 
 		echo "Checking if Pimpupdate is up to date........"
 	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ]; then
@@ -1362,8 +1372,10 @@ if [ ! -z $1 ]; then
 fi
 }
 #Work begins below#
-if [ "$UID" -ne 0 ]
-  then echo "ERROR: Please run as root"
+if [ "$UID" -ne 0 ]; then
+  echo "ERROR: Please run as root"
+  exit 1
+ fi
   else
 f.pimpupdateskel  
 clear
@@ -1382,21 +1394,4 @@ if [ $1 = "update" ]; then
 #	f.updatepimpupdate
 fi
 fi #endif arg
-
-echo -n "Do you wish to continue to the main menu Enter y/n: "
 #	f.updatepimpupdate
-	pimpmenu
-fi
-	else 
-	f.pimpupdatenews
-	$THELINE
-	echo "Script up to date! Commencing..."
-	$THELINE
-	pimpmenu
-	fi
-#Work begins below
-else
-	echo "Error: Stopping because the user didn't answer y when prompted."
-	exit 1
-fi
-fi
