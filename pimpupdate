@@ -1387,19 +1387,44 @@ $THELINE
 #Do we have an argument?
 if [ -z "$1" ]; then
 f.updatepimpupdate
+
 fi
 
 if [ ! -z "$1" ]; then #If arg
-if [ $1 = "?" ]; then
-	echo "Valid arguments:"
-fi
+	 	case $1 in
+		1 )
+		doinstall.version
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 ) 
+		doinstall.promptfix
+		;;
+		? )
+		echo "Valid arguments:" 
+		;;
+	esac
+#if [ $1 = "?" ]; then
+#	echo "Valid arguments:"
+#fi
 
-if [ $1 = "1" ]; then
-	doinstall.version
-fi
-if [ $1 = "update" ]; then
-	f.updatepimpupdate
-fi
+#if [ $1 = "1" ]; then
+#	doinstall.version
+#fi
+#if [ $1 = "update" ]; then
+#	f.updatepimpupdate
+#fi
 fi 
 #endif arg
 	
