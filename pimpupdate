@@ -62,218 +62,7 @@ function f.pimpupdatenews() {
 	echo "irc.freenode.net #PiMP"
 	sleep 3
 }
-function doinstall.version() {
-#if grep -wqs pimp /etc/version ; then
-#	if [[ sed -n '2,2p' /etc/version ]]; then
-	$THELINE
-	echo "Pimp $PIMP_VERSION detected Continuing installation"
-	echo "IMPORTANT: Poolmanager now requires Proc::Daemon perl module for on boot mining & graphing."
-	echo "This will automatically be installed as poolmanager updates."
-	echo "This is to alleviate issues with crontab causing breaks in graphings & bootmining issues."
-	sleep 3
-	case $PIMP_VERSION in
-	 	1.0 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-		    download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.0.tbz2
-			doinstall.pimp
-			;;
-		1.1 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.1.tbz2
-			doinstall.pimp
-			;;
-		1.2 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.2.tbz2
-			doinstall.pimp
-			;;
-		1.3.1 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.1.tbz2
-			doinstall.pimp
-			;;
-		1.3.7h )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.7h.tbz2
-			doinstall.pimp
-			;;
-		1.3.7t )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.7t.tbz2
-			doinstall.pimp
-			;;
-		1.4-amd-12.8 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-12.8.tbz2
-			doinstall.pimp
-			;;
-		1.4-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.4-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.4.1-amd-12.8 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.1-amd-12.8.tbz2
-			doinstall.pimp
-			;;
-		1.4.1-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.1-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.4.1-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.1-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.4.2-amd-12.8 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-12.8.tbz2
-			doinstall.pimp
-			;;
-		1.4.2-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.4.2-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.4.3-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.3-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.4.4-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.4-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.4.4-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.4-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.5.2-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.5.3-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.5.3-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.5.4-amd-13.12 )
-			echo "Applying crontab fix for 1.5.4/1.5.5"
-			echo "Crontab fix applied..."
-			sleep 2
-			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.4-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.5.4-amd-14.4 )
-			echo "Applying crontab fix for 1.5.4/1.5.5"
-			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
-			echo "Crontab fix applied..."
-			sleep 2
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.4-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.5.5-amd-13.12 )
-			echo "Applying crontab fix for 1.5.5"
-			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
-			echo "Crontab fix applied..."
-			sleep 2
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.5.5-amd-14.4 )
-			echo "Applying crontab fix for 1.5.5"
-			sed -i '/* * * * * root \/opt\/pimp\/viewgpu2.sh/d' /etc/crontab
-			echo "Crontab fix applied..."
-			sleep 2
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.5.51-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.5.6-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-13.12.tbz2
-			doinstall.pimp
-			;;
-		1.5.6-amd-14.4 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-14.4.tbz2
-			doinstall.pimp
-			;;
-		1.6.0-amd-13.12 )
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.6.0-amd-13.12.tbz2
-			doinstall.pimp
-			;;	
-		9.9.9 )
-			echo DEV VERSION DETECTED
-			echo "Gathering files for PiMP $PIMP_VERSION....."
-			download /tmp/poolmanager.zip $PMURL
-			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.dev.tbz2
-			doinstall.pimp
-			;;
-	esac	
-#	else echo "Unable to find pimp version sorry"
-#	exit 1
-#fi
-}
+
 
 #Seedmanager Installation function
 function doinstall.seedmanager() {
@@ -287,7 +76,6 @@ function doinstall.seedmanager() {
 	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
 	sleep 2
 	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
-#git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
 	echo "Installing new seedmanager"
 	sleep 2
 	cd /opt/pimp/sminstall/Linux-SeedManager-master/
@@ -295,10 +83,11 @@ function doinstall.seedmanager() {
 	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
 	chown www-data.root /opt/ifmi/seedmanager.conf
 	echo "Successfully installed updated seedmanager"
-$THELINE
-rm /tmp/seedmanager.zip
-f.return
+	$THELINE
+	rm /tmp/seedmanager.zip
+	f.return
 }
+
 #Pimp 1.5.5 promptfix
 function doinstall.promptfix() {
 	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
@@ -315,10 +104,17 @@ function doinstall.promptfix() {
 	/etc/init.d/cron start
 	echo "Done, installing fixed poolmanager..."
 	sleep 2
-	doinstall.version
+	doinstall.poolmanager
 }
-#Installer function-Pimp
-function doinstall.pimp() {
+
+#Installer function-Pimp poolmanager upgrader
+function doinstall.poolmanager() {
+	$THELINE
+	echo "Pimp $PIMP_VERSION detected Continuing installation"
+	echo "IMPORTANT: Poolmanager now requires Proc::Daemon perl module for on boot mining & graphing."
+	echo "This will automatically be installed as poolmanager updates."
+	echo "This is to alleviate issues with crontab causing breaks in graphings & bootmining issues."
+	download /tmp/poolmanager.zip $PMURL
 	echo "Installing libproc-daemon-perl dependency.."
 	echo "if this is already installed it will just verify that it is installed."
 	apt-get install -y libproc-daemon-perl
@@ -360,12 +156,7 @@ function f.pimpupdateskel() {
 		echo "Looks like this has been installed before, continuing..."
 fi
 }
-#function f.backupfolder(){
-#	if [ ! -e /opt/pimp/pimpupdatefiles/backups ]
-#}
 function doinstall.wicdfix() {
-	#wireless_interface = wlan0 
-	#sed -i -e 's/wireless_interface = None/wireless_interface = wlan0/g' /etc/wicd/manager-settings.conf
 	case $PIMP_VERSION in
 	 	1.3.1 )
 			echo "Applying fix on Pimp $PIMP_VERSION....."
@@ -415,6 +206,7 @@ function doinstall.wicdfix() {
 	echo "This fix is not applicable to $PIMP_VERSION"
 esac
 }
+
 #Seedmanager profiles
 function doinstall.smprofiles() {
 echo "Update seedmanager.conf with the latest Seedmanager profile?"
@@ -450,8 +242,9 @@ echo -n "Install updated profile? Y/N:"
 	pimpmenu
 fi
 }
+
 #Poolmanager Profiles
-function doinstall.pmprofiles() {
+function doinstall.pmprofiles2() {
 echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
 echo "Note this will reset your active mining profile to scrypt, as well as remove any email notification settings"
 echo -n "Install updated profiles? Y/N:"
@@ -477,6 +270,58 @@ echo -n "Install updated profiles? Y/N:"
 	f.return
 fi
 }
+function doinstall.pmprofiles() {
+	sleep 3
+	echo "Gathering files for PiMP $PIMP_VERSION....."
+	case $PIMP_VERSION in
+	 	1.0 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.0.tbz2
+			;;
+		1.1 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.1.tbz2
+			;;
+		1.2 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.2.tbz2
+			;;
+		1.3.1 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.1.tbz2
+			;;
+		1.3.7h | 1.3.7t )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.3.7h.tbz2
+			;;
+		1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4-amd-12.8.tbz2
+			;;
+		1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.1-amd-12.8.tbz2
+			;;
+		1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.4.2-amd-12.8.tbz2
+			;;
+		1.4.3-amd-13.12 | 1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.4.3-amd-13.12 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-13.12.tbz2
+			;;
+		1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.3-amd-13.12.tbz2
+			;;
+		1.4.4-amd-13.12 | 1.4.4-amd-14.4 | 1.5.5-amd-13.12 | 1.5.5-amd-14.4 | 1.5.4-amd-14.4 | 1.5.4-amd-13.12 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.5-amd-13.12.tbz2
+			;;
+		1.5.51-amd-14.4 | 1.5.52-amd-14.4 | 1.5.6-amd-13.12 | 1.5.6-amd-14.4 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.5.6-amd-13.12.tbz2
+			;;
+		1.6.0-amd-13.12 )
+			download /tmp/poolmanager.conf.tbz2 http://hackin.yourshell.net/pmupdate/poolmanager.conf.1.6.0-amd-13.12.tbz2
+			;;	
+		* )
+			echo "NON RELEASE/BETA VERSION DETECTED - Gathering generic poolmanager.conf"
+			CVERS="generic"
+			;;
+	esac	
+	download /tmp/poolmanager.conf.tbz2 http://files.getpimp.org/pmupdate/poolmanager.conf.$CVERS.tbz2
+	doinstall.pmprofiles2
+}
+
 function f.minestart() {
 	echo "Restarting mining..... (May take 30-45 seconds!)"
 	cd /opt/ifmi/
@@ -978,7 +823,7 @@ echo -n "Which one? 1-5: "
 	then 
 	case $PMSELECTNUM in
 		1 )
-		doinstall.version
+		doinstall.poolmanager
 		;;
 		2 )
 		doinstall.pmprofiles
@@ -1029,7 +874,7 @@ echo -n "Which one? 1-6: "
 	then 
 	case $PMSELECTNUM in
 		1 )
-		doinstall.version
+		doinstall.poolmanager
 		;;
 		2 )
 		doinstall.pmprofiles
@@ -1084,7 +929,7 @@ echo -n "Which one? 1-7: "
 	then 
 	case $PMSELECTNUM in
 		1 )
-		doinstall.version
+		doinstall.poolmanager
 		;;
 		2 )
 		doinstall.pmprofiles
@@ -1143,7 +988,7 @@ echo -n "Which one? 1-7: "
 	then 
 	case $PMSELECTNUM in
 		1 )
-		doinstall.version
+		doinstall.poolmanager
 		;;
 		2 )
 		doinstall.pmprofiles
@@ -1222,7 +1067,7 @@ echo -n "Which one? 1-14: "
 	then 
 	case $PMSELECTNUM in
 		1 )
-		doinstall.version
+		doinstall.poolmanager
 		;;
 		2 )
 		doinstall.pmprofiles
@@ -1377,7 +1222,7 @@ fi
 if [ ! -z "$1" ]; then #If arg
 	case $1 in
 	1 )
-	doinstall.version
+	doinstall.poolmanager
 	;;
 	2 )
 	doinstall.pmprofiles
