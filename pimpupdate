@@ -1320,7 +1320,7 @@ PIMP_VERSION2=`echo $PIMPVERSION | grep -o '1.4.1'`
 	fi
 }
 
-function f.pimpupdateupdate() {
+function f.updatepimpupdate() {
 if [ -z "$1" ]; then 
 	echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
