@@ -660,8 +660,8 @@ function checkinstall.x15mod() {
 								download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.$PVERS.tbz2
 								echo "Done, extracting poolmanager.conf w/ x15mod"
 								tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
-						fi #X11FI5
-						 doinstall.x15mod
+#						fi #X11FI5
+#						 doinstall.x15mod
 					fi #X11FI4
 						else #X11ELSE4
 						doinstall.x15mod
