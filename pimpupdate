@@ -619,71 +619,47 @@ function checkinstall.x15mod() {
 	$THELINE
 	echo "Pimp 1.x sgminer 5 x15 installer"
 	$THELINE
-	if [ -e /opt/sgminer5_x15 ]; #X11IF1
+	if [ -e /opt/sgminer5 ]; #X11IF1
 		then
-			echo -n "X15mod miner already installed, reinstall? (y/n): "
+			echo -n "SG5/X15mod miner already installed, reinstall? (y/n): "
 			read X15_REINSTALL
 			if [ $X15_REINSTALL = y ]; then #X11IF2
-				if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then #IF 2.5
-					$THELINE
-					echo "You don't have cgminer.x15mod.conf, downloading & installing."
-					echo "This will also replace poolmanager.conf with a new one"
-					echo "which has an x15 profile.  Reenter your email notification settings..."
-					echo "Continuing in 5 seconds.."
-					sleep 5
-					download /tmp/cgminer.x15mod.conf.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.conf.tbz2
-					tar xvjpf /tmp/cgminer.x15mod.conf.tbz2 -C /opt/ifmi/
-					echo "Done, downloading poolmanager.conf for x15mod"
-					if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then #X11IF2.75
-							download /tmp/poolmanager.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/poolmanager.x15mod.1.4.tbz2
-							echo "Done, extracting poolmanager.conf w/ x15mod"
-							sleep 2 
-							tar jxvpf /tmp/poolmanager.x15mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
-							download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/poolmanager.x15mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod"
-							tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
-							download /tmp/poolmanager.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/poolmanager.x15mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod"
-							tar jxvpf /tmp/poolmanager.x15mod.tbz2 -C /opt/ifmi/					
-						else #x11ELSE 2.75
-							download /tmp/poolmanager.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/poolmanager.x15mod.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod"
-							tar jxvpf /tmp/poolmanager.x15mod.tbz2 -C /opt/ifmi/
-						fi #X11FI2.75
-					fi #X11FI2.5
+			
 				$THELINE
-				echo -n "Overwrite cgminer.x15mod.conf/poolmanager.conf? (y/n): "
-#				echo -n "Would you like to overwrite your existing poolmanager.conf & cgminer.x11mod.conf? (y/n):"
+				echo -n "Overwrite cgminer.multi.conf/cgminer.x15mod.conf/poolmanager.conf? (y/n): "
 				read X15_OVERWRITE
 				if [ $X15_OVERWRITE = y ]; then #X11IF3
 					echo "Backing up existing cgminer.x15mod.conf to /opt/ifmi/cgminer.x15mod.conf.bak"
 					if [ -f "/opt/ifmi/cgminer.x15mod.conf" ]; then #X11IF4
-						cp /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
-						if [ $PIMP_VERSION = 1.4-amd-13.12 ]; then #X11IF5
-							download /tmp/cgminer.x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.1.4.tbz2
-							echo "Done, extracting poolmanager.conf w/ x15mod & cgminer.x15mod.conf"
-							sleep 2 
-							tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-12.8 ]; then
-							download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod & cgminer.x15mod.conf"
-							tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
-						elif [ $PIMP_VERSION = 1.4-amd-14.4 ]; then
-							download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.1.4.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod & cgminer.x15mod.conf"
-							tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/					
-						else #x11ELSE5
-							download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x11mod.tbz2
-							sleep 2 
-							echo "Done, extracting poolmanager.conf w/ x15mod & cgminer.x15mod.conf"
-							tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
+						cp /opt/ifmi/cgminer.multi.conf /opt/ifmi/cgminer.multi.conf.bak
+						cp /opt/ifmi/cgminer.x15mod.conf /opt/ifmi/cgminer.x15mod.conf.bak
+						echo "Done, downloading poolmanager.conf for SG5/x15mod"
+								case $PIMP_VERSION in
+								1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 )
+								PVERS="1.4"
+								;;
+								1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4 )
+								PVERS="1.4.2"
+								;;
+								1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+								PVERS="1.4.2"
+								;;
+								1.4.3-amd-13.12 | 1.4.4-amd-13.12 | 1.4.4-amd-14.4 )
+								PVERS="1.4"
+								;;
+								1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+								PVERS="1.5.5"
+								;;
+								1.5.5-amd-13.12 | 1.5.5-amd-14.4 | 1.5.4-amd-14.4 | 1.5.4-amd-13.12 )
+								PVERS="1.5.5"
+								;;
+								1.5.51-amd-14.4 | 1.5.52-amd-14.4 | 1.5.52-amd-14.6 | 1.5.6-amd-13.12 | 1.5.6-amd-14.4 )
+								PVERS="1.5.6"
+								;;
+								esac
+								download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.$PVERS.tbz2
+								echo "Done, extracting poolmanager.conf w/ x15mod"
+								tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
 						fi #X11FI5
 						 doinstall.x15mod
 					fi #X11FI4
