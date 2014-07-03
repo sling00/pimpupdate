@@ -1380,8 +1380,8 @@ if [ -z "$1" ]; then
 	exit 1
 	fi
 fi
-
-if [ ! -z $1 ]; then 
+}
+function f.updateunattend() {
 		echo "Checking if Pimpupdate is up to date........"
 	if [ $SCRIPT_NEW_VERSION \> $SCRIPT_VERSION ]; then
 		echo "Getting latest version of PiMPUpdate"
@@ -1393,9 +1393,8 @@ if [ ! -z $1 ]; then
 		( shift; "$PROGNAME" $* ) | grep $1
 		exit 0
 	else 
-		echo "Script up to date, running the command you requested."
+		echo "Script up to date"
 	fi
-fi
 }
 #Work begins below#
 if [ "$UID" -ne 0 ]; then
@@ -1430,7 +1429,7 @@ if [ ! -z "$1" ]; then #If arg
 	doinstall.promptfix
 	;;
 	update ) 
-	f.updatepimpupdate
+	f.updateunattend
 	;;
 	* )
 	echo "Valid command line arguments:" 
