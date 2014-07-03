@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.2
+SCRIPT_VERSION=1.3.3
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -49,8 +49,10 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.3.2 Latest news:"
+	echo "PiMPUpdate v1.3.3 Latest news:"
 	$THELINE
+	echo "July 2: Add SGminer 5 ALPHA and X15 Miner/profiles.  Enjoy & Please dont forget to donate!"
+	echo "July 1: Major code cleanup of pimpupdate, please report issues to sling00 in irc."
 	echo "June 19: 1.5.5 Bootmining & bashprompt fix UPDATED. Should also help with graphing bootmining issue should now be fixed for good.."
 	echo "June 18: applied superlimes fixes for SPH-SGminer_x11mod miner build."
 	echo "June 17: 1.5.6 added to pimpupdate, Public release coming SOON! :) :) :)"
@@ -697,15 +699,14 @@ function checkinstall.x15mod() {
 function doinstall.x15mod() {
 	f.minestop
 	$THELINE
-	echo "This is an optimized miner for the X15 algorithm."
+	echo "This installs SGMiner 5 multi mining miner and multi algo/x15 profiles"
 	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
 	echo "This will also replace your current poolmanager.conf"
-	echo "with one that has an x15mod profile in it. "
+	echo "with one that has multimining/x15mod profiles in it. "
 	echo "YOU WILL HAVE TO RE-ENTER EMAIL NOTIFICATION SETTINGS AFTER THIS!"
 	echo "AND ALSO ANY CUSTOM POOLMANAGER ALGORITHM PROFILES!"
 	fi
-	echo "NOTE: This will update poolmanager first due to a compat issue"
-	echo "with the PM versions shipped with 1.4/1.4.2"
+	echo "NOTE: This will update poolmanager to add sg5 compatibility"
 	echo -n "Ok to continue? (y/n): "
 	read X11_CONTINUE
 	if [ $X11_CONTINUE = y ];
@@ -727,14 +728,23 @@ function doinstall.x15mod() {
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Successfully installed updated poolmanager"
 	rm /tmp/poolmanager.zip
-	echo "Poolmanager update done, continuing X11-mod install."
+	echo "Poolmanager update done, continuing SG5/X15 install."
 	$THELINE
 			doinstall.x15mod1		
 		else
 			f.return
 	fi
 }
+function doinstall.x15modunattended() {
+	echo "SG5 Alpha/X15 unattended installation started."
+	echo "If you have done this before it WILL overwrite your conf files for sg5/x15/poolmanger!"
+	echo "you must also pimpupdate 1 for a complete installation."
+	echo "Ctrl+C to abort (5 seconds)"
+	sleep 5
+	doinstall.x15mod1
+}
 function doinstall.x15mod1() {
+		f.minestop
 		case $PIMP_VERSION in
 		1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 )
 		PVERS="1.4"
@@ -763,7 +773,7 @@ function doinstall.x15mod1() {
 	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
 		download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.$PVERS.tbz2
 	fi
-	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
+	echo "Extracting Sgminer5 / X15 mod miner to /opt/sgminer5"
 	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
 	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
 	echo "Done, extracting poolmanager.conf w/ sgminer5 multi conf & cgminer.x15mod.conf"
@@ -1410,19 +1420,12 @@ if [ ! -z "$1" ]; then #If arg
 	doinstall.poolmanager
 	;;
 	2 )
-	doinstall.pmprofiles
-	;;
-	3 )
 	doinstall.seedmanager
 	;;
+	3 )
+	doinstall.x15modunattended
+	;;
 	4 )
-	doinstall.smprofiles
-	;;
-	5 ) 
-	clear
-	f.minermenu
-	;;
-	6 ) 
 	doinstall.promptfix
 	;;
 	update ) 
@@ -1430,6 +1433,12 @@ if [ ! -z "$1" ]; then #If arg
 	;;
 	* )
 	echo "Valid command line arguments:" 
+	echo "1 - update poolmanger"
+	echo "2 - update seedmanager"
+	echo "3 - install sg5/x15 miner"
+	echo "4 - 1.5.5 prompt fix"
+	echo "help - show this menu"
+	echo "update - update pimpupdate script"
 	;;
 	esac
 fi 
