@@ -51,7 +51,7 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo "PiMPUpdate v1.3.3 Latest news:"
 	$THELINE
-	echo "July 2: Pimpupdate now accept command line options, type pimpupdate help to get a list!"
+	echo "July 2: Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "July 2: Add SGminer 5 ALPHA and X15 Miner/profiles.  Enjoy & Please dont forget to donate!"
 	echo "July 1: Major code cleanup of pimpupdate, please report issues to sling00 in irc."
 	echo "June 19: 1.5.5 Bootmining & bashprompt fix UPDATED. Should also help with graphing bootmining issue should now be fixed for good.."
