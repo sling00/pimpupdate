@@ -961,7 +961,7 @@ local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmana
 local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
 local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="7. NEW: Install SGminer5 Multi miner / X15 miner"
+local PMSELECT_6="6. NEW: Install SGminer5 Multi miner / X15 miner"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -970,7 +970,7 @@ echo $PMSELECT_4
 echo $PMSELECT_5
 echo $PMSELECT_6
 echo "or q to exit"
-echo -n "Which one? 1-7: "
+echo -n "Which one? 1-6: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
