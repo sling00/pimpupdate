@@ -965,6 +965,60 @@ function pimp15xto156() {
 
 
 }
+#Menu function for pimp 1.5.6
+function pimpmenu156() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo "or q to exit"
+echo -n "Which one? 1-6: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 )
+		doinstall.farmwatcher
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
 #Menu function for pimp 1.5.2+/1.6.0+
 function pimpmenu1551() {
 local PMSELECT_1="1. Update Poolmanager"
@@ -1333,7 +1387,10 @@ PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 		1.4.4-amd | 1.5.4-amd | 1.5.5-amd )
 			pimpmenu155
 		;;
-		1.5.51-amd | 1.5.6-amd )
+		1.5.51-amd | 1.5.52-amd )
+			pimpmenu1551
+		;;
+		1.5.6-amd )
 			pimpmenu156
 		;;
 		* )
