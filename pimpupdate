@@ -340,8 +340,8 @@ function doinstall.farmwatcher() {
 function doinstall.farmwatcher1() {
 	get_cpanm
 	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
-	unzip /tmp/farmwatcher.zip /opt/pimp/fwinstall/
-	cd /fwinstall
+	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
+	cd /opt/pimp/fwinstall/Linux-FarmWatcher/
 	cpanm DBI 
 	cpanm Proc::ProcessTable
 	cpanm DBD::SQLite
