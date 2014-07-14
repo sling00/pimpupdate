@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.4
+SCRIPT_VERSION=1.3.
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -338,6 +338,7 @@ function doinstall.farmwatcher() {
 	fi
 }
 function doinstall.farmwatcher1() {
+	get_cpanm
 	download /tmp/farmwatcher.zip https://www.github.com/starlilyth/Linux-Farmwatcher/releases/master.zip
 	unzip /tmp/farmwatcher.zip /opt/pimp/fwinstall/
 	cd /fwinstall
