@@ -49,8 +49,10 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.3.4 Latest news:"
+	echo "PiMPUpdate v1.3.5 Latest news:"
 	$THELINE
+	echo "July 13: Pimpupdate now supports installing FARMWATCHER! The farmview replacement many of you have been asking about!"
+	echo "July 13: Pimp 1.5.6 RELEASED! Incremental updater coming to pimpupdate SOON! (Within the next 48 hrs!) "
 	echo "July 12: Minermenu updated, Support for pimp 1.5.6 added (YAY!) "
 	echo "July 2: Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "July 2: Add SGminer 5 ALPHA and X15 Miner/profiles.  Enjoy & Please dont forget to donate!"
@@ -338,6 +340,17 @@ function doinstall.farmwatcher() {
 	fi
 }
 function doinstall.farmwatcher1() {
+	echo "Killing poolmanager and farmview if they are running..."
+	killall -9 run-poolmanager.pl 2>&1 > /dev/null
+	killall -9 farmview 2>&1 > /dev/null
+	if [ -f "/opt/ifmi/farmview" ]; then
+		echo "Removing old farmview leftovers..."
+		rm -rf /opt/ifmi/farmview
+	fi
+	if [ -f "/var/www/farmview.html" ]; then
+		echo "Removing old farmview.html file.."
+		rm -rf /var/www/farmview.html
+	fi
 	echo "Checking for cpanm...."
 	get_cpanm
 	echo "Cpanm located, installing perl module dependencies"
@@ -1048,7 +1061,7 @@ echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
 echo "or q to exit"
-echo -n "Which one? 1-6: "
+echo -n "Which one? 1-7: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1098,6 +1111,7 @@ local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmana
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Install bootmining / prompt fix."
 local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
+local PMSELECT_8="8. NEW: Install FarmWatcher (Farmview replacement!)"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -1106,8 +1120,9 @@ echo $PMSELECT_4
 echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
+echo $PMSELECT_8
 echo "or q to exit"
-echo -n "Which one? 1-7: "
+echo -n "Which one? 1-8: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1139,6 +1154,9 @@ echo -n "Which one? 1-7: "
 		7 )
 		checkinstall.x15mod
 		;;
+		8 )
+		doinstall.farmwatcher
+		;;
 	esac
 	else
 	$THELINE
@@ -1157,6 +1175,7 @@ local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Install open source x11/x13 optimized miner"
 local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
 local PMSELECT_8="8. Install arebyp scrypt sgminer kernel"
+local PMSELECT_9="9. NEW: Install FarmWatcher (Farmview replacement!)"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -1166,8 +1185,9 @@ echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
 echo $PMSELECT_8
+echo $PMSELECT_9
 echo "or q to exit"
-echo -n "Which one? 1-8: "
+echo -n "Which one? 1-9: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1202,6 +1222,9 @@ echo -n "Which one? 1-8: "
 		8 )
 		doinstall.arebypkernel
 		;;
+		9 )
+		doinstall.farmwatcher
+		;;
 	esac
 	else
 	$THELINE
@@ -1221,6 +1244,7 @@ local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Install open source x11/x13 optimized miner"
 local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
 local PMSELECT_8="8. Install arebyp scrypt sgminer kernel"
+local PMSELECT_9="9. NEW: Install FarmWatcher (Farmview replacement!)"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -1230,8 +1254,9 @@ echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
 echo $PMSELECT_8
+echo $PMSELECT_9
 echo "or q to exit"
-echo -n "Which one? 1-8: "
+echo -n "Which one? 1-9: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1266,6 +1291,9 @@ echo -n "Which one? 1-8: "
 		8 )
 		doinstall.arebypkernel
 		;;
+		9 )
+		doinstall.farmwatcher
+		;;
 	esac
 	else
 	$THELINE
@@ -1292,6 +1320,7 @@ local PMSELECT_12="12. Install jackpotcoin miner"
 local PMSELECT_13="13. Install open source x11/x13 optimized miner"
 local PMSELECT_14="14. NEW: Install SGminer5 Multi miner / X15 miner"
 local PMSELECT_15="15. Install arebyp optimized scrypt sgminer kernel"
+local PMSELECT_16="16. NEW: Install FarmWatcher (Farmview replacement!)"
 #local PMSELECT_15="15. Install updated /opt/pimp scripts."
 #local PMSELECT_16="16. Update .bashrc & supporting scripts for new prompt."
 echo "What would you like to do?"
@@ -1310,9 +1339,9 @@ echo $PMSELECT_12
 echo $PMSELECT_13
 echo $PMSELECT_14
 echo $PMSELECT_15
-#echo $PMSELECT_16
+echo $PMSELECT_16
 echo "or q to exit"
-echo -n "Which one? 1-1: "
+echo -n "Which one? 1-16: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1371,6 +1400,9 @@ echo -n "Which one? 1-1: "
 		doinstall.arebypkernel
 		;;
 		16 )
+		doinstall.farmwatcher
+		;;
+		17 )
 		doinstall.newprompt
 		;;
 	esac
@@ -1494,7 +1526,7 @@ if [ ! -z "$1" ]; then #If arg
 	doinstall.promptfix
 	;;
 	5 ) 
-	doinstall.farmwatcher1
+	doinstall.farmwatcher
 	update ) 
 	f.updateunattend
 	;;
