@@ -338,13 +338,22 @@ function doinstall.farmwatcher() {
 	fi
 }
 function doinstall.farmwatcher1() {
+	echo "Checking for cpanm...."
 	get_cpanm
-	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
-	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
-	cd /opt/pimp/fwinstall/Linux-FarmWatcher/
+	echo "Cpanm located, installing perl module dependencies"
 	cpanm DBI 
 	cpanm Proc::ProcessTable
 	cpanm DBD::SQLite
+	echo "Deps installed, downloading farmwatcher."
+	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
+	echo "Download finished...extracting files..."
+	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
+	if [ -e "/opt/pimp/fwinstall" ]; then
+		echo "Removing old /opt/pimp/fwinstall"
+		rm -rf /opt/pimp/fwinstall
+	fi
+	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
+	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
 	./install-fw.pl -q
 }
 #Nodm installation function
@@ -1483,6 +1492,8 @@ if [ ! -z "$1" ]; then #If arg
 	4 )
 	doinstall.promptfix
 	;;
+	5 ) 
+	doinstall.farmwatcher1
 	update ) 
 	f.updateunattend
 	;;
@@ -1492,6 +1503,7 @@ if [ ! -z "$1" ]; then #If arg
 	echo "2 - update seedmanager"
 	echo "3 - install sg5/x15 miner"
 	echo "4 - 1.5.5 prompt fix"
+	echo "5 - update FarmWatcher"
 	echo "help - show this menu"
 	echo "update - update pimpupdate script"
 	;;
