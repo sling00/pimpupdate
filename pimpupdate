@@ -355,6 +355,7 @@ function doinstall.farmwatcher1() {
 	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
 	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
 	./install-fw.pl -q
+	f.return
 }
 #Nodm installation function
 function doinstall.nodm() {
