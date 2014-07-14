@@ -347,11 +347,11 @@ function doinstall.farmwatcher1() {
 	echo "Deps installed, downloading farmwatcher."
 	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
 	echo "Download finished...extracting files..."
-	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
 	if [ -d "/opt/pimp/fwinstall" ]; then
 		echo "emoving old /opt/pimp/fwinstall"
 		rm -rf /opt/pimp/fwinstall
 	fi
+	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
 	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
 	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
 	./install-fw.pl -q
