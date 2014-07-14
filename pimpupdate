@@ -305,6 +305,9 @@ function f.minestop() {
 #Farmwatcher installation support functions
 function get_cpanm(){
     if [ \! -f /usr/local/bin/cpanm ]; then
+    		echo "Cpanm not found, Downloading and installing.."
+    		echo "This can take a while....."
+    		sleep 3
             cd $TMP_DIR && curl --insecure -L http://cpanmin.us | perl - App::cpanminus
             if [ \! -f /usr/local/bin/cpanm ]; then
                     echo "Downloading from cpanmin.us failed, downloading from xrl.us"
