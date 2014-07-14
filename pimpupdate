@@ -348,8 +348,8 @@ function doinstall.farmwatcher1() {
 	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
 	echo "Download finished...extracting files..."
 	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
-	if [ -e "/opt/pimp/fwinstall" ]; then
-		echo "Removing old /opt/pimp/fwinstall"
+	if [ -d "/opt/pimp/fwinstall" ]; then
+		echo "emoving old /opt/pimp/fwinstall"
 		rm -rf /opt/pimp/fwinstall
 	fi
 	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
