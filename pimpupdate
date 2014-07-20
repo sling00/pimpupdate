@@ -551,7 +551,7 @@ function doinstall.x11mod1() {
 		XVERS="1.5"
 		;;
 		esac
-		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/sph-sggminer_x11mod.$XVERS.tbz2
+		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/sph-sgminer_x11mod.$XVERS.tbz2
 	#Get the right conf file
 		download /tmp/cgminer.x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/cgminer.x11mod.$XVERS.tbz2
 	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
