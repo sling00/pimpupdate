@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.5
+SCRIPT_VERSION=1.3.6
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -15,8 +15,8 @@ SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
-#Turn on logging?
-#exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
+Turn on logging?
+exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
 if [ "$DEV" != 0 ];
 then
@@ -49,21 +49,15 @@ function f.return() {
 }
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate v1.3.5 Latest news:"
+	echo "PiMPUpdate v1.3.6 Latest news:"
 	$THELINE
+	echo "July 19: Pimpupdate now supports updating from 1.5.x to 1.5.6! "
 	echo "July 13: Pimpupdate now supports installing FARMWATCHER! The farmview replacement many of you have been asking about!"
 	echo "July 13: Pimp 1.5.6 RELEASED! Incremental updater coming to pimpupdate SOON! (Within the next 48 hrs!) "
 	echo "July 12: Minermenu updated, Support for pimp 1.5.6 added (YAY!) "
 	echo "July 2: Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "July 2: Add SGminer 5 ALPHA and X15 Miner/profiles.  Enjoy & Please dont forget to donate!"
 	echo "July 1: Major code cleanup of pimpupdate, please report issues to sling00 in irc."
-	echo "June 19: 1.5.5 Bootmining & bashprompt fix UPDATED. Should also help with graphing bootmining issue should now be fixed for good.."
-	echo "June 18: applied superlimes fixes for SPH-SGminer_x11mod miner build."
-	echo "June 17: 1.5.6 added to pimpupdate, Public release coming SOON! :) :) :)"
-	echo "June 9: SGminer5 release candidate added to pimpupdate miner menu (USE AT YOUR OWN RISK!)"
-	echo "June 9: Please rebuild x11/x13 mod miner if you are having issues with system hangs while mining x11mod/x13mod."
-	echo "May 29:"
-	echo "Updated x11mod miner to x13 support & added poolmanager profile."
 	echo "Don't forget to visit us on IRC!"
 	echo "irc.freenode.net #PiMP"
 	sleep 3
@@ -922,75 +916,168 @@ function doinstall.manualstart() {
 			f.return
 	fi 
 }
+
 #Pimp 1.5.x to 1.5.6 upgrader
-function pimp15xto156() {
- 	echo "Redoing prompt fix just to be sure it was done!"
+function pimp15xto1561() {
+	SPHVER=`cat /etc/ver | grep -c 14.6`
+ 	echo "Ctrl+C to abort....Continuing in 5 seconds."
+ 	sleep 5
+ 	echo "Backing up your config files..."
+ 	mkdir /root/confbackup
+ 	cp /opt/ifmi/*.conf /root/confbackup/
+ 	echo "Done, continuing..."
+ 	echo "Installing FarmWatcher"
+    echo "Killing poolmanager and farmview if they are running..."
+	killall -9 run-poolmanager.pl 2>&1 > /dev/null
+	killall -9 farmview 2>&1 > /dev/null
+	if [ -f "/opt/ifmi/farmview" ]; then
+		echo "Removing old farmview leftovers..."
+		rm -rf /opt/ifmi/farmview
+	fi
+	if [ -f "/var/www/farmview.html" ]; then
+		echo "Removing old farmview.html file.."
+		rm -rf /var/www/farmview.html
+	fi
+	echo "Checking for cpanm...."
+	get_cpanm
+	echo "Cpanm located, installing perl module dependencies"
+	cpanm DBI 
+	cpanm Proc::ProcessTable
+	cpanm DBD::SQLite
+	echo "Deps installed, downloading farmwatcher."
+	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
+	echo "Download finished...extracting files..."
+	if [ -d "/opt/pimp/fwinstall" ]; then
+		echo "Removing old /opt/pimp/fwinstall"
+		rm -rf /opt/pimp/fwinstall
+	fi
+	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
+	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
+	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
+	./install-fw.pl -q
+	echo "Installing motd generator..."
+	rm /etc/motd
+	ln -s /tmp/motd.tail /etc/motd
+	echo "Downloading new pimp scripts...."
+	download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/pimpscripts.tbz2
+	echo "Done, extracting..."
+	tar xjpf /tmp/pimpscripts.tbz2 /opt/pimp/
 	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
-	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/bashrc.tbz2
-	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/crontab.tbz2
+	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
+	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/crontab.tbz2
 	echo "Unpacking replacement .bashrc"
 	tar xvjpf /tmp/bashrc.tbz2 -C /root/
 	echo "Unpacking replacement crontab"
 	tar xvjpf /tmp/crontab.tbz2 -C /etc/
 	echo "Setting file permissions for crontab"..
 	chown root.root /etc/crontab
-	echo "Restarting crontab..."
+	echo "Running MOTDGen & Restarting crontab..."
+	/opt/pimp/motdgen
 	/etc/init.d/cron stop
 	/etc/init.d/cron start
-	#Install MOTDgen and update motd.
-	echo "Installing motd generator..."
-	rm /etc/motd
-	ln -s /tmp/motd.tail /etc/motd
-	download /tmp/motdgen.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/motdgen.tbz2
-	tar xvjpf /tmp/motdgen.tbz2 /opt/pimp/
-	#Unpack new bashrc.
-	echo "Getting new bashrc (profile)...."
-	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
-	echo "extracting new bash profile.."
-	tar xvjpf /tmp/bashrc.tbz2 -C /root/
-	#Get the groestl miner / conf file.
+	#Get the x11mod & groestl miner / conf file.
+	if [ "$SPHVER" = "1" ]; then
+		echo "Downloading replacement sph-sgminer_x11mod"
+		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_x11mod.tbz2
+		echo "Download completed, extracting..."
+		tar xjpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
+		rm -rf /tmp/sph-sgminer_x11mod.tbz2
+	fi
 	echo "Downloading new groestl miner..."
 	download /tmp/sph-sgminer_groestl.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_groestl.tbz2
 	echo "Extracting new groestl miner..."
-	tar xvjpf /tmp/sph-sgminer_groestl.tbz2 -C /opt/
+	tar xjpf /tmp/sph-sgminer_groestl.tbz2 -C /opt/
 	echo "Downloading groestl conf file...."
 	download /tmp/cgminer.groestl.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.groestl.conf
 	echo "saving existing cgminer.groestl.conf to /root/cgminer.groestl.conf"
-	mv /optifmi/cgminer.groestl.conf /root/
+	mv /opt/ifmi/cgminer.groestl.conf /root/
 	echo "Installing new groestl conf....restore pools from your backup if you had changed this file."
 	mv /tmp/cgminer.groestl.conf /opt/ifmi/cgminer.groestl.conf
-	echo "Downloading nist5 (Talkcoin) conf file..."
+	echo "Downloading and installing nist5 (Talkcoin) conf files..."
 	download /tmp/cgminer.nist5.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5.conf
+	download /tmp/cgminer.nist5mod.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5mod.conf
 	mv /tmp/cgminer.nist5.conf /opt/ifmi/
+	mv /tmp/cgminer.nist5mod.conf /opt/ifmi/
+	if [ ! -f "/opt/ifmi/cgminer.multi.conf" ]; then
+		echo "Downloading sgminer5 config files."
+		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.multi.conf
+		mv /tmp/cgminer.multi.conf /opt/ifmi/
+	fi
+	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
+		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.x15mod.conf
+		mv /tmp/cgminer.x15mod.conf /opt/ifmi/
+	fi
+	echo "Downloading updated sgminer5 miner..."
+	download /tmp/sgminer5.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sgminer5.tbz2
+	echo "Done, extracting..."
+	if [ -d "/opt/sgminer5" ]; then
+		rm -rf /opt/sgminer5
+	fi
+	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
+	rm -rf /tmp/sgminer5.tbz2
+	echo "Downloading Updating poolmanager profiles...."
+	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
+	mv /tmp/poolmanager.conf /opt/ifmi
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Downloading BFGMiner 4.4 upgrade.."
+	download /tmp/bfgminer.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bfgminer.tbz2
+	echo "Done, extracting..."
+	rm -rf /opt/bfgminer
+	tar xvpf /tmp/bfgminer.tbz2 -C /opt/
+	rm -rf /tmp/bfgminer.tbz2
 	echo "Downloading Zeusminer miners..."
 	download /tmp/cgminer-4.3-zeus.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-zeus.tbz2
+	download /tmp/cgminer-4.3-gridseed.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-gridseed.tbz2
 	echo "Extracting zeus miners..."
-	tar xvpf /tmp/cgminer-4.3-zeus.tbz2 -C /opt/
+	tar xjpf /tmp/cgminer-4.3-zeus.tbz2 -C /opt/
+	rm -rf /opt/cgminer-4.3-gridseed
+	tar xjpf /tmp/cgminer-4.3-gridseed.tbz2 -C /opt/
+	rm -rf /tmp/cgminer-4.3-gridseed.tbz2
+	rm -rf /tmp/cgminer-4.3-zeus.tbz2
 	echo "Done, Downloading zeus profiles..."
 	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.ltc.zeus.conf
+	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.bfg.ltc.zeus.conf
 	download /tmp/seedmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/seedmanager.conf
 	echo "Done, moving into place."
 	mv /tmp/cgminer.asic.ltc.zeus.conf /opt/ifmi/
+	mv /tmp/cgminer.asic.bfg.ltc.zeus.conf /opt/ifmi/
 	mv /tmp/seedmanager.conf /opt/ifmi/
 	chown www-data.root /opt/ifmi/seedmanager.conf
 	echo "Done, downloading initramfs scripts"
 	download /tmp/initramfs-tools.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/initramfs-tools.tbz2
 	tar xjpf /tmp/initramfs-tools.tbz2 -C /usr/share/
+	rm -rf /tmp/initramfs-tools.tbz2
 	echo "Done extracting, updating initramfs...."
 	update-initramfs -u
-	echo "Done.."
-	echo "Downloading new nodm display manager script & keyboard-setup script"
-	download /tmp/initscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/initscripts.tbz2
-	echo "Done, extracting init scripts..."
-	tar xjpf /tmp/initscripts.tbz2 -C /etc/init.d/
-	echo "Done, updating version files."
-	download /tmp/versions.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/versions.tbz2
+	echo "Done, updating init & version files."
+	download /tmp/version.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/version.tbz2
 	echo "Extracting new version files and updating grub bootloader.."
-	tar xjpf /tmp/versions.tbz2 -C /etc/
+	tar xjpf /tmp/version.tbz2 -C /
 	update-grub
+}
+function pimp15xto156() {
+	echo "Pimp 1.5.x to 1.5.6 upgrader...."
+	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
+	echo "Gathering files....This may take some time (~200mb of files)"
+	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	echo -n "Ok to continue? y/n:" 
+	read 156_CONTINUE
+	if [ $156_CONTINUE = y ]; then
+		pimp15xto1561
+	fi
 
-
-
+}
+function pimp15xto156auto() {
+	UGVER15=`cat /etc/ver | grep -c 1.5`
+	if [ "$UGVER15" = 0 ]; then
+		echo "This is only for pimp 1.5.x"
+		exit 1
+	fi
+	echo "Pimp 1.5.x to 1.5.6 upgrader...."
+	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
+	echo "Gathering files....This may take some time (~200mb of files)"
+	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	pimp15xto1561
 }
 #Menu function for pimp 1.5.6
 function pimpmenu156() {
@@ -1046,7 +1133,7 @@ echo -n "Which one? 1-6: "
 fi
 fi
 }
-#Menu function for pimp 1.5.2+/1.6.0+
+#Menu function for pimp 1.5.2+
 function pimpmenu1551() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
@@ -1055,6 +1142,7 @@ local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmana
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. NEW: Install SGminer5 Multi miner / X15 miner"
 local PMSELECT_7="7. NEW: Install FarmWatcher (Farmview replacement!)"
+local PMSELECT_8="8. NEW: Upgrade to Pimp 1.5.6"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -1063,8 +1151,9 @@ echo $PMSELECT_4
 echo $PMSELECT_5
 echo $PMSELECT_6
 echo $PMSELECT_7
+echo $PMSELECT_8
 echo "or q to exit"
-echo -n "Which one? 1-7: "
+echo -n "Which one? 1-8: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1096,6 +1185,9 @@ echo -n "Which one? 1-7: "
 		7 )
 		doinstall.farmwatcher
 		;;
+		8 )
+		pimp15xto156
+		;;
 	esac
 	else
 	$THELINE
@@ -1107,6 +1199,224 @@ fi
 }
 
 function pimpmenu155() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install bootmining / prompt fix."
+local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
+local PMSELECT_8="8. NEW: Install FarmWatcher (Farmview replacement!)"
+local PMSELECT_9="9. NEW: Upgrade to pimp 1.5.6"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo $PMSELECT_9
+echo "or q to exit"
+echo -n "Which one? 1-9: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 ) 
+		doinstall.promptfix
+		;;
+		7 )
+		checkinstall.x15mod
+		;;
+		8 )
+		doinstall.farmwatcher
+		;;
+		9 )
+		pimp15xto156
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
+#Menu function for pimp 1.5-test/1.5.2-test
+function pimpmenu151() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Install updated poolmanager profiles"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Install updated seedmanager profiles"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install open source x11/x13 optimized miner"
+local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
+local PMSELECT_8="8. Install arebyp scrypt sgminer kernel"
+local PMSELECT_9="9. NEW: Install FarmWatcher (Farmview replacement!)"
+local PMSELECT_10="10. Upgrade to pimp 1.5.6"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo $PMSELECT_9
+echo $PMSELECT_10
+echo "or q to exit"
+echo -n "Which one? 1-10: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 ) 
+		checkinstall.x11mod
+		;;
+		7 )
+		checkinstall.x15mod
+		;;
+		8 )
+		doinstall.arebypkernel
+		;;
+		9 )
+		doinstall.farmwatcher
+		;;
+		10 ) 
+		pimp15xto156
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
+
+#Menu function for pimp 1.5.3
+function pimpmenu153() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Install updated poolmanager profiles"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Install updated seedmanager profiles"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Install open source x11/x13 optimized miner"
+local PMSELECT_7="7. NEW: Install SGminer5 Multi miner / X15 miner"
+local PMSELECT_8="8. Install arebyp scrypt sgminer kernel"
+local PMSELECT_9="9. NEW: Install FarmWatcher (Farmview replacement!)"
+local PMSELECT_10="10. Upgrade to pimp 1.5.6"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo $PMSELECT_9
+echo $PMSELECT_10
+echo "or q to exit"
+echo -n "Which one? 1-10: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 ) 
+		checkinstall.x11mod
+		;;
+		7 ) 
+		checkinstall.x15mod
+		;;
+		8 )
+		doinstall.arebypkernel
+		;;
+		9 )
+		doinstall.farmwatcher
+		;;
+		10 ) 
+		pimp15xto156
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+}
+#Menu function for pimp 1.4.4
+function pimpmenu144() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
 local PMSELECT_3="3. Update Seedmanager"
@@ -1169,7 +1479,8 @@ echo -n "Which one? 1-8: "
 fi
 fi
 }
-function pimpmenu152() {
+#Menu function for pimp 1.4.3
+function pimpmenu143() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
 local PMSELECT_3="3. Update Seedmanager"
@@ -1237,7 +1548,7 @@ echo -n "Which one? 1-9: "
 fi
 fi
 }
-#Menu function for pimp 1.4.1/1.5-test/1.5.2-test
+#Menu function for pimp 1.4.1 / 1.4.2 
 function pimpmenu141() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Install updated poolmanager profiles"
@@ -1421,16 +1732,26 @@ fi
 function pimpmenu() {
 PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 	case $PIMP_VERSION2 in
-	   	1.3.1-amd | 1.4-amd )
+	   	1.3.1-amd | 1.4-amd | 1.4.1-amd )
 			pimpmenu14
 		;;
-	   	1.4.2-amd | 1.5.2-amd )
+	   	1.4.2-amd )
 			pimpmenu141
-				;;
-		1.4.3-amd | 1.5.3-amd )
-			pimpmenu152
+			;;
+
+		1.4.3-amd )
+			pimpmenu143
 		;;
-		1.4.4-amd | 1.5.4-amd | 1.5.5-amd )
+		1.4.4-amd )
+			pimpmenu144
+		;;
+		1.5.2-amd )
+			pimpmenu151
+		;;
+		1.5.3-amd )
+			pimpmenu153
+		;;
+		1.5.4-amd | 1.5.5-amd )
 			pimpmenu155
 		;;
 		1.5.51-amd | 1.5.52-amd )
@@ -1530,6 +1851,10 @@ if [ ! -z "$1" ]; then #If arg
 	;;
 	5 ) 
 	doinstall.farmwatcher
+	;;
+	6 )
+	pimp15xto156auto
+	;;
 	update ) 
 	f.updateunattend
 	;;
@@ -1539,7 +1864,8 @@ if [ ! -z "$1" ]; then #If arg
 	echo "2 - update seedmanager"
 	echo "3 - install sg5/x15 miner"
 	echo "4 - 1.5.5 prompt fix"
-	echo "5 - update FarmWatcher"
+	echo "5 - install/update FarmWatcher"
+	echo "6 - Upgrade pimp 1.5.x to 1.5.6"
 	echo "help - show this menu"
 	echo "update - update pimpupdate script"
 	;;
