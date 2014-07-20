@@ -955,6 +955,26 @@ function pimp15xto1561() {
 	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
 	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
 	./install-fw.pl -q
+	rm -rf /tmp/farmwatcher.zip
+	echo "Gathering Seedmanager files......."
+	download /tmp/seedmanager.zip $SMURL
+	cd /opt/pimp/
+	echo "moving old /opt/pimp/sminstall install directory....."
+	sleep 2
+	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
+	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
+	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
+	sleep 2
+	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
+	echo "Installing new seedmanager"
+	sleep 2
+	cd /opt/pimp/sminstall/Linux-SeedManager-master/
+	 ./install-sm.pl -q
+	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/seedmanager.conf
+	echo "Successfully installed updated seedmanager"
+	$THELINE
+	rm /tmp/seedmanager.zip
 	echo "Installing motd generator..."
 	rm /etc/motd
 	ln -s /tmp/motd.tail /etc/motd
@@ -975,6 +995,7 @@ function pimp15xto1561() {
 	/opt/pimp/motdgen
 	/etc/init.d/cron stop
 	/etc/init.d/cron start
+
 	#Get the x11mod & groestl miner / conf file.
 	if [ "$SPHVER" = "1" ]; then
 		echo "Downloading replacement sph-sgminer_x11mod"
@@ -1007,6 +1028,10 @@ function pimp15xto1561() {
 		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.x15mod.conf
 		mv /tmp/cgminer.x15mod.conf /opt/ifmi/
 	fi
+	if [ ! -f "/opt/ifmi/cgminer.blake.conf" ]; then
+		download /tmp/cgminer.blake.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.blake.conf
+		mv /tmp/cgminer.blake.conf /opt/ifmi/
+	fi
 	echo "Downloading nist5 and blake miners.."
 	download /tmp/cgminer_blake.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer_blake.tbz2
 	download /tmp/talkcoin-miner.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/talkcoin-miner.tbz2
@@ -1023,7 +1048,9 @@ function pimp15xto1561() {
 	rm -rf /tmp/sgminer5.tbz2
 	echo "Downloading Updating poolmanager profiles...."
 	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
+	echo "Done, moving new poolmanager.conf into /opt/ifmi/"
 	mv /tmp/poolmanager.conf /opt/ifmi
+	echo "Setting permissions..."
 	chown www-data.root /opt/ifmi/poolmanager.conf
 	echo "Downloading BFGMiner 4.4 upgrade.."
 	download /tmp/bfgminer.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bfgminer.tbz2
@@ -1072,6 +1099,8 @@ function pimp15xto1561() {
 	echo "Extracting new version files and updating grub bootloader.."
 	tar xjpf /tmp/version.tbz2 -C /
 	update-grub
+	echo "Done, upgrading poolmanager"
+	doinstall.poolmanager
 }
 function pimp15xto156() {
 	echo "Pimp 1.5.x to 1.5.6 upgrader...."
