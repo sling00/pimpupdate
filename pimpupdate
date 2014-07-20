@@ -1061,8 +1061,8 @@ function pimp15xto156() {
 	echo "Gathering files....This may take some time (~200mb of files)"
 	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
 	echo -n "Ok to continue? y/n:" 
-	read 156_CONTINUE
-	if [ $156_CONTINUE = y ]; then
+	read UPGCONTINUE
+	if [ "$UPGCONTINUE" = y ]; then
 		pimp15xto1561
 	fi
 
