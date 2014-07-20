@@ -961,7 +961,7 @@ function pimp15xto1561() {
 	echo "Downloading new pimp scripts...."
 	download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/pimpscripts.tbz2
 	echo "Done, extracting..."
-	tar xjpf /tmp/pimpscripts.tbz2 /opt/pimp/
+	tar xjpf /tmp/pimpscripts.tbz2 -C /opt/pimp/
 	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
 	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
 	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/crontab.tbz2
@@ -1007,6 +1007,12 @@ function pimp15xto1561() {
 		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.x15mod.conf
 		mv /tmp/cgminer.x15mod.conf /opt/ifmi/
 	fi
+	echo "Downloading nist5 and blake miners.."
+	download /tmp/cgminer_blake.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer_blake.tbz2
+	download /tmp/talkcoin-miner.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/talkcoin-miner.tbz2
+	echo "Done, extracting..."
+	tar xjpf /tmp/cgminer_blake.tbz2 -C /opt/
+	tar xjpf /tmp/talkcoin-miner.tbz2 -C /opt/
 	echo "Downloading updated sgminer5 miner..."
 	download /tmp/sgminer5.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sgminer5.tbz2
 	echo "Done, extracting..."
@@ -1023,20 +1029,23 @@ function pimp15xto1561() {
 	download /tmp/bfgminer.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bfgminer.tbz2
 	echo "Done, extracting..."
 	rm -rf /opt/bfgminer
-	tar xvpf /tmp/bfgminer.tbz2 -C /opt/
+	tar xjpf /tmp/bfgminer.tbz2 -C /opt/
 	rm -rf /tmp/bfgminer.tbz2
-	echo "Downloading Zeusminer miners..."
+	echo "Downloading new Gridseed & Zeusminer miners..."
 	download /tmp/cgminer-4.3-zeus.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-zeus.tbz2
 	download /tmp/cgminer-4.3-gridseed.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-gridseed.tbz2
+	download /tmp/zeus_cgminer-3.1.1.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/zeus_cgminer-3.1.1.tbz2
 	echo "Extracting zeus miners..."
 	tar xjpf /tmp/cgminer-4.3-zeus.tbz2 -C /opt/
 	rm -rf /opt/cgminer-4.3-gridseed
 	tar xjpf /tmp/cgminer-4.3-gridseed.tbz2 -C /opt/
+	tar xjpf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
 	rm -rf /tmp/cgminer-4.3-gridseed.tbz2
 	rm -rf /tmp/cgminer-4.3-zeus.tbz2
+	rm -rf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
 	echo "Done, Downloading zeus profiles..."
 	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.ltc.zeus.conf
-	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.bfg.ltc.zeus.conf
+	download /tmp/cgminer.asic.bfg.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.bfg.ltc.zeus.conf
 	download /tmp/seedmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/seedmanager.conf
 	echo "Done, moving into place."
 	mv /tmp/cgminer.asic.ltc.zeus.conf /opt/ifmi/
@@ -1050,7 +1059,16 @@ function pimp15xto1561() {
 	echo "Done extracting, updating initramfs...."
 	update-initramfs -u
 	echo "Done, updating init & version files."
-	download /tmp/version.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/version.tbz2
+	if [ -d "/var/lib/dkms/fglrx/14.10.1006.1001" ]; then
+		UPGVER="14.4"
+	fi
+	if [ -d "/var/lib/dkms/fglrx/14.20" ]; then
+		UPGVER="14.6"
+	fi
+	if [ -d "/var/lib/dkms/fglrx/13.251" ]; then
+		UPGVER="13.12"
+	fi
+	download /tmp/version.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/version.$UPGVER.tbz2
 	echo "Extracting new version files and updating grub bootloader.."
 	tar xjpf /tmp/version.tbz2 -C /
 	update-grub
