@@ -922,6 +922,8 @@ function pimp15xto1561() {
 	SPHVER=`cat /etc/ver | grep -c 14.6`
  	echo "Ctrl+C to abort....Continuing in 5 seconds."
  	sleep 5
+ 	touch /nomine
+ 	f.minestop
  	echo "Backing up your config files..."
  	mkdir /root/confbackup
  	cp /opt/ifmi/*.conf /root/confbackup/
@@ -1099,6 +1101,8 @@ function pimp15xto1561() {
 	echo "Extracting new version files and updating grub bootloader.."
 	tar xjpf /tmp/version.tbz2 -C /
 	update-grub
+	echo "Removing /nomine"
+	rm -rf /nomine
 	echo "Done, upgrading poolmanager"
 	doinstall.poolmanager
 }
