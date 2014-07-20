@@ -1046,7 +1046,7 @@ function pimp15xto1561() {
 	fi
 	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
 	rm -rf /tmp/sgminer5.tbz2
-	echo "Downloading Updating poolmanager profiles...."
+	echo "Downloading Updated poolmanager profiles...."
 	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
 	echo "Done, moving new poolmanager.conf into /opt/ifmi/"
 	mv /tmp/poolmanager.conf /opt/ifmi
@@ -1107,6 +1107,8 @@ function pimp15xto156() {
 	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
 	echo "Gathering files....This may take some time (~200mb of files)"
 	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
+	echo "DO NOT power off or restart before the process completes!"
 	echo -n "Ok to continue? y/n:" 
 	read UPGCONTINUE
 	if [ "$UPGCONTINUE" = y ]; then
@@ -1124,6 +1126,8 @@ function pimp15xto156auto() {
 	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
 	echo "Gathering files....This may take some time (~200mb of files)"
 	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
+	echo "DO NOT power off or restart before the process completes!"
 	pimp15xto1561
 }
 #Menu function for pimp 1.5.6
