@@ -217,7 +217,21 @@ function dobuild.sgminer() {
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
 }
-function dobuild.sgminer5ystar() {
+function dobuild.sgminerdevelop() {
+	MINERNAME="Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sgminer"
+	MINERDIRNAME2="/opt/sgminer5"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b develop"
+	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	buildminer.2
+}
+function dobuild.sgminer5() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer"
@@ -371,10 +385,11 @@ local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
-local MSELECT_11="11. SGminer5 (ystarnaud fork) ALPHA TESTING"
+local MSELECT_11="11. SGminer5 sgminer-dev/sgminer -b v5_0"
+local MSELECT_12="12. Sgminer5 sgminer-dev/sgminer -b develop (Bleeding edge, replaces sgminer5 v5_0)"
 echo "What would you like to do?"
-echo ""
-echo 
+#echo ""
+#echo 
 echo $MSELECT_1
 echo $MSELECT_2 
 echo $MSELECT_3
@@ -386,8 +401,9 @@ echo $MSELECT_8
 echo $MSELECT_9
 echo $MSELECT_10
 echo $MSELECT_11
+echo $MSELECT_12
 echo "or q to exit"
-echo -n "Which one? 1-11: "
+echo -n "Which one? 1-12: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -428,7 +444,10 @@ echo -n "Which one? 1-11: "
 		dobuild.x11mod
 		;;
 		11 )
-		dobuild.sgminer5ystar
+		dobuild.sgminer5
+		;;
+		12 )
+		dobuild.sgminerdevelop
 		;;
 	  esac
 	else
