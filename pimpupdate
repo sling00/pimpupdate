@@ -278,6 +278,9 @@ function doinstall.pmprofiles() {
 		1.6.0-amd-13.12 )
 			CVERS="1.6.0-amd-14.4"
 			;;	
+		1.9.0-amd-14.6 )
+			CVERS="1.6.0-amd-14.4"
+			;;
 		* )
 			echo "NON RELEASE/BETA VERSION DETECTED - Gathering generic poolmanager.conf"
 			CVERS="generic"
@@ -1814,6 +1817,9 @@ PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 			pimpmenu1551
 		;;
 		1.5.6-amd )
+			pimpmenu156
+		;;
+		1.9.0-amd )
 			pimpmenu156
 		;;
 		* )
