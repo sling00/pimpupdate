@@ -100,7 +100,7 @@ function buildminer.4 {
 		cp -R /root/minerbuild/$MINERDIRNAME $MINERDIRNAME2
 		echo "Build of $MINERNAME $MINERVER done."
 		buildminer.checklsoc
-		/opt/ifmi/mcontrol stop
+		timeout 10 /opt/ifmi/mcontrol stop
 		f.minestart
 		else
 		echo "make did not complete successfully, failing not so gracefully!"

@@ -298,7 +298,7 @@ function f.minestart() {
 # Mine stop function
 function f.minestop() {
 	echo "Stopping mining....."
-	/etc/init.d/mine stop
+	timeout 10 /etc/init.d/mine stop
 }
 #Farmwatcher installation support functions
 function get_cpanm(){
