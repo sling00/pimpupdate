@@ -472,6 +472,7 @@ echo -n "Which one? 1-12: "
 		;;
 		13 ) 
 		dobuild.sgminer5badman74
+		;;
 	  esac
 	else
 	$THELINE
