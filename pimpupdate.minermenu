@@ -114,7 +114,7 @@ function buildminer.4 {
 	fi 
 }
 function buildminer.3() {
-		`$MINERGETMETHOD $MINERGETFLAGS $MINERGETURL`
+		`$MINERGETMETHOD $MINERGETFLAGS $MINERGETURL /root/minerbuild/$MINERDIRNAME`
 		buildminer.4
 }
 function buildminer.2() {
@@ -217,10 +217,24 @@ function dobuild.sgminer() {
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
 }
+function dobuild.sgminer5badman75() {
+	MINERNAME="Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sgminer5-badman74"
+	MINERDIRNAME2="/opt/sgminer5"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b develop"
+	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	buildminer.2
+}
 function dobuild.sgminerdevelop() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
-	MINERDIRNAME="sgminer"
+	MINERDIRNAME="sgminer5-develop"
 	MINERDIRNAME2="/opt/sgminer5"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="yes"
@@ -234,7 +248,7 @@ function dobuild.sgminerdevelop() {
 function dobuild.sgminer5() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
-	MINERDIRNAME="sgminer"
+	MINERDIRNAME="sgminer5"
 	MINERDIRNAME2="/opt/sgminer5"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="yes"
@@ -354,7 +368,12 @@ function dobuild.x11mod() {
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
-	MINERGETURL="https://github.com/lasybear/sph-sgminer_x11mod.git"
+	DRIVER_VERSION=`sed -n '2,2p' /etc/version | cut -d "-" -f 3`
+	if [ "$DRIVER_VERSION" = "14.6" ]; then
+		MINERGETURL="https://github.com/djm34/sph-sgminer_x11mod.git"
+	else 
+		MINERGETURL="https://github.com/lasybear/sph-sgminer_x11mod.git"
+	fi
 	buildminer.2
 }
 function dobuild.jackpot() {
