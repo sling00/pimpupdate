@@ -217,7 +217,7 @@ function dobuild.sgminer() {
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
 }
-function dobuild.sgminer5badman75() {
+function dobuild.sgminer5badman74() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-badman74"
@@ -405,7 +405,8 @@ local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 local MSELECT_11="11. SGminer5 sgminer-dev/sgminer -b v5_0"
-local MSELECT_12="12. Sgminer5 sgminer-dev/sgminer -b develop (Bleeding edge, replaces sgminer5 v5_0)"
+local MSELECT_12="12. Sgminer5 sgminer-dev/sgminer -b develop (Development branch may break stuff, replaces sgminer5 v5_0)"
+local MSELECT_13="13. Sgminer5 badman74/sgminer -b develop (3rd party fork, may break stuff, replaces sgminer5 v5_0)"
 echo "What would you like to do?"
 #echo ""
 #echo 
@@ -421,6 +422,7 @@ echo $MSELECT_9
 echo $MSELECT_10
 echo $MSELECT_11
 echo $MSELECT_12
+echo $MSELECT_13
 echo "or q to exit"
 echo -n "Which one? 1-12: "
 	read MINERSELECTNUM
@@ -468,6 +470,8 @@ echo -n "Which one? 1-12: "
 		12 )
 		dobuild.sgminerdevelop
 		;;
+		13 ) 
+		dobuild.sgminer5badman74
 	  esac
 	else
 	$THELINE
