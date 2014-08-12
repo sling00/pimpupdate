@@ -228,7 +228,7 @@ function dobuild.sgminer5badman74() {
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone -b develop"
-	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	MINERGETURL="https://github.com/badman74/sgminer.git"
 	buildminer.2
 }
 function dobuild.sgminerdevelop() {
