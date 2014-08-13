@@ -15,14 +15,15 @@ SMURL="https://github.com/starlilyth/Linux-SeedManager/archive/master.zip"
 SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
+UPDATESERVER="http://files.getpimp.org"
 #Turn on logging?
 exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
 if [ "$DEV" != 0 ];
 then
-	PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/dev-version"
+	PMUPDATEVERURL="$UPDATESERVER/pimpupdate/dev-version"
 else
-	PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
+	PMUPDATEVERURL="$UPDATESERVER/pimpupdate/version"
 fi
 if [ "$DEV" != 0 ];
 	then
@@ -38,6 +39,7 @@ local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
 echo "Downloading $CLEANURL"
 wget -O $destin  "$URL"
 }
+#Return
 function f.return() { 
 	if [ -z $1 ]; then
 		echo "Done."
@@ -47,6 +49,7 @@ function f.return() {
 	pimpmenu
 	fi
 }
+
 function f.pimpupdatenews() {
 	$THELINE
 	echo "PiMPUpdate $SCRIPT_VERSION Latest news:"
@@ -68,6 +71,7 @@ function f.pimpupdatenews() {
 
 
 #Seedmanager Installation function
+
 function doinstall.seedmanager() {
 	echo "Gathering files for PiMP $PIMP_VERSION....."
 	download /tmp/seedmanager.zip $SMURL
@@ -141,13 +145,13 @@ function doinstall.poolmanager() {
 	$THELINE
 	f.return
 }
-#This will be used later.
+#This will be used later. remove?
 function checkupdates() {
 	# incomplete work in progress. 
 	echo this should never display.
 }
 
-#these two should be moved to the installer.
+# 1.4.x stuff ... safe to remove?
 function f.pimpupdateskel() {
 	if [ ! -e /opt/pimp/pimpupdatefiles ]
 		then
@@ -159,6 +163,8 @@ function f.pimpupdateskel() {
 		echo "Looks like this has been installed before, continuing..."
 fi
 }
+#1.3.x/1.4 wicd fix
+
 function doinstall.wicdfix() {
 	case $PIMP_VERSION in
 	 	1.3.1 | 1.3.7t | 1.3.7h | 1.4-amd-12.8 | 1.4-amd-13.12 )
@@ -295,14 +301,14 @@ function doinstall.pmprofiles() {
 function f.minestart() {
 	echo "Restarting mining..... (May take 30-45 seconds!)"
 	cd /opt/ifmi/
-	/etc/init.d/mine start
+	timeout 45 /etc/init.d/mine start
 }
 # Mine stop function
 function f.minestop() {
 	echo "Stopping mining....."
 	timeout 10 /etc/init.d/mine stop
 }
-#Farmwatcher installation support functions
+#Cpanm / Farmwatcher installation support functions
 function get_cpanm(){
     if [ \! -f /usr/local/bin/cpanm ]; then
     		echo "Cpanm not found, Downloading and installing.."
@@ -388,6 +394,8 @@ chmod +x /etc/init.d/nodm
 (update-rc.d nodm defaults)
 f.return
 }
+
+#Pimp 1.4.x sgminer fix... antiquated ?
 function doinstall.sgminer() {
 		$THELINE
 	echo "Checking sgminer version...."
@@ -443,6 +451,8 @@ function checkinstall.sgminer() {
 	echo "..."
 	$THELINE
 }
+
+# X11mod installer. 1.4.x / early 1.5.x (pre 1.5.4)
 function checkinstall.x11mod() {
 	case $PIMP_VERSION in
 	1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 | 1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4  )
@@ -1826,8 +1836,7 @@ PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 		;;
 	   	1.4.2-amd )
 			pimpmenu141
-			;;
-
+		;;
 		1.4.3-amd )
 			pimpmenu143
 		;;
