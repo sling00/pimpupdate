@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.9
+SCRIPT_VERSION=1.4.0
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -31,6 +31,19 @@ if [ "$DEV" != 0 ];
 	else
 		source /opt/pimp/pimpupdate.minermenu
 fi
+
+##Colors
+#VERS=$(sed -n 3p $0 | awk '{print $2}') #Version information
+#LED=$(sed -n 5p $0 | awk '{print $3 " - " $4}') #Date of last edit to script
+STD=$(echo -e "\e[0;0;0m")              #Revert fonts to standard color/format
+RED=$(echo -e "\e[1;31m")               #Alter fonts to red bold
+REDN=$(echo -e "\e[0;31m")              #Alter fonts to red normal
+GRN=$(echo -e "\e[1;32m")               #Alter fonts to green bold
+GRNN=$(echo -e "\e[0;32m")              #Alter fonts to green normal
+BLU=$(echo -e "\e[1;36m")               #Alter fonts to blue bold
+BLUN=$(echo -e "\e[0;36m")              #Alter fonts to blue normal
+#
+
 #DOWNLOADFUNCTION
 function download() {
 local URL=$2
@@ -52,18 +65,16 @@ function f.return() {
 
 function f.pimpupdatenews() {
 	$THELINE
-	echo "PiMPUpdate $SCRIPT_VERSION Latest news:"
+	echo -e $RED"\tPiMP Updater V. $SCRIPT_VERSION Latest news:$STD"
 	$THELINE
+	echo "August 27: Added Nicehash/Westhash Profit based Autoswitching profiles!! Check these out!"
 	echo "August 12: Badman74/sgminer5 build added to miner build menu! Moar hash!!!!"
 	echo "August 12: Added blake 256 miner installer for old versions of pimp ( pimpupdate 7 from command line. )"
 	echo "August 2: Added sgminer5-develop to miner build menu."
 	echo "July 19: Pimpupdate now supports updating from 1.5.x to 1.5.6! "
 	echo "July 13: Pimpupdate now supports installing FARMWATCHER! The farmview replacement many of you have been asking about!"
-	echo "July 13: Pimp 1.5.6 RELEASED! Incremental updater coming to pimpupdate SOON! (Within the next 48 hrs!) "
 	echo "July 12: Minermenu updated, Support for pimp 1.5.6 added (YAY!) "
-	echo "July 2: Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
-	echo "July 2: Add SGminer 5 ALPHA and X15 Miner/profiles.  Enjoy & Please dont forget to donate!"
-	echo "July 1: Major code cleanup of pimpupdate, please report issues to sling00 in irc."
+	echo "Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "Don't forget to visit us on IRC!"
 	echo "irc.freenode.net #PiMP"
 	sleep 3
@@ -215,7 +226,46 @@ echo -n "Install updated profile? Y/N:"
 	pimpmenu
 fi
 }
-
+#NH Profiles for Poolmanager
+function doinstall.nhprofiles() {
+echo "Installer for Nicehash/Westhash multi algorithm mining with auto switching based on profitability."
+echo "Update poolmanager.conf with latest miner profiles and add cgminer.nhmulti.conf / cgminer.whmulti.conf"
+echo "Note this will reset your active mining profile to the default, as well as remove any email notification settings"
+echo "Please read this first!: http://www.getpimp.org/community/blog/165-nicehash.html"
+echo -n "Install New profiles & Tools? Y/N:"
+	read NHPROFILES
+	if [ $NHPROFILES == y ]; then
+		f.minestop
+		echo "Downloading new profiles, changebtcaddress script, and cleanbins script..."
+		download /tmp/poolmanager.conf.tbz2 http://files.getpimp.org/pimpupdate/1.5.6-nicehash/nhprofiles.tbz2
+		download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.6-nicehash/pimpscriptsupdate.tbz2
+	    echo "Backing up old poolmanager.conf to /opt/ifmi/poolmanager.conf.bak"
+	    if [[ -e /opt/ifmi/poolmanager.conf ]]; then
+	    	mv /opt/ifmi/poolmanager.conf /opt/ifmi/poolmanager.conf.bak
+	    else echo "No poolmanager.conf found to back up...Continuing..."
+		fi
+		tar jxvf /tmp/poolmanager.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log
+	    echo "Poolmanager.conf unpacked, repairing permissions..."
+	    chown www-data.root /opt/ifmi/poolmanager.conf
+	    if [[ ! -e /opt/pimp/changebtcaddress ]]; then
+	    echo "Unpacking changebtcaddress and cleanbins to /opt/pimp/"
+	    tar jxvf /tmp/pimpscripts.tbz2 -C /opt/pimp/ > /tmp/pmprofile.log 
+	    else 
+	    echo "/opt/pimp/changebtcaddress already exists, not overwriting."
+	    fi 
+	    sleep 2
+		echo "Remember to reconfigure your email alert settings after this installer finishes!"
+		rm /tmp/poolmanager.conf.tbz2
+		rm /tmp/pimpscripts.tbz2
+		f.minestart
+		echo "Done..."
+		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
+		f.return
+	else 
+	echo "Try again! you must enter y to continue."
+	f.return
+fi
+}
 #Poolmanager Profiles
 function doinstall.pmprofiles2() {
 echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
@@ -1186,6 +1236,7 @@ local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+local PMSELECT_7="7. (NEW) Install Nicehash/Westhash Profit based Autoswitching multi algorithm profiles"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -1193,8 +1244,9 @@ echo $PMSELECT_3
 echo $PMSELECT_4
 echo $PMSELECT_5
 echo $PMSELECT_6
+echo $PMSELECT_7
 echo "or q to exit"
-echo -n "Which one? 1-6: "
+echo -n "Which one? 1-7: "
 	read PMSELECTNUM
 	if [ $PMSELECTNUM == q ];
 		then exit 0
@@ -1223,6 +1275,8 @@ echo -n "Which one? 1-6: "
 		6 )
 		doinstall.farmwatcher
 		;;
+		7 )
+		doinstall.nhprofiles
 	esac
 	else
 	$THELINE
@@ -1873,10 +1927,11 @@ if [ -z "$1" ]; then
 	echo -n "Do you wish to continue to the main menu Enter y/n: "
 	read PMPUPDATE_CONTINUE
 	if [ "$PMPUPDATE_CONTINUE" == y ]; then
-	#Is pimpupdate up to date?! Updater code below...		
+	#Is pimpupdate up to date?! Updater code below...
+	echo "Current PiMPUpdate Version: $SCRIPT_VERSION"		
 	echo "Checking if Pimpupdate is up to date........"
 		if [ "$SCRIPT_NEW_VERSION" \> "$SCRIPT_VERSION" ]; then
-			echo -n "pimpupdate script is out of date! Would you like it to update itself? y/n: "
+			echo -n "pimpupdate script is out of date! Would you like it to update itself to version $SCRIPT_NEW_VERSION? y/n: "
 			read PMPUPDATE_UPDATE
 			if [ "$PMPUPDATE_UPDATE" == y ]; then
 				echo "Getting latest version of PiMPUpdate"
