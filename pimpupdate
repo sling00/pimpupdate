@@ -1229,7 +1229,7 @@ function pimp15xto156auto() {
 	pimp15xto1561
 }
 #Menu function for pimp 1.7.0 (64bit)
-function pimpmenu160() {
+function pimpmenu170() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
 local PMSELECT_3="3. Update Seedmanager"
