@@ -235,7 +235,7 @@ function dobuild.sgminerdevelop() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-develop"
-	MINERDIRNAME2="/opt/sgminer5"
+	MINERDIRNAME2="/opt/sgminer5-develop"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="yes"
 	MINERCONFIGFLAGS=" "
