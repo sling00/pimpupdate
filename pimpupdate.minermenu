@@ -72,7 +72,12 @@ function buildminer.4 {
 	make clean &> /dev/null
 	cd /root/minerbuild/$MINERDIRNAME
 	buildminer.checkadl
-	if [ "$MINERDIRNAME2" = "/opt/sgminer5" ]; then
+	if [ "$MINERDIRNAME2" = "/opt/sgminer" ]; then
+		echo "Checking out jansson library"
+		git submodule init 
+		git submodule update
+	fi
+	if [ "$MINERDIRNAME2" = "/opt/sgminer5-develop" ]; then
 		echo "Checking out jansson library"
 		git submodule init 
 		git submodule update
@@ -221,7 +226,7 @@ function dobuild.sgminer5badman74() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-badman74"
-	MINERDIRNAME2="/opt/sgminer5"
+	MINERDIRNAME2="/opt/sgminer5-develop"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="yes"
 	MINERCONFIGFLAGS=" "
@@ -235,7 +240,7 @@ function dobuild.sgminerdevelop() {
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-develop"
-	MINERDIRNAME2="/opt/sgminer5"
+	MINERDIRNAME2="/opt/sgminer5-develop"
 	MINEREXECNAME="sgminer"
 	MINERUSELSOC="yes"
 	MINERCONFIGFLAGS=" "
@@ -255,7 +260,7 @@ function dobuild.sgminer5() {
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS="clone -b v5_0"
+	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
 }
@@ -394,19 +399,18 @@ function f.minermenu() {
 $THELINE
 echo "			Miner build menu"
 $THELINE
-local MSELECT_1="1. Update Sgminer (Scrypt/Scrypt-N)"
-local MSELECT_2="2. Update sph-sgminer (Many algos)"
-local MSELECT_3="3. Update cgminer_heavy (Heavy, Hefty, Sha3(Keccak), Skein, Scrypt)"
-local MSELECT_4="4. Update yacminer (Chacha, scrypt)"
+local MSELECT_1="1. Update Sgminer5 (Many algorithms, main branch.)"
+local MSELECT_2="2. Update sph-sgminer (Many algos - deprecated, 13.12 only, Custom profiles only.)"
+local MSELECT_3="3. Update cgminer_heavy (Heavy, Hefty, Sha3(Keccak), Skein, Scrypt - Deprecated, 13.12 only, Custom profiles only.)"
+local MSELECT_4="4. Update yacminer (Chacha, scrypt, most likely 13.12 only, Custom profiles only.)"
 local MSELECT_5="5. Update BFGminer (ASIC, Gridseeds, scrypt)"
-local MSELECT_6="6. Update Cgminer-3.7.2 (Ckolivas)"
-local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth"
+local MSELECT_6="6. Update Cgminer-3.7.2 (Ckolivas) (For custom ASIC profiles.)"
+local MSELECT_7="7. Update Cgminer-3.7.2-Kalroth (13.12 driver series only.)"
 local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
-local MSELECT_11="11. SGminer5 sgminer-dev/sgminer -b v5_0"
-local MSELECT_12="12. Sgminer5 sgminer-dev/sgminer -b develop (Development branch may break stuff, replaces sgminer5 v5_0)"
-local MSELECT_13="13. Sgminer5 badman74/sgminer -b develop (3rd party fork, may break stuff, replaces sgminer5 v5_0)"
+local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Development branch may break stuff, updates -develop profiles.)"
+local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b develop (3rd party fork, may break stuff, replaces -develop profiles miner)"
 echo "What would you like to do?"
 #echo ""
 #echo 
@@ -422,7 +426,6 @@ echo $MSELECT_9
 echo $MSELECT_10
 echo $MSELECT_11
 echo $MSELECT_12
-echo $MSELECT_13
 echo "or q to exit"
 echo -n "Which one? 1-13: "
 	read MINERSELECTNUM
@@ -465,12 +468,9 @@ echo -n "Which one? 1-13: "
 		dobuild.x11mod
 		;;
 		11 )
-		dobuild.sgminer5
-		;;
-		12 )
 		dobuild.sgminerdevelop
 		;;
-		13 ) 
+		12 ) 
 		dobuild.sgminer5badman74
 		;;
 	  esac

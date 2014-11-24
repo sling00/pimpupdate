@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.3.9
+SCRIPT_VERSION=1.4.1
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -67,6 +67,7 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo -e $RED"\tPiMP Updater V. $SCRIPT_VERSION Latest news:$STD"
 	$THELINE
+	echo "August 27: Added Nicehash/Westhash Profit based Autoswitching profiles!! Check these out!"
 	echo "August 12: Badman74/sgminer5 build added to miner build menu! Moar hash!!!!"
 	echo "August 12: Added blake 256 miner installer for old versions of pimp ( pimpupdate 7 from command line. )"
 	echo "August 2: Added sgminer5-develop to miner build menu."
@@ -225,7 +226,46 @@ echo -n "Install updated profile? Y/N:"
 	pimpmenu
 fi
 }
-
+#NH Profiles for Poolmanager
+function doinstall.nhprofiles() {
+echo "Installer for Nicehash/Westhash multi algorithm mining with auto switching based on profitability."
+echo "Update poolmanager.conf with latest miner profiles and add cgminer.nhmulti.conf / cgminer.whmulti.conf"
+echo "Note this will reset your active mining profile to the default, as well as remove any email notification settings"
+echo "Please read this first!: http://www.getpimp.org/community/blog/165-nicehash.html"
+echo -n "Install New profiles & Tools? Y/N:"
+	read NHPROFILES
+	if [ $NHPROFILES == y ]; then
+		f.minestop
+		echo "Downloading new profiles, changebtcaddress script, and cleanbins script..."
+		download /tmp/poolmanager.conf.tbz2 http://files.getpimp.org/pimpupdate/1.5.6-nicehash/nhprofiles.tbz2
+		download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.6-nicehash/pimpscriptsupdate.tbz2
+	    echo "Backing up old poolmanager.conf to /opt/ifmi/poolmanager.conf.bak"
+	    if [[ -e /opt/ifmi/poolmanager.conf ]]; then
+	    	mv /opt/ifmi/poolmanager.conf /opt/ifmi/poolmanager.conf.bak
+	    else echo "No poolmanager.conf found to back up...Continuing..."
+		fi
+		tar jxvf /tmp/poolmanager.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log
+	    echo "Poolmanager.conf unpacked, repairing permissions..."
+	    chown www-data.root /opt/ifmi/poolmanager.conf
+	    if [[ ! -e /opt/pimp/changebtcaddress ]]; then
+	    echo "Unpacking changebtcaddress and cleanbins to /opt/pimp/"
+	    tar jxvf /tmp/pimpscripts.tbz2 -C /opt/pimp/ > /tmp/pmprofile.log 
+	    else 
+	    echo "/opt/pimp/changebtcaddress already exists, not overwriting."
+	    fi 
+	    sleep 2
+		echo "Remember to reconfigure your email alert settings after this installer finishes!"
+		rm /tmp/poolmanager.conf.tbz2
+		rm /tmp/pimpscripts.tbz2
+		f.minestart
+		echo "Done..."
+		echo "Script completed! Please report bugs to Sling00 in #PIMP irc.freenode.net"
+		f.return
+	else 
+	echo "Try again! you must enter y to continue."
+	f.return
+fi
+}
 #Poolmanager Profiles
 function doinstall.pmprofiles2() {
 echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
@@ -1188,8 +1228,8 @@ function pimp15xto156auto() {
 	echo "DO NOT power off or restart before the process completes!"
 	pimp15xto1561
 }
-#Menu function for pimp 1.5.6
-function pimpmenu156() {
+#Menu function for pimp 1.7.0 (64bit)
+function pimpmenu170() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
 local PMSELECT_3="3. Update Seedmanager"
@@ -1232,6 +1272,121 @@ echo -n "Which one? 1-6: "
 		;;
 		6 )
 		doinstall.farmwatcher
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+} #) ? 
+#Menu function for pimp 1.6.0 (32bit Bigmem)
+function pimpmenu160() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo "or q to exit"
+echo -n "Which one? 1-6: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 )
+		doinstall.farmwatcher
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+} 
+
+#Menu function for pimp 1.5.6
+
+function pimpmenu156() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+local PMSELECT_7="7. (NEW) Install Nicehash/Westhash Profit based Autoswitching multi algorithm profiles"
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo "or q to exit"
+echo -n "Which one? 1-7: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 )
+		doinstall.farmwatcher
+		;;
+		7 )
+		doinstall.nhprofiles
 		;;
 	esac
 	else
@@ -1868,8 +2023,14 @@ PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 		1.5.6-amd )
 			pimpmenu156
 		;;
+		1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
+			pimpmenu160
+		;;
+		1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
+			pimpmenu170
+		;;
 		1.9.0-amd )
-			pimpmenu156
+			pimpmenu190
 		;;
 		* )
 		echo "Error: This version is not yet supported by pimpupdate."
