@@ -5,7 +5,7 @@
 #If you use printed copys to burn down your house, also not my fault, lose data. not my fault. lose time...not my fault. 
 #However if you like it.
 #VARIABLES DON'T TOUCH UNLESS YOU KNOW WHAT YOU ARE GOING TO BREAK!
-SCRIPT_VERSION=1.4.1
+SCRIPT_VERSION=1.4.2
 PIMP_VERSION=`sed -n '2,2p' /etc/version`
 CURL2='/usr/bin/curl'
 PMUPDATEVERURL="http://files.getpimp.org/pimpupdate/version"
@@ -16,6 +16,8 @@ SCRIPT_NEW_VERSION="$($CURL2 $CURLARGS $PMUPDATEVERURL)"
 THELINE='echo -====================================================================-'
 DEV=0
 UPDATESERVER="http://files.getpimp.org"
+BACKUPDIR="/root"
+DATESTAMP=$(date +"%m-%d-%Y-%H-%M-%S")
 #Turn on logging?
 exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
 #Are we working from git? 
@@ -69,13 +71,7 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo -e $RED"\tPiMP Updater V. $SCRIPT_VERSION Latest news:$STD"
 	$THELINE
-	echo "August 27: Added Nicehash/Westhash Profit based Autoswitching profiles!! Check these out!"
-	echo "August 12: Badman74/sgminer5 build added to miner build menu! Moar hash!!!!"
-	echo "August 12: Added blake 256 miner installer for old versions of pimp ( pimpupdate 7 from command line. )"
-	echo "August 2: Added sgminer5-develop to miner build menu."
-	echo "July 19: Pimpupdate now supports updating from 1.5.x to 1.5.6! "
-	echo "July 13: Pimpupdate now supports installing FARMWATCHER! The farmview replacement many of you have been asking about!"
-	echo "July 12: Minermenu updated, Support for pimp 1.5.6 added (YAY!) "
+	echo "Nov. 24: Added neoscrypt profiles.  Check the website for blog entry detailing how to add Nicehash/Westhash neoscrypt capability!"
 	echo "Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "Don't forget to visit us on IRC!"
 	echo "irc.freenode.net #PiMP"
@@ -106,14 +102,98 @@ function doinstall.seedmanager() {
 	rm /tmp/seedmanager.zip
 	f.return
 }
+#Need to define $DATESTAMP and $BACKUPDIR globally before this will work.
+function checkinstall.conffile() {
+	local FILE1=$1
+	local FILE2=$2
+	local URL=$3
+	local DESTIN="/tmp/$CLEANURL"
+	local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
+	if [ -f $FILE1 ]; then #IF1
+		echo "File $FILE1 already exists, would you like to overwrite it with the PiMP Default for $FILE1 or keep existing?"
+		echo "Y to overwrite, N to keep existing: Y/N?"
+		read $OVERWRITE
+		if [ $OVERWRITE = y ]; then #IF2
+			echo "Backing up $FILE2 to $BACKUPDIR"
+			mv $FILE1 $BACKUPDIR/$FILE2.$DATESTAMP
+		else #Else2
+			echo "Keeping existing $FILE1"
+			echo "Continuing installation..."
+		fi #FI2
+	else #Else1
+		echo "Downloading config file $FILE1 from PiMP Update server..."
+		download $DESTIN $URL
+		echo "Download completed, extracting..."
+		tar xvjpf $DESTIN -O $FILE1
+		echo "Done, Continuing installation..."
+	fi #FI 1
+}
 
 function doinstall.neoscrypt() {
 	$THELINE
 	echo "Neoscrypt profile and sgminer5 updater for pimp 1.5.6/1.6/1.7"
+	echo "Note: IF you overwrite cgminer.nhmulti.conf/cgminer.whmulti.conf during this installation, you will need to run changebtcaddress again to update the config files with your btc address."
+	echo "Continuing in 5 seconds, CTRL+C to abort."
+	sleep 5
 	echo "PiMP $PIMP_VERSION detected, Continuing installation."
+	echo "Checking for existing files."
+    checkinstall.conffile /opt/ifmi/cgminer.neoscrypt.conf cgminer.neoscrypt.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.neoscrypt.conf.tbz2
+    checkinstall.conffile /opt/ifmi/cgminer.nhmulti.conf cgminer.nhmulti.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.nhmulti.conf.tbz2
+    checkinstall.conffile /opt/ifmi/cgminer.whmulti.conf cgminer.whmulti.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.whmulti.conf.tbz2
+	echo "Downloading neoscrypt profiles for poolmanager..."
+	download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.tbz2
+	echo "Download finished, extracting...."
+	tar xvjpf /tmp/poolmanager.conf.neoscrypt.tbz2 -O /opt/ifmi/
+	chown -R www-data.root /opt/ifmi/poolmanager.conf
+	echo "New poolmanager profile installed, continuing installation.."
+	doinstall.neoscrypt.upgsg5
 
 }
-function doinstall.neoscrypt.upgsg5
+
+#Not sure if any of this is needed other than the first one.
+#	if [ -f /opt/ifmi/cgminer.neoscrypt.conf ]; #NEOIF1
+#		then
+#		echo "Warning: Previous installation of neoscrypt addition detected, do you wish to continue?"
+#		read NEOSCRYPT_REINSTALL
+#			if [ $NEOSCRYPT_REINSTALL = y ]; #NEOIF2
+#				then  
+#				echo "Do you wish reinstall the default cgminer.neoscrypt.conf? (No keeps your existing configuration file intact. (Y/N)?"
+#					read NEOSCRYPT_CONF_OVERWRITE
+#					if [ $NEOSCRYPT_CONF_OVERWRITE = y]; #NEOIF3
+#						then
+#						cp /opt/ifmi/cgminer.neoscrypt.conf /root/cgminer.neoscrypt.conf.bak
+#						doinstall.neoscrypt.2
+#					else
+#					doinstall.neoscrypt.3
+#					fi #NEOFI3
+#				f.minestop
+#				doinstall.neoscrypt.2
+#			else
+#			f.return
+#			fi #NEOFI2
+#		else
+#			doinstall.neoscrypt.2
+#		fi #NEOFI1
+#End removable section.
+
+
+#function doinstall.neoscrypt.2() {
+#	echo "Downloading neoscrypt profiles for poolmanager..."
+#download /tmp/neoscrypt.profiles.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/neoscrypt.profiles.tbz2#
+#	echo "Download finished, extracting...."
+#}
+function doinstall.neoscrypt.upgsg5() {
+	case $PIMP_VERSION2 in 
+	1.5.6-amd )
+	    MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
+		MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
+		MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	esac
 	MINERNAME="Sgminer"
 #	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-develop"
@@ -126,18 +206,6 @@ function doinstall.neoscrypt.upgsg5
 	MINERGETFLAGS="clone -b develop"
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
-
-	case $PIMP_VERSION2 in 
-	1.5.6-amd )
-	    MINERDIRNAME2="/opt/sgminer5-develop"
-	;;
-	1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
-		MINERDIRNAME2="/opt/sgminer5-develop"
-	;;
-	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
-		MINERDIRNAME2="/opt/sgminer5-develop"
-	;;
-	esac
 }
 
 #Installer function-Pimp poolmanager upgrader

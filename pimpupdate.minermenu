@@ -1,6 +1,7 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
-MCFLAGS="-O2 -w -march=native"
+MCFLAGS="-O2 -w"
+#-march=native"
 #Variables for the condensed version.
 #MINERNAME="Name of the miner: IE Sgminer or SPH-Sgminer"
 #MINERVER="This gets set in the script"
