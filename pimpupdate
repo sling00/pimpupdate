@@ -82,7 +82,6 @@ function f.pimpupdatenews() {
 	sleep 3
 }
 
-
 #Seedmanager Installation function
 
 function doinstall.seedmanager() {
@@ -108,29 +107,43 @@ function doinstall.seedmanager() {
 	f.return
 }
 
-#Pimp 1.5.5 promptfix
-function doinstall.promptfix() {
-	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
-	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/bashrc.tbz2
-	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/crontab.tbz2
-	echo "Unpacking replacement .bashrc"
-	tar xvjpf /tmp/bashrc.tbz2 -C /root
-	echo "Unpacking replacement crontab"
-	tar xvjpf /tmp/crontab.tbz2 -C /etc/
-	echo "Restarting crontab..."
-	echo "Setting file permissions for crontab"..
-	chown root.root /etc/crontab
-	/etc/init.d/cron stop
-	/etc/init.d/cron start
-	echo "Done, installing fixed poolmanager..."
-	sleep 2
-	doinstall.poolmanager
+function doinstall.neoscrypt() {
+	$THELINE
+	echo "Neoscrypt profile and sgminer5 updater for pimp 1.5.6/1.6/1.7"
+	echo "PiMP $PIMP_VERSION detected, Continuing installation."
+
+}
+function doinstall.neoscrypt.upgsg5
+	MINERNAME="Sgminer"
+#	MINERVER="This gets set in the script"
+	MINERDIRNAME="sgminer5-develop"
+	MINERDIRNAME2="/opt/sgminer5-develop"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b develop"
+	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
+	buildminer.2
+
+	case $PIMP_VERSION2 in 
+	1.5.6-amd )
+	    MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
+		MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
+		MINERDIRNAME2="/opt/sgminer5-develop"
+	;;
+	esac
 }
 
 #Installer function-Pimp poolmanager upgrader
 function doinstall.poolmanager() {
 	$THELINE
-	echo "Pimp $PIMP_VERSION detected Continuing installation"
+	echo "PiMP $PIMP_VERSION detected, Continuing installation"
 	echo "IMPORTANT: Poolmanager now requires Proc::Daemon perl module for on boot mining & graphing."
 	echo "This will automatically be installed as poolmanager updates."
 	echo "This is to alleviate issues with crontab causing breaks in graphings & bootmining issues."
@@ -417,223 +430,7 @@ function doinstall.farmwatcher1() {
 	f.return
 }
 
-#Pimp 1.5.x to 1.5.6 upgrader
-function pimp15xto1561() {
-	SPHVER=`cat /etc/ver | grep -c 14.6`
- 	echo "Ctrl+C to abort....Continuing in 5 seconds."
- 	sleep 5
- 	touch /nomine
- 	f.minestop
- 	echo "Backing up your config files..."
- 	mkdir /root/confbackup
- 	cp /opt/ifmi/*.conf /root/confbackup/
- 	echo "Done, continuing..."
- 	echo "Installing FarmWatcher"
-    echo "Killing poolmanager and farmview if they are running..."
-	killall -9 run-poolmanager.pl 2>&1 > /dev/null
-	killall -9 farmview 2>&1 > /dev/null
-	if [ -f "/opt/ifmi/farmview" ]; then
-		echo "Removing old farmview leftovers..."
-		rm -rf /opt/ifmi/farmview
-	fi
-	if [ -f "/var/www/farmview.html" ]; then
-		echo "Removing old farmview.html file.."
-		rm -rf /var/www/farmview.html
-	fi
-	echo "Checking for cpanm...."
-	get_cpanm
-	echo "Cpanm located, installing perl module dependencies"
-	cpanm DBI 
-	cpanm Proc::ProcessTable
-	cpanm DBD::SQLite
-	echo "Deps installed, downloading farmwatcher."
-	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
-	echo "Download finished...extracting files..."
-	if [ -d "/opt/pimp/fwinstall" ]; then
-		echo "Removing old /opt/pimp/fwinstall"
-		rm -rf /opt/pimp/fwinstall
-	fi
-	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
-	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
-	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
-	./install-fw.pl -q
-	rm -rf /tmp/farmwatcher.zip
-	echo "Gathering Seedmanager files......."
-	download /tmp/seedmanager.zip $SMURL
-	cd /opt/pimp/
-	echo "moving old /opt/pimp/sminstall install directory....."
-	sleep 2
-	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
-	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
-	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
-	sleep 2
-	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
-	echo "Installing new seedmanager"
-	sleep 2
-	cd /opt/pimp/sminstall/Linux-SeedManager-master/
-	 ./install-sm.pl -q
-	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
-	chown www-data.root /opt/ifmi/seedmanager.conf
-	echo "Successfully installed updated seedmanager"
-	$THELINE
-	rm /tmp/seedmanager.zip
-	echo "Installing motd generator..."
-	rm /etc/motd
-	ln -s /tmp/motd.tail /etc/motd
-	echo "Downloading new pimp scripts...."
-	download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/pimpscripts.tbz2
-	echo "Done, extracting..."
-	tar xjpf /tmp/pimpscripts.tbz2 -C /opt/pimp/
-	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
-	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
-	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/crontab.tbz2
-	echo "Unpacking replacement .bashrc"
-	tar xvjpf /tmp/bashrc.tbz2 -C /root/
-	echo "Unpacking replacement crontab"
-	tar xvjpf /tmp/crontab.tbz2 -C /etc/
-	echo "Setting file permissions for crontab"..
-	chown root.root /etc/crontab
-	echo "Running MOTDGen & Restarting crontab..."
-	/opt/pimp/motdgen
-	/etc/init.d/cron stop
-	/etc/init.d/cron start
 
-	#Get the x11mod & groestl miner / conf file.
-	if [ "$SPHVER" = "1" ]; then
-		echo "Downloading replacement sph-sgminer_x11mod"
-		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_x11mod.tbz2
-		echo "Download completed, extracting..."
-		tar xjpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
-		rm -rf /tmp/sph-sgminer_x11mod.tbz2
-	fi
-	echo "Downloading new groestl miner..."
-	download /tmp/sph-sgminer_groestl.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_groestl.tbz2
-	echo "Extracting new groestl miner..."
-	tar xjpf /tmp/sph-sgminer_groestl.tbz2 -C /opt/
-	echo "Downloading groestl conf file...."
-	download /tmp/cgminer.groestl.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.groestl.conf
-	echo "saving existing cgminer.groestl.conf to /root/cgminer.groestl.conf"
-	mv /opt/ifmi/cgminer.groestl.conf /root/
-	echo "Installing new groestl conf....restore pools from your backup if you had changed this file."
-	mv /tmp/cgminer.groestl.conf /opt/ifmi/cgminer.groestl.conf
-	echo "Downloading and installing nist5 (Talkcoin) conf files..."
-	download /tmp/cgminer.nist5.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5.conf
-	download /tmp/cgminer.nist5mod.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5mod.conf
-	mv /tmp/cgminer.nist5.conf /opt/ifmi/
-	mv /tmp/cgminer.nist5mod.conf /opt/ifmi/
-	if [ ! -f "/opt/ifmi/cgminer.multi.conf" ]; then
-		echo "Downloading sgminer5 config files."
-		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.multi.conf
-		mv /tmp/cgminer.multi.conf /opt/ifmi/
-	fi
-	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
-		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.x15mod.conf
-		mv /tmp/cgminer.x15mod.conf /opt/ifmi/
-	fi
-	if [ ! -f "/opt/ifmi/cgminer.blake.conf" ]; then
-		download /tmp/cgminer.blake.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.blake.conf
-		mv /tmp/cgminer.blake.conf /opt/ifmi/
-	fi
-	echo "Downloading nist5 and blake miners.."
-	download /tmp/cgminer_blake.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer_blake.tbz2
-	download /tmp/talkcoin-miner.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/talkcoin-miner.tbz2
-	echo "Done, extracting..."
-	tar xjpf /tmp/cgminer_blake.tbz2 -C /opt/
-	tar xjpf /tmp/talkcoin-miner.tbz2 -C /opt/
-	echo "Downloading updated sgminer5 miner..."
-	download /tmp/sgminer5.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sgminer5.tbz2
-	echo "Done, extracting..."
-	if [ -d "/opt/sgminer5" ]; then
-		rm -rf /opt/sgminer5
-	fi
-	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
-	rm -rf /tmp/sgminer5.tbz2
-	echo "Downloading Updated poolmanager profiles...."
-	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
-	echo "Done, moving new poolmanager.conf into /opt/ifmi/"
-	mv /tmp/poolmanager.conf /opt/ifmi
-	echo "Setting permissions..."
-	chown www-data.root /opt/ifmi/poolmanager.conf
-	echo "Downloading BFGMiner 4.4 upgrade.."
-	download /tmp/bfgminer.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bfgminer.tbz2
-	echo "Done, extracting..."
-	rm -rf /opt/bfgminer
-	tar xjpf /tmp/bfgminer.tbz2 -C /opt/
-	rm -rf /tmp/bfgminer.tbz2
-	echo "Downloading new Gridseed & Zeusminer miners..."
-	download /tmp/cgminer-4.3-zeus.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-zeus.tbz2
-	download /tmp/cgminer-4.3-gridseed.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-gridseed.tbz2
-	download /tmp/zeus_cgminer-3.1.1.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/zeus_cgminer-3.1.1.tbz2
-	echo "Extracting zeus miners..."
-	tar xjpf /tmp/cgminer-4.3-zeus.tbz2 -C /opt/
-	rm -rf /opt/cgminer-4.3-gridseed
-	tar xjpf /tmp/cgminer-4.3-gridseed.tbz2 -C /opt/
-	tar xjpf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
-	rm -rf /tmp/cgminer-4.3-gridseed.tbz2
-	rm -rf /tmp/cgminer-4.3-zeus.tbz2
-	rm -rf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
-	echo "Done, Downloading zeus profiles..."
-	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.ltc.zeus.conf
-	download /tmp/cgminer.asic.bfg.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.bfg.ltc.zeus.conf
-	download /tmp/seedmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/seedmanager.conf
-	echo "Done, moving into place."
-	mv /tmp/cgminer.asic.ltc.zeus.conf /opt/ifmi/
-	mv /tmp/cgminer.asic.bfg.ltc.zeus.conf /opt/ifmi/
-	mv /tmp/seedmanager.conf /opt/ifmi/
-	chown www-data.root /opt/ifmi/seedmanager.conf
-	echo "Done, downloading initramfs scripts"
-	download /tmp/initramfs-tools.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/initramfs-tools.tbz2
-	tar xjpf /tmp/initramfs-tools.tbz2 -C /usr/share/
-	rm -rf /tmp/initramfs-tools.tbz2
-	echo "Done extracting, updating initramfs...."
-	update-initramfs -u
-	echo "Done, updating init & version files."
-	if [ -d "/var/lib/dkms/fglrx/14.10.1006.1001" ]; then
-		UPGVER="14.4"
-	fi
-	if [ -d "/var/lib/dkms/fglrx/14.20" ]; then
-		UPGVER="14.6"
-	fi
-	if [ -d "/var/lib/dkms/fglrx/13.251" ]; then
-		UPGVER="13.12"
-	fi
-	download /tmp/version.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/version.$UPGVER.tbz2
-	echo "Extracting new version files and updating grub bootloader.."
-	tar xjpf /tmp/version.tbz2 -C /
-	update-grub
-	echo "Removing /nomine"
-	rm -rf /nomine
-	echo "Done, upgrading poolmanager"
-	doinstall.poolmanager
-}
-function pimp15xto156() {
-	echo "Pimp 1.5.x to 1.5.6 upgrader...."
-	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
-	echo "Gathering files....This may take some time (~200mb of files)"
-	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
-	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
-	echo "DO NOT power off or restart before the process completes!"
-	echo -n "Ok to continue? y/n:" 
-	read UPGCONTINUE
-	if [ "$UPGCONTINUE" = y ]; then
-		pimp15xto1561
-	fi
-
-}
-function pimp15xto156auto() {
-	UGVER15=`cat /etc/ver | grep -c 1.5`
-	if [ "$UGVER15" = 0 ]; then
-		echo "This is only for pimp 1.5.x"
-		exit 1
-	fi
-	echo "Pimp 1.5.x to 1.5.6 upgrader...."
-	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
-	echo "Gathering files....This may take some time (~200mb of files)"
-	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
-	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
-	echo "DO NOT power off or restart before the process completes!"
-	pimp15xto1561
-}
 #Menu function for pimp 1.7.0 (64bit)
 function pimpmenu170() {
 local PMSELECT_1="1. Update Poolmanager"

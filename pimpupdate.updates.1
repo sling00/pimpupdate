@@ -1,2 +1,836 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
+
+#Pimp 1.5.5 promptfix
+function doinstall.promptfix() {
+	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
+	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/bashrc.tbz2
+	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.5-promptfix/crontab.tbz2
+	echo "Unpacking replacement .bashrc"
+	tar xvjpf /tmp/bashrc.tbz2 -C /root
+	echo "Unpacking replacement crontab"
+	tar xvjpf /tmp/crontab.tbz2 -C /etc/
+	echo "Restarting crontab..."
+	echo "Setting file permissions for crontab"..
+	chown root.root /etc/crontab
+	/etc/init.d/cron stop
+	/etc/init.d/cron start
+	echo "Done, installing fixed poolmanager..."
+	sleep 2
+	doinstall.poolmanager
+}
+#Pimp 1.5.x to 1.5.6 upgrader
+function pimp15xto1561() {
+	SPHVER=`cat /etc/ver | grep -c 14.6`
+ 	echo "Ctrl+C to abort....Continuing in 5 seconds."
+ 	sleep 5
+ 	touch /nomine
+ 	f.minestop
+ 	echo "Backing up your config files..."
+ 	mkdir /root/confbackup
+ 	cp /opt/ifmi/*.conf /root/confbackup/
+ 	echo "Done, continuing..."
+ 	echo "Installing FarmWatcher"
+    echo "Killing poolmanager and farmview if they are running..."
+	killall -9 run-poolmanager.pl 2>&1 > /dev/null
+	killall -9 farmview 2>&1 > /dev/null
+	if [ -f "/opt/ifmi/farmview" ]; then
+		echo "Removing old farmview leftovers..."
+		rm -rf /opt/ifmi/farmview
+	fi
+	if [ -f "/var/www/farmview.html" ]; then
+		echo "Removing old farmview.html file.."
+		rm -rf /var/www/farmview.html
+	fi
+	echo "Checking for cpanm...."
+	get_cpanm
+	echo "Cpanm located, installing perl module dependencies"
+	cpanm DBI 
+	cpanm Proc::ProcessTable
+	cpanm DBD::SQLite
+	echo "Deps installed, downloading farmwatcher."
+	download /tmp/farmwatcher.zip https://github.com/starlilyth/Linux-FarmWatcher/archive/master.zip
+	echo "Download finished...extracting files..."
+	if [ -d "/opt/pimp/fwinstall" ]; then
+		echo "Removing old /opt/pimp/fwinstall"
+		rm -rf /opt/pimp/fwinstall
+	fi
+	unzip /tmp/farmwatcher.zip -d /opt/pimp/fwinstall/
+	cd /opt/pimp/fwinstall/Linux-FarmWatcher-master/
+	echo "Extraction finished...Now Installing fw... EVERYONE THANK LILY!"
+	./install-fw.pl -q
+	rm -rf /tmp/farmwatcher.zip
+	echo "Gathering Seedmanager files......."
+	download /tmp/seedmanager.zip $SMURL
+	cd /opt/pimp/
+	echo "moving old /opt/pimp/sminstall install directory....."
+	sleep 2
+	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
+	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
+	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
+	sleep 2
+	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
+	echo "Installing new seedmanager"
+	sleep 2
+	cd /opt/pimp/sminstall/Linux-SeedManager-master/
+	 ./install-sm.pl -q
+	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/seedmanager.conf
+	echo "Successfully installed updated seedmanager"
+	$THELINE
+	rm /tmp/seedmanager.zip
+	echo "Installing motd generator..."
+	rm /etc/motd
+	ln -s /tmp/motd.tail /etc/motd
+	echo "Downloading new pimp scripts...."
+	download /tmp/pimpscripts.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/pimpscripts.tbz2
+	echo "Done, extracting..."
+	tar xjpf /tmp/pimpscripts.tbz2 -C /opt/pimp/
+	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."
+	download /tmp/bashrc.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bashrc.tbz2
+	download /tmp/crontab.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/crontab.tbz2
+	echo "Unpacking replacement .bashrc"
+	tar xvjpf /tmp/bashrc.tbz2 -C /root/
+	echo "Unpacking replacement crontab"
+	tar xvjpf /tmp/crontab.tbz2 -C /etc/
+	echo "Setting file permissions for crontab"..
+	chown root.root /etc/crontab
+	echo "Running MOTDGen & Restarting crontab..."
+	/opt/pimp/motdgen
+	/etc/init.d/cron stop
+	/etc/init.d/cron start
+
+	#Get the x11mod & groestl miner / conf file.
+	if [ "$SPHVER" = "1" ]; then
+		echo "Downloading replacement sph-sgminer_x11mod"
+		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_x11mod.tbz2
+		echo "Download completed, extracting..."
+		tar xjpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
+		rm -rf /tmp/sph-sgminer_x11mod.tbz2
+	fi
+	echo "Downloading new groestl miner..."
+	download /tmp/sph-sgminer_groestl.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sph-sgminer_groestl.tbz2
+	echo "Extracting new groestl miner..."
+	tar xjpf /tmp/sph-sgminer_groestl.tbz2 -C /opt/
+	echo "Downloading groestl conf file...."
+	download /tmp/cgminer.groestl.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.groestl.conf
+	echo "saving existing cgminer.groestl.conf to /root/cgminer.groestl.conf"
+	mv /opt/ifmi/cgminer.groestl.conf /root/
+	echo "Installing new groestl conf....restore pools from your backup if you had changed this file."
+	mv /tmp/cgminer.groestl.conf /opt/ifmi/cgminer.groestl.conf
+	echo "Downloading and installing nist5 (Talkcoin) conf files..."
+	download /tmp/cgminer.nist5.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5.conf
+	download /tmp/cgminer.nist5mod.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.nist5mod.conf
+	mv /tmp/cgminer.nist5.conf /opt/ifmi/
+	mv /tmp/cgminer.nist5mod.conf /opt/ifmi/
+	if [ ! -f "/opt/ifmi/cgminer.multi.conf" ]; then
+		echo "Downloading sgminer5 config files."
+		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.multi.conf
+		mv /tmp/cgminer.multi.conf /opt/ifmi/
+	fi
+	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
+		download /tmp/cgminer.multi.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.x15mod.conf
+		mv /tmp/cgminer.x15mod.conf /opt/ifmi/
+	fi
+	if [ ! -f "/opt/ifmi/cgminer.blake.conf" ]; then
+		download /tmp/cgminer.blake.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.blake.conf
+		mv /tmp/cgminer.blake.conf /opt/ifmi/
+	fi
+	echo "Downloading nist5 and blake miners.."
+	download /tmp/cgminer_blake.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer_blake.tbz2
+	download /tmp/talkcoin-miner.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/talkcoin-miner.tbz2
+	echo "Done, extracting..."
+	tar xjpf /tmp/cgminer_blake.tbz2 -C /opt/
+	tar xjpf /tmp/talkcoin-miner.tbz2 -C /opt/
+	echo "Downloading updated sgminer5 miner..."
+	download /tmp/sgminer5.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/sgminer5.tbz2
+	echo "Done, extracting..."
+	if [ -d "/opt/sgminer5" ]; then
+		rm -rf /opt/sgminer5
+	fi
+	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
+	rm -rf /tmp/sgminer5.tbz2
+	echo "Downloading Updated poolmanager profiles...."
+	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
+	echo "Done, moving new poolmanager.conf into /opt/ifmi/"
+	mv /tmp/poolmanager.conf /opt/ifmi
+	echo "Setting permissions..."
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Downloading BFGMiner 4.4 upgrade.."
+	download /tmp/bfgminer.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/bfgminer.tbz2
+	echo "Done, extracting..."
+	rm -rf /opt/bfgminer
+	tar xjpf /tmp/bfgminer.tbz2 -C /opt/
+	rm -rf /tmp/bfgminer.tbz2
+	echo "Downloading new Gridseed & Zeusminer miners..."
+	download /tmp/cgminer-4.3-zeus.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-zeus.tbz2
+	download /tmp/cgminer-4.3-gridseed.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer-4.3-gridseed.tbz2
+	download /tmp/zeus_cgminer-3.1.1.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/zeus_cgminer-3.1.1.tbz2
+	echo "Extracting zeus miners..."
+	tar xjpf /tmp/cgminer-4.3-zeus.tbz2 -C /opt/
+	rm -rf /opt/cgminer-4.3-gridseed
+	tar xjpf /tmp/cgminer-4.3-gridseed.tbz2 -C /opt/
+	tar xjpf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
+	rm -rf /tmp/cgminer-4.3-gridseed.tbz2
+	rm -rf /tmp/cgminer-4.3-zeus.tbz2
+	rm -rf /tmp/zeus_cgminer-3.1.1.tbz2 -C /opt/
+	echo "Done, Downloading zeus profiles..."
+	download /tmp/cgminer.asic.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.ltc.zeus.conf
+	download /tmp/cgminer.asic.bfg.ltc.zeus.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.asic.bfg.ltc.zeus.conf
+	download /tmp/seedmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/seedmanager.conf
+	echo "Done, moving into place."
+	mv /tmp/cgminer.asic.ltc.zeus.conf /opt/ifmi/
+	mv /tmp/cgminer.asic.bfg.ltc.zeus.conf /opt/ifmi/
+	mv /tmp/seedmanager.conf /opt/ifmi/
+	chown www-data.root /opt/ifmi/seedmanager.conf
+	echo "Done, downloading initramfs scripts"
+	download /tmp/initramfs-tools.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/initramfs-tools.tbz2
+	tar xjpf /tmp/initramfs-tools.tbz2 -C /usr/share/
+	rm -rf /tmp/initramfs-tools.tbz2
+	echo "Done extracting, updating initramfs...."
+	update-initramfs -u
+	echo "Done, updating init & version files."
+	if [ -d "/var/lib/dkms/fglrx/14.10.1006.1001" ]; then
+		UPGVER="14.4"
+	fi
+	if [ -d "/var/lib/dkms/fglrx/14.20" ]; then
+		UPGVER="14.6"
+	fi
+	if [ -d "/var/lib/dkms/fglrx/13.251" ]; then
+		UPGVER="13.12"
+	fi
+	download /tmp/version.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/version.$UPGVER.tbz2
+	echo "Extracting new version files and updating grub bootloader.."
+	tar xjpf /tmp/version.tbz2 -C /
+	update-grub
+	echo "Removing /nomine"
+	rm -rf /nomine
+	echo "Done, upgrading poolmanager"
+	doinstall.poolmanager
+}
+function pimp15xto156() {
+	echo "Pimp 1.5.x to 1.5.6 upgrader...."
+	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
+	echo "Gathering files....This may take some time (~200mb of files)"
+	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
+	echo "DO NOT power off or restart before the process completes!"
+	echo -n "Ok to continue? y/n:" 
+	read UPGCONTINUE
+	if [ "$UPGCONTINUE" = y ]; then
+		pimp15xto1561
+	fi
+
+}
+function pimp15xto156auto() {
+	UGVER15=`cat /etc/ver | grep -c 1.5`
+	if [ "$UGVER15" = 0 ]; then
+		echo "This is only for pimp 1.5.x"
+		exit 1
+	fi
+	echo "Pimp 1.5.x to 1.5.6 upgrader...."
+	echo "Note that this may overwrite certain conf files, your existing conf files will be backed up to /root/confbackup/"
+	echo "Gathering files....This may take some time (~200mb of files)"
+	echo "Note: This will also reset your running poolmanager/seedmanager profiles to default!"
+	echo "Also, some of these miners may take up to 5 minutes to extract on a usb stick depending on cpu/ram/disk speed! be patient!"
+	echo "DO NOT power off or restart before the process completes!"
+	pimp15xto1561
+}
+#1.3.x/1.4 wicd fix
+
+function doinstall.wicdfix() {
+	case $PIMP_VERSION in
+	 	1.3.1 | 1.3.7t | 1.3.7h | 1.4-amd-12.8 | 1.4-amd-13.12 )
+			echo "Applying fix on Pimp $PIMP_VERSION....."
+			echo "Backing up /etc/wicd/manager-settings.conf to /opt/pimp/pimpupdatefiles/backups/"
+			cp /etc/wicd/manager-settings.conf /opt/pimp/pimpupdatefiles/backups/
+			echo "Applying wifi fix...."
+			sed -i -e 's/wireless_interface = None/wireless_interface = wlan0/g' /etc/wicd/manager-settings.conf
+			echo "If your wifi adapter is supported you should now see wireless networks in wicd."
+			;;
+	* ) 
+	echo "This fix is not applicable to $PIMP_VERSION"
+esac
+}
+#Nodm installation function
+function doinstall.nodm() {
+$THELINE
+echo "Updating Premine scripts to latest version..."
+echo "Downloading latest nodm.tar from patch site..."
+download /tmp/nodm.tar http://files.getpimp.org/nodm/nodm.tar
+echo "Backing up old /etc/init.d/nodm to /root/nodm.bak"
+cp /etc/init.d/nodm /root/nodm.bak
+echo "Extracting new /etc/init.d/nodm....."
+tar xvf /tmp/nodm.tar -C /etc/init.d/
+chmod +x /etc/init.d/nodm
+(update-rc.d nodm remove)
+(update-rc.d nodm defaults)
+f.return
+}
+
+#Pimp 1.4.x sgminer fix... antiquated ?
+function doinstall.sgminer() {
+		$THELINE
+	echo "Checking sgminer version...."
+		local SGFILE="http://files.getpimp.org/pimpupdate/1.4-sgminerfix/sgminer-4.1.242.tbz2"
+		local SGMINERVER=`/opt/sgminer/sgminer --version` 
+		echo $SGMINERVER "detected.."
+			if [ `/opt/sgminer/sgminer --version | grep -c 4.1.271` = 1 ];
+			then
+			$THELINE 
+			echo "Your sgminer version is 4.1.271.xxxx, this version needs to be rolled back to 4.1.242"
+			echo "Due to an sgminer bug adding erroneous commas in the config file upon api save."
+			echo "Note, the old sgminer version will be saved in /opt/sgminer-4.1.271"
+			echo -n "Continue? y/n: "
+			read SGMINER_CONTINUE
+			if [ $SGMINER_CONTINUE = y ];
+				then  
+				f.minestop
+				download /tmp/sgminer-4.1.242.tbz2 $SGFILE
+				echo "Backing up old sgminer to /opt/sgminer-4.1.271"
+				mv /opt/sgminer /opt/sgminer-4.1.271 
+				echo "Extracting new sgminer to /opt/sgminer"
+				tar jxvpf /tmp/sgminer-4.1.242.tbz2 -C /opt/
+				echo "Finished"
+				f.minestart
+				f.return
+				else
+					f.return
+				fi
+			else echo "Your version of sgminer does not need to be changed."
+			$THELINE
+			f.return
+	fi
+}
+#SGMINER ROLLBACK TO FIX BAD CONF ON POOL ADD
+function checkinstall.sgminer() {
+	clear
+	$THELINE
+	case $PIMP_VERSION in 
+		1.4-amd-12.8 )
+		doinstall.sgminer
+		;;
+		1.4-amd-13.12 )
+		doinstall.sgminer
+		;;
+		1.4-amd-14.4 )
+		doinstall.sgminer
+		;;
+		* )
+		echo "Your version of PiMP does not need this fix applied."
+		f.return
+		;;
+	esac
+	echo "..."
+	$THELINE
+}
+
+# X11mod installer. 1.4.x / early 1.5.x (pre 1.5.4)
+function checkinstall.x11mod() {
+	case $PIMP_VERSION in
+	1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 | 1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4  )
+	XVERS="1.4"
+	;;
+	1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+	XVERS="1.4.2"
+	;;
+	1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+	XVERS="1.5"
+	;;
+	esac
+	clear
+	$THELINE
+	echo "Pimp 1.x open source sph-sgminer_x11mod (X11mod/X13mod) installer"
+	$THELINE
+	if [ -e /opt/sph-sgminer_x11mod ]; #X11IF1
+		then
+			echo -n "X11 mod miner already installed, reinstall? (y/n): "
+			read X11_REINSTALL
+			if [ $X11_REINSTALL = y ]; then #X11IF2
+				if [ ! -f "/opt/ifmi/cgminer.x13.conf" ]; then #IF 2.5
+					$THELINE
+					echo "You don't have cgminer.x13.conf, downloading & installing."
+					echo "This will also replace poolmanager.conf with a new one"
+					echo "which has an x13 profile.  Reenter your email notification settings..."
+					echo "Continuing in 5 seconds.."
+					sleep 5
+					download /tmp/cgminer.x13.conf.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/cgminer.x13.conf.tbz2
+					tar xvjpf /tmp/cgminer.x13.conf.tbz2 -C /opt/ifmi/
+					echo "Done, downloading poolmanager.conf for x11mod/x13"
+					download /tmp/poolmanager.x13.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/poolmanager.$XVERS.tbz2
+					sleep 2 
+					echo "Done, extracting poolmanager.conf w/ x11mod/x13mod"
+					tar jxvpf /tmp/poolmanager.x13.tbz2 -C /opt/ifmi/
+				fi #X11FI2.5
+				$THELINE
+				echo -n "Overwrite cgminer.x11mod.conf/cgminer.x13.conf/poolmanager.conf? (y/n): "
+				read X11_OVERWRITE
+				if [ $X11_OVERWRITE = y ]; then #X11IF3
+					echo "Backing up existing cgminer.x11mod.conf to /opt/ifmi/cgminer.x11mod.conf.bak"
+					if [ -f "/opt/ifmi/cgminer.x11mod.conf" ]; then #X11IF4
+						cp /opt/ifmi/cgminer.x11mod.conf /opt/ifmi/cgminer.x11mod.conf.bak
+						echo " Done, Downloading cgminer.x11mod.conf & poolmanager.conf"
+						download /tmp/cgminer.x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/cgminer.x11mod.$XVERS.tbz2
+						sleep 2 
+						echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
+						tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
+						doinstall.x11mod
+					fi #X11FI4
+						else #X11ELSE4
+						doinstall.x11mod
+					fi #X11FI3
+			else #X11ELSE2
+				pimpmenu
+			fi #X11FI2
+	else  #X11ELSE1
+		doinstall.x11mod
+	fi #X11FI1
+}
+function doinstall.x11mod() {
+	f.minestop
+	$THELINE
+	echo "This is an optimized miner for the X11 algorithm."
+	echo "This is the open source version NOT the binary vesion"
+	if [ ! -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
+	echo "This will also replace your current poolmanager.conf"
+	echo "with one that has an x11 mod profile in it. "
+	echo "YOU WILL HAVE TO RE-ENTER EMAIL NOTIFICATION SETTINGS AFTER THIS!"
+	echo "AND ALSO ANY CUSTOM POOLMANAGER ALGORITHM PROFILES!"
+	fi
+	echo "NOTE: This will update poolmanager first due to a compat issue"
+	echo "with the PM versions shipped with 1.4/1.4.2"
+	echo -n "Ok to continue? (y/n): "
+	read X11_CONTINUE
+	if [ $X11_CONTINUE = y ];
+		then
+		download /tmp/poolmanager.zip $PMURL
+		cd /opt/pimp/
+		echo "Moving old /opt/pimp/pminstall install directory....."
+		sleep 2
+		rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
+		mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
+		echo "Extracting new pool manager.... Everyone thank LILY!!!!"
+		sleep 2
+		unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
+#git clone https://github.com/starlilyth/Linux-PoolManager.git /opt/pimp/pminstall
+	echo "Installing new poolmanager"
+	sleep 2
+	cd /opt/pimp/pminstall/Linux-PoolManager-master/
+ 	./install-pm.pl -q
+	echo "Setting permissions on poolmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Successfully installed updated poolmanager"
+	rm /tmp/poolmanager.zip
+	echo "Poolmanager update done, continuing X11-mod install."
+	$THELINE
+			doinstall.x11mod1		
+		else
+			f.return
+	fi
+}
+function doinstall.x11mod1() {
+		case $PIMP_VERSION in
+		1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 | 1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4  )
+		XVERS="1.4"
+		;;
+		1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+		XVERS="1.4.2"
+		;;
+		1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+		XVERS="1.5"
+		;;
+		esac
+		download /tmp/sph-sgminer_x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/sph-sminer_x11mod.$XVERS.tbz2
+	#Get the right conf file
+		download /tmp/cgminer.x11mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x11mod/cgminer.x11mod.$XVERS.tbz2
+	echo "Extracting X11 mod miner to /opt/sph-sgminer_x11mod"
+	tar jxpf /tmp/sph-sgminer_x11mod.tbz2 -C /opt/
+	if [ ! -f "/opt/ifmi/cgminer.x11mod.conf" ]; then
+	echo "Done, extracting poolmanager.conf w/ x11mod & cgminer.x11mod.conf"
+	sleep 2 
+	tar jxvpf /tmp/cgminer.x11mod.tbz2 -C /opt/ifmi/
+	fi
+	echo "Finished"
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	f.minestart
+}
+function checkinstall.jackpot() {
+	clear
+	$THELINE
+	echo "Pimp 1.x Jackpot coin miner installer"
+	$THELINE
+	if [ -e /opt/sgminer-jackpot ];
+		then
+			echo -n "Jackpot coin miner already installed, reinstall? (y/n): "
+			read J_REINSTALL
+			if [ $J_REINSTALL = y ];
+				then
+				doinstall.jackpot
+			else 
+				pimpmenu
+			fi
+	else 
+		doinstall.jackpot
+	fi
+	}
+function doinstall.jackpot() {
+	f.minestop
+	$THELINE
+	echo "This is a miner for the jackpotcoin algorithm."
+	echo "This will also replace your current poolmanager.conf"
+	echo "with one that has jackpotcoin in it. "
+	echo "YOU WILL HAVE TO RE-ENTER EMAIL NOTIFACTION SETTINGS AFTER THIS!"
+	echo -n "Ok to continue? (y/n): "
+	read J_CONTINUE
+	if [ $J_CONTINUE = y ];
+		then
+			doinstall.jackpot1			
+		else
+			f.return
+	fi
+}
+function doinstall.jackpot1() {
+	download /tmp/sgminer-jackpot.tbz2 http://files.getpimp.org/pimpupdate/1.x-jackpot/sgminer-jackpot.tbz2
+	if [ ! -f "/opt/ifmi/cgminer.jackpot.conf" ]; then
+		download /tmp/cgminer.jackpot.tbz2 http://files.getpimp.org/pimpupdate/1.x-jackpot/cgminer.jackpot.tbz2
+	fi
+	echo "Extracting jackpotcoin miner to /opt/sgminer-jackpot"
+	tar jxpf /tmp/sgminer-jackpot.tbz2 -C /opt/
+	if [ ! -f "/opt/ifmi/cgminer.jackpot.conf" ]; then
+		echo "Done, extracting poolmanager.conf w/ jackpot & cgminer.jackpot.conf"
+		tar jxpf /tmp/cgminer.jackpot.tbz2 -C /opt/ifmi/
+	fi
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Finished"
+	f.minestart
+}
+
+#Blake miner below
+function doinstall.blake256unattend {
+	echo "Blake 256 miner / conf / profile installer."
+	echo "Continuing in 5 seconds, CTRL+C to abort..."
+	sleep 5
+
+	echo "Downloading cgminer.blake.conf if it doesnt exist..."
+	if [ ! -f "/opt/ifmi/cgminer.blake.conf" ]; then
+		download /tmp/cgminer.blake.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer.blake.conf
+		mv /tmp/cgminer.blake.conf /opt/ifmi/
+	fi
+	echo "Downloading Updated poolmanager profiles...."
+	download /tmp/poolmanager.conf http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/poolmanager.conf
+	echo "Done, moving new poolmanager.conf into /opt/ifmi/"
+	mv /tmp/poolmanager.conf /opt/ifmi
+	echo "Setting permissions..."
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Downloading blake256 miner.."
+	download /tmp/cgminer_blake.tbz2 http://files.getpimp.org/pimpupdate/1.5.x-1.5.6/cgminer_blake.tbz2
+	echo "Done, extracting miner..."
+	tar xjpf /tmp/cgminer_blake.tbz2 -C /opt/
+	echo "Cleaning up /tmp files"
+	rm -rf /tmp/cgminer_blake.tbz2
+	rm -rf /tmp/poolmanager.conf
+	rm -rf /tmp/cgminer.blake.conf
+	echo "Done"
+}
+#X15 miner below
+function checkinstall.x15mod() {
+	clear
+	$THELINE
+	echo "Pimp 1.x sgminer 5 x15 installer"
+	$THELINE
+	if [ -e /opt/sgminer5 ]; #X11IF1
+		then
+			echo -n "SG5/X15mod miner already installed, reinstall? (y/n): "
+			read X15_REINSTALL
+			if [ $X15_REINSTALL = y ]; then #X11IF2
+			
+				$THELINE
+				echo -n "Overwrite cgminer.multi.conf/cgminer.x15mod.conf/poolmanager.conf? (y/n): "
+				read X15_OVERWRITE
+				if [ $X15_OVERWRITE = y ]; then #X11IF3
+					echo "Backing up existing cgminer.x15mod.conf to /opt/ifmi/cgminer.x15mod.conf.bak"
+					if [ -f "/opt/ifmi/cgminer.multi.conf" ]; then #X11IF4
+						cp /opt/ifmi/cgminer.multi.conf /opt/ifmi/cgminer.multi.conf.bak
+						cp /opt/ifmi/cgminer.x15mod.conf /opt/ifmi/cgminer.x15mod.conf.bak
+						echo "Done, downloading poolmanager.conf for SG5/x15mod"
+								case $PIMP_VERSION in
+								1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 )
+								PVERS="1.4"
+								;;
+								1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4 )
+								PVERS="1.4.2"
+								;;
+								1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+								PVERS="1.4.2"
+								;;
+								1.4.3-amd-13.12 | 1.4.4-amd-13.12 | 1.4.4-amd-14.4 )
+								PVERS="1.4"
+								;;
+								1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+								PVERS="1.5.5"
+								;;
+								1.5.5-amd-13.12 | 1.5.5-amd-14.4 | 1.5.4-amd-14.4 | 1.5.4-amd-13.12 )
+								PVERS="1.5.5"
+								;;
+								1.5.51-amd-14.4 | 1.5.52-amd-14.4 | 1.5.52-amd-14.6 | 1.5.6-amd-13.12 | 1.5.6-amd-14.4 )
+								PVERS="1.5.6"
+								;;
+								esac
+								download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.$PVERS.tbz2
+								echo "Done, extracting poolmanager.conf w/ x15mod"
+								tar jxvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
+								doinstall.x15mod
+#						fi #X11FI5
+#						 doinstall.x15mod
+					fi #X11FI4
+						else #X11ELSE4
+						doinstall.x15mod
+					fi #X11FI3
+			else #X11ELSE2
+				pimpmenu
+			fi #X11FI2
+	else  #X11ELSE1
+		doinstall.x15mod
+	fi #X11FI1
+}
+function doinstall.x15mod() {
+	f.minestop
+	$THELINE
+	echo "This installs SGMiner 5 multi mining miner and multi algo/x15 profiles"
+	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
+	echo "This will also replace your current poolmanager.conf"
+	echo "1.5.51 users: your existing cgminer.multi.conf is saved in /opt/ifmi/cgminer.multi.conf.bak !"
+	echo "with one that has multimining/x15mod profiles in it. "
+	echo "YOU WILL HAVE TO RE-ENTER EMAIL NOTIFICATION SETTINGS AFTER THIS!"
+	echo "AND ALSO ANY CUSTOM POOLMANAGER ALGORITHM PROFILES!"
+	fi
+	echo "NOTE: This will update poolmanager to add sg5 compatibility"
+	echo -n "Ok to continue? (y/n): "
+	read X11_CONTINUE
+	if [ $X11_CONTINUE = y ];
+		then
+		if [ -f "/opt/ifmi/cgminer.multi.conf" ]; then 
+		cp /opt/ifmi/cgminer.multi.conf /opt/ifmi/cgminer.multi.conf.bak
+		fi
+		download /tmp/poolmanager.zip $PMURL
+		cd /opt/pimp/
+		echo "Moving old /opt/pimp/pminstall install directory....."
+		sleep 2
+		rm -rf /opt/pimp/pminstall.pimpdist 2> /dev/null
+		mv /opt/pimp/pminstall /opt/pimp/pminstall.pimpdist
+		echo "Extracting new pool manager.... Everyone thank LILY!!!!"
+		sleep 2
+		unzip -q /tmp/poolmanager.zip -d /opt/pimp/pminstall
+	echo "Installing new poolmanager"
+	sleep 2
+	cd /opt/pimp/pminstall/Linux-PoolManager-master/
+ 	./install-pm.pl -q
+	echo "Setting permissions on poolmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	echo "Successfully installed updated poolmanager"
+	rm /tmp/poolmanager.zip
+	echo "Poolmanager update done, continuing SG5/X15 install."
+	$THELINE
+			doinstall.x15mod1		
+		else
+			f.return
+	fi
+}
+function doinstall.x15modunattended() {
+	echo "SG5 Alpha/X15 unattended installation started."
+	echo "If you have done this before it WILL overwrite your conf files for sg5/x15/poolmanger!"
+	echo "you must also pimpupdate 1 for a complete installation."
+	echo "Ctrl+C to abort (5 seconds)"
+	sleep 5
+	doinstall.x15mod1
+}
+function doinstall.x15mod1() {
+		f.minestop
+		case $PIMP_VERSION in
+		1.4-amd-12.8 | 1.4-amd-13.12 | 1.4-amd-14.4 )
+		PVERS="1.4"
+			;;
+		1.4.1-amd-12.8 | 1.4.1-amd-13.12 | 1.4.1-amd-14.4 )
+		PVERS="1.4.2"
+			;;
+		1.4.2-amd-12.8 | 1.4.2-amd-13.12 | 1.4.2-amd-14.4 )
+		PVERS="1.4.2"
+			;;
+		1.4.3-amd-13.12 | 1.4.4-amd-13.12 | 1.4.4-amd-14.4 )
+		PVERS="1.4"
+			;;
+		1.5.2-amd-14.4 | 1.5.2-amd-13.12 | 1.5.3-amd-13.12 | 1.5.3-amd-14.4 )
+		PVERS="1.5.5"
+			;;
+		 1.5.5-amd-13.12 | 1.5.5-amd-14.4 | 1.5.4-amd-14.4 | 1.5.4-amd-13.12 )
+		PVERS="1.5.5"
+			;;
+		1.5.51-amd-14.4 | 1.5.52-amd-14.4 | 1.5.52-amd-14.6 | 1.5.6-amd-13.12 | 1.5.6-amd-14.4 )
+		PVERS="1.5.6"
+			;;
+		esac
+		download /tmp/sgminer5.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/sgminer5-$PVERS.tbz2
+	#Get the right conf file
+	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
+		download /tmp/cgminer.x15mod.tbz2 http://files.getpimp.org/pimpupdate/1.x-x15mod/cgminer.x15mod.$PVERS.tbz2
+	fi
+	echo "Extracting Sgminer5 / X15 mod miner to /opt/sgminer5"
+	tar xjpf /tmp/sgminer5.tbz2 -C /opt/
+	if [ ! -f "/opt/ifmi/cgminer.x15mod.conf" ]; then
+	echo "Done, extracting poolmanager.conf w/ sgminer5 multi conf & cgminer.x15mod.conf"
+	sleep 2 
+	tar xjvpf /tmp/cgminer.x15mod.tbz2 -C /opt/ifmi/
+	fi
+	echo "Finished"
+	chown www-data.root /opt/ifmi/poolmanager.conf
+	f.minestart
+}
+
+function doinstall.lsockernels() {
+	clear
+	$THELINE
+	echo "Pimp 1.4 installer for LSOC Scrypt/Scryptn Kernels"
+	$THELINE
+	echo "LSOC is an sgminer CL kernel by Soul_Keeper"
+	echo "It improves performance on most 78xx / 270(x) cards."
+	echo "You may need to increase your thread concurrency to see gains"
+	echo "Activate by changing the \"kernel\" line in cgminer.conf to lsoc or lsoc3"
+	echo "It works for Scrypt / Scrypt-n"
+	echo -n "Ok to continue? y/n:" 
+	read LSOC_CONTINUE
+	if [ $LSOC_CONTINUE = y ]
+		then
+			$THELINE
+			echo "Downloading lsoc kernel tarball.."
+			download /tmp/lsoc.tbz2 http://files.getpimp.org/pimpupdate/1.x-lsoc/lsoc-5-6-2014.tbz2
+			echo "Extracting lsoc kernels to /tmp..."
+			tar jxpf /tmp/lsoc.tbz2 -C /tmp/
+			if [ -e /opt/sgminer/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer/kernel"
+						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer/kernel"
+						cp /tmp/lsoc.cl /opt/sgminer/kernel/lsoc.cl
+						cp /tmp/lsoc3.cl /opt/sgminer/kernel/lsoc3.cl
+						echo "Installed Successfully"
+						sleep 2
+
+						f.return
+			elif [ -e /opt/sgminer-4.1.0/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer-4.1.0/kernel"
+						echo "Copying lsoc.cl & lsoc3.cl to /opt/sgminer-4.1.0/kernel"
+						cp /tmp/lsoc.cl /opt/sgminer-4.1.0/kernel/lsoc.cl
+						cp /tmp/lsoc3.cl /opt/sgminer-4.1.0/kernel/lsoc3.cl
+						f.return
+			else 
+						echo "Cannot determine your sgminer directory, returning to main menu"
+						pimpmenu
+			fi
+		else
+			echo "Returning to the main menu..."
+			pimpmenu
+	fi
+}
+function doinstall.arebypkernel() {
+	clear
+	$THELINE
+	echo "Pimp installer for arebyp Scrypt miner Kernel"
+	$THELINE
+	echo "arebyp is an sgminer CL kernel by arebyp"
+	echo "It improves performance on most all cards for scrypt mining.."
+	echo "You may need to increase your thread concurrency to see gains"
+	echo "or modify your engine/memory clock"
+	echo "Activate by changing the \"kernel\" line in cgminer.conf to arebyp"
+	echo "It works for Scrypt only, no scrypt-n support at this time"
+	echo -n "Ok to continue? y/n:" 
+multib	read AB_CONTINUE
+	if [ $AB_CONTINUE = y ]
+		then
+			$THELINE
+			echo "Downloading arebyp kernel tarball.."
+			download /tmp/arebyp.tbz2 http://files.getpimp.org/pimpupdate/1.x-arebyp/arebyp-5-25-14.tbz2
+			echo "Extracting arebyp kernel to /tmp..."
+			tar jxpf /tmp/arebyp.tbz2 -C /tmp/
+			if [ -e /opt/sgminer/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer/kernel"
+						echo "Copying arebyp.cl to /opt/sgminer/kernel"
+						cp /tmp/arebyp.cl /opt/sgminer/kernel/arebyp.cl
+						echo "arebyp kernel Installed Successfully"
+						sleep 2
+						f.return
+			elif [ -e /opt/sgminer-4.1.0/kernel ];
+				then
+						echo "Sgminer kernel directory located at /opt/sgminer-4.1.0/kernel"
+						echo "Copying arebyp.cl to /opt/sgminer-4.1.0/kernel"
+						cp /tmp/arebyp.cl /opt/sgminer-4.1.0/kernel/arebyp.cl
+						sleep 2
+						f.return
+			else 
+						echo "Cannot determine your sgminer directory, returning to main menu"
+						pimpmenu
+			fi
+		else
+			echo "Returning to the main menu..."
+			pimpmenu
+	fi
+}
+#BFGMINER Gridseed fix.
+function doinstall.bfgminer() {
+	clear
+	$THELINE
+	echo "Pimp 1.4 BFGMINER installer for gridseed ASIC support."
+	$THELINE
+	echo "Currently ONLY for 1.4, Full 1.x support coming soon."
+	echo "This will replace the defunct bfgminer located in /opt/bfgminer"
+	echo -n "Ok to continue? y/n:" 
+	read BFG_CONTINUE
+	if [ $BFG_CONTINUE = y ]
+		then
+			$THELINE
+			echo "Removing old bfgminer...."
+			rm -rf /opt/bfgminer
+			echo "Downloading bfgminer binary tarball.."
+			download /tmp/bfgminer-gridseed.tbz2 http://files.getpimp.org/pimpupdate/1.x-bfgminer/bfgminer-gridseed.tbz2
+			echo "Extracting new bfgminer..."
+			tar jxpf /tmp/bfgminer-gridseed.tbz2 -C /opt/
+			echo "Done, remember to update seedmanager & profiles for a full working setup!"
+			f.return
+		else
+			echo "You must enter y if you wish to continue...Returning to main menu"
+			pimpmenu
+	fi 
+}
+#Manualstart manual miner starting menu system.
+function doinstall.manualstart() {
+	clear
+	$THELINE
+	echo "Manualstart 1.0 installer for pimp."
+	$THELINE
+	echo "Currently ONLY for 1.3.1/1.4, Full 1.x support coming soon."
+	echo "This will replace manualrun with manualstart. Multi algorithm support"
+	echo "As well as being able to use your conf or the default for testing"
+	echo "Does not replace your conf file!"
+	echo "If manualstart is already installed, this will simple reinstall it."
+	echo -n "Ok to continue? y/n:" 
+	read MS_CONTINUE
+	if [ $MS_CONTINUE = y ];
+		then
+			$THELINE
+			echo "Moving /opt/pimp/manualrun to /opt/pimp/manualrun.bak..."
+			mv /opt/pimp/manualrun /opt/pimp/manualrun.bak
+			echo "Downloading Manualstart tarball.."
+			download /tmp/manualstart.tar.gz https://github.com/sling00/manualstart/archive/1.0.tar.gz
+			echo "Extracting manualstart"
+			tar zxvpf /tmp/manualstart.tar.gz -C /tmp
+			echo "Moving manualstart to /opt/pimp..."
+			mv /tmp/manualstart-1.0/manualstart /opt/pimp/
+			mv /tmp/manualstart-1.0/manualstart.conf /opt/pimp
+			ln -s /opt/pimp/manualstart /opt/pimp/manualrun
+			echo "Done, remember stop mining before using this!"
+		    echo "Returning to the main menu..."
+		    f.return
+		else
+			f.return
+	fi 
+}
