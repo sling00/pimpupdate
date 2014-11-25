@@ -34,9 +34,10 @@ function doinstall.neoscrypt() {
 		download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.1.6.0-14.6.tbz2
 	;;
 	esac
-	
+	echo "Backing up old poolmanager.conf to $BACKUPDIR"
+	cp /opt/ifmi/poolmanager.conf $BACKUPDIR/poolmanager.conf.$DATESTAMP
 	echo "Download finished, extracting...."
-	tar xvjpf /tmp/poolmanager.conf.neoscrypt.tbz2 -O /opt/ifmi/
+	tar xvjpf /tmp/poolmanager.conf.neoscrypt.tbz2 -C /opt/ifmi/
 	chown -R www-data.root /opt/ifmi/poolmanager.conf
 	echo "New poolmanager profile installed, continuing installation.."
 	doinstall.neoscrypt.upgsg5
