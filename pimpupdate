@@ -118,6 +118,11 @@ function checkinstall.conffile() {
 		if [ $OVERWRITE = y ]; then #IF2
 			echo "Backing up $FILE2 to $BACKUPDIR"
 			mv $FILE1 $BACKUPDIR/$FILE2.$DATESTAMP
+			echo "Downloading config file $FILE1 from PiMP Update server..."
+			download $DESTIN $URL
+			echo "Download completed, extracting..."
+			tar xvjpf $DESTIN -C $FILE1
+			echo "Done, Continuing installation..."
 		else #Else2
 			echo "Keeping existing $FILE1"
 			echo "Continuing installation..."
