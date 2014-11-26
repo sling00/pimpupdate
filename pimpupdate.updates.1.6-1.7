@@ -46,7 +46,6 @@ function doinstall.neoscrypt() {
 	echo "Downloading Neoscrypt profiles for poolmanager..."	
 	case $PIMP_VERSION in 
 	1.5.6-amd-13.12 | 1.5.6-amd-14.4 | 1.5.6-amd-14.6 )
-		#Download poolmanager conf for 1.5.6
 		download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.1.5.6.tbz2
 	;;
 	1.4.8-amd-13.12 | 1.4.9-amd-13.12 | 1.6.0-amd-13.12 | 1.7.0-amd-13.12 )
@@ -64,65 +63,3 @@ function doinstall.neoscrypt() {
 	echo "New poolmanager profile installed, continuing installation.."
 	doinstall.neoscrypt.upgsg5
 }
-
-
-
-
-#function doinstall.neoscrypt.upgsg5nope.jpg() {
-#	case $PIMP_VERSION2 in 
-#	1.5.6-amd )
-#	    MINERDIRNAME2="/opt/sgminer5-develop"
-#	;;
-#	1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
-#		MINERDIRNAME2="/opt/sgminer5-develop"
-#	;;
-#	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
-#		MINERDIRNAME2="/opt/sgminer5-develop"
-#	;;
-#	esac
-#	MINERNAME="Sgminer"
-#	MINERVER="This gets set in the script"
-#	MINERDIRNAME="sgminer5-develop"
-#	MINERDIRNAME2="/opt/sgminer5-develop"
-#	MINEREXECNAME="sgminer"
-#	MINERUSELSOC="yes"
-#	MINERCONFIGFLAGS=" "
-#	MINERCONFIGCOMMAND="configure"
-#	MINERGETMETHOD="git"
-#	MINERGETFLAGS="clone -b develop"
-#   MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
-#	buildminer.2
-#}
-
-#Not sure if any of this is needed other than the first one.
-#	if [ -f /opt/ifmi/cgminer.neoscrypt.conf ]; #NEOIF1
-#		then
-#		echo "Warning: Previous installation of neoscrypt addition detected, do you wish to continue?"
-#		read NEOSCRYPT_REINSTALL
-#			if [ $NEOSCRYPT_REINSTALL = y ]; #NEOIF2
-#				then  
-#				echo "Do you wish reinstall the default cgminer.neoscrypt.conf? (No keeps your existing configuration file intact. (Y/N)?"
-#					read NEOSCRYPT_CONF_OVERWRITE
-#					if [ $NEOSCRYPT_CONF_OVERWRITE = y]; #NEOIF3
-#						then
-#						cp /opt/ifmi/cgminer.neoscrypt.conf /root/cgminer.neoscrypt.conf.bak
-#						doinstall.neoscrypt.2
-#					else
-#					doinstall.neoscrypt.3
-#					fi #NEOFI3
-#				f.minestop
-#				doinstall.neoscrypt.2
-#			else
-#			f.return
-#			fi #NEOFI2
-#		else
-#			doinstall.neoscrypt.2
-#		fi #NEOFI1
-#End removable section.
-
-
-#function doinstall.neoscrypt.2() {
-#	echo "Downloading neoscrypt profiles for poolmanager..."
-#download /tmp/neoscrypt.profiles.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/neoscrypt.profiles.tbz2#
-#	echo "Download finished, extracting...."
-#}
