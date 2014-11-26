@@ -111,6 +111,7 @@ function checkinstall.conffile() {
 	local URL=$3
 	local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
 	local DESTIN=/tmp/$CLEANURL
+	local FILEPATH=${FILE1%/*}
 	if [ -f $FILE1 ]; then #IF1
 		echo "File $FILE1 already exists, would you like to overwrite it with the PiMP Default for $FILE1 or keep existing?"
 		echo "Y to overwrite, N to keep existing: Y/N?"
@@ -121,7 +122,7 @@ function checkinstall.conffile() {
 			echo "Downloading config file $FILE1 from PiMP Update server..."
 			download $DESTIN $URL
 			echo "Download completed, extracting..."
-			tar xjpf $DESTIN -C $FILE1
+			tar xjpf $DESTIN -C $FILEPATH/
 			echo "Done, Continuing installation..."
 		else #Else2
 			echo "Keeping existing $FILE1"
@@ -131,7 +132,7 @@ function checkinstall.conffile() {
 		echo "Downloading config file $FILE1 from PiMP Update server..."
 		download $DESTIN $URL
 		echo "Download completed, extracting..."
-		tar xjpf $DESTIN -C $FILE1
+		tar xjpf $DESTIN -C $FILEPATH/
 		echo "Done, Continuing installation..."
 	fi #FI 1
 }
