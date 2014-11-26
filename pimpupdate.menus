@@ -3,12 +3,12 @@
 if [ "$DEV" != 0 ];
 	then
 		source /root/pimpupdate/pimpupdate.minermenu
-		source /root/pimpupdate/pimpupdate.menus
+#		source /root/pimpupdate/pimpupdate.menus
 		source /root/pimpupdate/pimpupdate.updates.1
 		source /root/pimpupdate/pimpupdate.updates.1.6-1.7
 	else
 		source /opt/pimp/pimpupdate.minermenu
-		source /opt/pimp/pimpupdate.menus
+#		source /opt/pimp/pimpupdate.menus
 		source /opt/pimp/pimpupdate.updates.1
 		source /opt/pimp/pimpupdate.updates.1.6-1.7
 fi
