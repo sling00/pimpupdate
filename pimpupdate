@@ -109,7 +109,7 @@ function checkinstall.conffile() {
 	local FILE1=$1
 	local FILE2=$2
 	local URL=$3
-	local DESTIN="/tmp/$CLEANURL"
+	local DESTIN='/tmp/$CLEANURL'
 	local CLEANURL=`echo $URL | sed -r 's#.*\/([^/]+).*#\1#'`
 	if [ -f $FILE1 ]; then #IF1
 		echo "File $FILE1 already exists, would you like to overwrite it with the PiMP Default for $FILE1 or keep existing?"
