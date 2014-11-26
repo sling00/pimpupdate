@@ -1,6 +1,20 @@
 #!/bin/bash
 #This file is an INCLUDE to pimpupdate. not to be run on its own under normal circumstances.
 
+
+# 1.4.x stuff ... safe to remove?
+function f.pimpupdateskel() {
+	if [ ! -e /opt/pimp/pimpupdatefiles ]
+		then
+		echo "Unable to locate /opt/pimp/pimpupdatefiles creating directory structure"
+		mkdir /opt/pimp/pimpupdatefiles
+		mkdir /opt/pimp/pimpupdatefiles/backups/
+		mkdir /opt/pimp/pimpupdatefiles/logs/
+	else 
+		echo "Looks like this has been installed before, continuing..."
+fi
+}
+
 #Pimp 1.5.5 promptfix
 function doinstall.promptfix() {
 	echo "Downloading replacement bash prompt & crontab (~/.bashrc)..."

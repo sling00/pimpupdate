@@ -211,7 +211,6 @@ fi
 }
 function dobuild.sgminer() {
 	MINERNAME="Sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer"
 	MINERDIRNAME2="/opt/sgminer"
 	MINEREXECNAME="sgminer"
@@ -225,7 +224,6 @@ function dobuild.sgminer() {
 }
 function dobuild.sgminer5badman74() {
 	MINERNAME="Sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-badman74"
 	MINERDIRNAME2="/opt/sgminer5-develop"
 	MINEREXECNAME="sgminer"
@@ -239,7 +237,6 @@ function dobuild.sgminer5badman74() {
 }
 function dobuild.sgminerdevelop() {
 	MINERNAME="Sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5-develop"
 	MINERDIRNAME2="/opt/sgminer5-develop"
 	MINEREXECNAME="sgminer"
@@ -253,7 +250,6 @@ function dobuild.sgminerdevelop() {
 }
 function dobuild.sgminer5() {
 	MINERNAME="Sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sgminer5"
 	MINERDIRNAME2="/opt/sgminer5"
 	MINEREXECNAME="sgminer"
@@ -267,7 +263,6 @@ function dobuild.sgminer5() {
 }
 function dobuild.sphsgminer() {
 	MINERNAME="DjStone\SPH-Sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sph-sgminer"
 	MINERDIRNAME2="/opt/sph-sgminer"
 	MINEREXECNAME="sgminer"
@@ -281,7 +276,6 @@ function dobuild.sphsgminer() {
 }
 function dobuild.cgminer_heavy() {
 	MINERNAME="reorder\cgminer_heavy"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="cgminer_heavy"
 	MINERDIRNAME2="/opt/cgminer_heavy"
 	MINEREXECNAME="cgminer"
@@ -295,7 +289,6 @@ function dobuild.cgminer_heavy() {
 }
 function doinstall.bfgminersrc() {
 	MINERNAME="BFGMiner"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="bfgminer"
 	MINERDIRNAME2="/opt/bfgminer"
 	MINEREXECNAME="bfgminer"
@@ -309,7 +302,6 @@ function doinstall.bfgminersrc() {
 }
 function doinstall.dmaxl-cgminer() {
 	MINERNAME="DMAXL\Cgminer 4.3.0 GRIDSEED fork"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="cgminer"
 	MINERDIRNAME2="/opt/cgminer-4.3.0-gridseed"
 	MINEREXECNAME="cgminer"
@@ -318,12 +310,11 @@ function doinstall.dmaxl-cgminer() {
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
-	MINERGETURL="https://github.com/luke-jr/bfgminer.git"
+	MINERGETURL="https://github.com/dmaxl/cgminer.git"
 	buildminer.2
 }
 function dobuild.yacminer() {
 	MINERNAME="Thirtybird\yacminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="YACMiner"
 	MINERDIRNAME2="/opt/yacminer"
 	MINEREXECNAME="yacminer"
@@ -337,7 +328,6 @@ function dobuild.yacminer() {
 }
 function dobuild.cgminer() {
 	MINERNAME="Cgminer-3.7.2"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="cgminer"
 	MINERDIRNAME2="/opt/cgminer-3.7.2"
 	MINEREXECNAME="cgminer"
@@ -351,7 +341,6 @@ function dobuild.cgminer() {
 }
 function dobuild.kalroth() {
 	MINERNAME="Kalroth\Cgminer-3.7.3"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="cgminer-3.7.2-kalroth"
 	MINERDIRNAME2="/opt/cgminer-3.7.2-kalroth"
 	MINEREXECNAME="cgminer"
@@ -365,7 +354,6 @@ function dobuild.kalroth() {
 }
 function dobuild.x11mod() {
 	MINERNAME="SPH-SGminer_x11mod"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="sph-sgminer_x11mod"
 	MINERDIRNAME2="/opt/sph-sgminer_x11mod"
 	MINEREXECNAME="sgminer"
@@ -384,7 +372,6 @@ function dobuild.x11mod() {
 }
 function dobuild.jackpot() {
 	MINERNAME="PrettyHateMachine\jackpot-sgminer"
-#	MINERVER="This gets set in the script"
 	MINERDIRNAME="jackpot-sgminer"
 	MINERDIRNAME2="/opt/sgminer-jackpot"
 	MINEREXECNAME="sgminer"
@@ -413,8 +400,6 @@ local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Development branch may break stuff, updates -develop profiles.)"
 local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b develop (3rd party fork, may break stuff, replaces -develop profiles miner)"
 echo "What would you like to do?"
-#echo ""
-#echo 
 echo $MSELECT_1
 echo $MSELECT_2 
 echo $MSELECT_3
@@ -483,4 +468,3 @@ echo -n "Which one? 1-13: "
 	fi
 fi
 }
-#doinstall.sgminer

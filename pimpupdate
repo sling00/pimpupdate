@@ -18,8 +18,9 @@ DEV=0
 UPDATESERVER="http://files.getpimp.org"
 BACKUPDIR="/root"
 DATESTAMP=$(date +"%m-%d-%Y-%H-%M-%S")
+
 #Turn on logging?
-exec > >(tee /opt/pimp/pimpupdatefiles/logs/pimpupdate.log)
+exec > >(tee /var/log/pimpupdate.log)
 #Are we working from git? 
 if [ "$DEV" != 0 ];
 then
@@ -70,6 +71,17 @@ function f.return() {
 	pimpmenu
 	fi
 }
+# Mine start function
+function f.minestart() {
+	echo "Restarting mining..... (May take 30-45 seconds!)"
+	cd /opt/ifmi/
+	timeout 45 /etc/init.d/mine start
+}
+# Mine stop function
+function f.minestop() {
+	echo "Stopping mining....."
+	timeout 10 /etc/init.d/mine stop
+}
 
 function f.pimpupdatenews() {
 	$THELINE
@@ -82,30 +94,6 @@ function f.pimpupdatenews() {
 	sleep 3
 }
 
-#Seedmanager Installation function
-
-function doinstall.seedmanager() {
-	echo "Gathering files for PiMP $PIMP_VERSION....."
-	download /tmp/seedmanager.zip $SMURL
-	cd /opt/pimp/
-	echo "moving old /opt/pimp/sminstall install directory....."
-	sleep 2
-	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
-	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
-	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
-	sleep 2
-	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
-	echo "Installing new seedmanager"
-	sleep 2
-	cd /opt/pimp/sminstall/Linux-SeedManager-master/
-	 ./install-sm.pl -q
-	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
-	chown www-data.root /opt/ifmi/seedmanager.conf
-	echo "Successfully installed updated seedmanager"
-	$THELINE
-	rm /tmp/seedmanager.zip
-	f.return
-}
 #Need to define $DATESTAMP and $BACKUPDIR globally before this will work.
 function checkinstall.conffile() {
 	local FILE1=$1
@@ -139,6 +127,32 @@ function checkinstall.conffile() {
 	fi #FI 1
 }
 
+#Seedmanager Installation function
+
+function doinstall.seedmanager() {
+	echo "Gathering files for PiMP $PIMP_VERSION....."
+	download /tmp/seedmanager.zip $SMURL
+	cd /opt/pimp/
+	echo "moving old /opt/pimp/sminstall install directory....."
+	sleep 2
+	rm -rf /opt/pimp/sminstall.pimpdist 2> /dev/null
+	mv /opt/pimp/sminstall /opt/pimp/sminstall.pimpdist
+	echo "Extracting new seed manager.... Everyone thank LILY!!!!"
+	sleep 2
+	unzip -q /tmp/seedmanager.zip -d /opt/pimp/sminstall
+	echo "Installing new seedmanager"
+	sleep 2
+	cd /opt/pimp/sminstall/Linux-SeedManager-master/
+	 ./install-sm.pl -q
+	echo "Setting permissions on seedmanager.conf just incase these are wrong.."
+	chown www-data.root /opt/ifmi/seedmanager.conf
+	echo "Successfully installed updated seedmanager"
+	$THELINE
+	rm /tmp/seedmanager.zip
+	f.return
+}
+
+
 
 #Installer function-Pimp poolmanager upgrader
 function doinstall.poolmanager() {
@@ -170,24 +184,6 @@ function doinstall.poolmanager() {
 	rm /tmp/poolmanager.zip
 	$THELINE
 	f.return
-}
-#This will be used later. remove?
-function checkupdates() {
-	# incomplete work in progress. 
-	echo this should never display.
-}
-
-# 1.4.x stuff ... safe to remove?
-function f.pimpupdateskel() {
-	if [ ! -e /opt/pimp/pimpupdatefiles ]
-		then
-		echo "Unable to locate /opt/pimp/pimpupdatefiles creating directory structure"
-		mkdir /opt/pimp/pimpupdatefiles
-		mkdir /opt/pimp/pimpupdatefiles/backups/
-		mkdir /opt/pimp/pimpupdatefiles/logs/
-	else 
-		echo "Looks like this has been installed before, continuing..."
-fi
 }
 
 
@@ -348,16 +344,6 @@ function doinstall.pmprofiles() {
 	doinstall.pmprofiles2
 }
 
-function f.minestart() {
-	echo "Restarting mining..... (May take 30-45 seconds!)"
-	cd /opt/ifmi/
-	timeout 45 /etc/init.d/mine start
-}
-# Mine stop function
-function f.minestop() {
-	echo "Stopping mining....."
-	timeout 10 /etc/init.d/mine stop
-}
 #Cpanm / Farmwatcher installation support functions
 function get_cpanm(){
     if [ \! -f /usr/local/bin/cpanm ]; then
@@ -379,7 +365,7 @@ function get_cpanm(){
     fi
     return 0
 }
-#cpanm DBI
+
 #Farmwatcher installation function
 function doinstall.farmwatcher() {
 	echo "This installs the new replacement for Farmview, FarmWatcher!"
@@ -539,7 +525,6 @@ $THELINE
 echo -e '\E[00;34m'"\033[1mPiMPUpdate Version $SCRIPT_VERSION\033[0m"
 echo -e '\E[00;31m'"\033[1mScript by Sling00\033[0m"
 $THELINE
-#Additions below
 #Do we have an argument?
 if [ -z "$1" ]; then
 	f.updatepimpupdate
