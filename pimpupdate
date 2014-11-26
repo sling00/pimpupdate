@@ -1347,6 +1347,9 @@ if [ ! -z "$1" ]; then #If arg
 	7 )
 	doinstall.blake256unattend
 	;;
+	8 ) 
+	doinstall.neoscrypt
+	;;
 	update ) 
 	f.updateunattend
 	;;
@@ -1359,6 +1362,7 @@ if [ ! -z "$1" ]; then #If arg
 	echo "5 - install/update FarmWatcher"
 	echo "6 - Upgrade pimp 1.5.x to 1.5.6"
 	echo "7 - blake256 miner/profile install (1.5.x only)"
+	echo "8 - Neoscrypt update, USER INPUT REQUIRED"
 	echo "help - show this menu"
 	echo "update - update pimpupdate script"
 	;;
