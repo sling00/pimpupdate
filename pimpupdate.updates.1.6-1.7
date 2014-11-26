@@ -7,24 +7,22 @@ function doinstall.neoscrypt.upgsg5() {
 	f.minestop
  	case $PIMP_VERSION2 in 
  	1.5.6-amd | 1.5.61-amd | 1.5.62-amd )
-		echo "Downloading SGMiner5-develop for pimp 1.5.6/1.6.0/32bit..."
-	    download /tmp/sgminer5-develop.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/sgminer5-develop.i386.tbz2
-	    echo "Download finished, removing old sgminer5 and extracting replacement...."
-	    rm -rf /opt/sgminer5
+		PIMPARCH=i386
+		SG5DEVFOLDER=/opt/sgminer5
 	;;
 	1.6.0-amd )
-		echo "Downloading SGMiner5-develop for pimp 1.5.6/1.6.0/32bit..."
-	    download /tmp/sgminer5-develop.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/sgminer5-develop.i386.tbz2
-	    echo "Download finished, removing old sgminer5-develop and extracting replacement...."
-	    rm -rf /opt/sgminer5-develop
+		PIMPARCH=i386
+		SG5DEVFOLDER=/opt/sgminer5-develop
 	;;
-	1.4.8-amd | 1.4.9-amd | 1.7.0-amd | 1.5.6-amd | 1.5.61-amd | 1.5.62-amd | 1.6.0-amd )
-		echo "Downloading SGMiner5-develop for pimp 1.7.0/64bit..."
-	    download /tmp/sgminer5-develop.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/sgminer5-develop.amd64.tbz2
-	    echo "Download finished, removing old sgminer5-develop and extracting replacement...."
-	    rm -rf /opt/sgminer5-develop
+	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
+		PIMPARCH=amd64
+		SG5DEVFOLDER=/opt/sgminer5-develop
 	;;
 	esac
+	echo "Downloading SGMiner5-develop for pimp $PIMP_VERSION/$PIMPARCH"
+	download /tmp/sgminer5-develop.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/sgminer5-develop.$PIMPARCH.tbz2
+	echo "Download finished, removing old sgminer5-develop and extracting replacement...."
+	rm -rf $SG5DEVFOLDER
     tar xjpf /tmp/sgminer5-develop.tbz2 -C /opt/
     echo "Done extracting, restarting mining... Remember to use poolmanager profiles ending in -develop!"
     f.minestart
@@ -39,21 +37,25 @@ function doinstall.neoscrypt() {
 	sleep 5
 	$THELINE
 	echo "PiMP $PIMP_VERSION detected, Continuing installation."
+	$THELINE
 	echo "Checking for existing files."
     checkinstall.conffile /opt/ifmi/cgminer.neoscrypt.conf cgminer.neoscrypt.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.neoscrypt.conf.tbz2
     checkinstall.conffile /opt/ifmi/cgminer.nhmulti.conf cgminer.nhmulti.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.nhmulti.conf.tbz2
     checkinstall.conffile /opt/ifmi/cgminer.whmulti.conf cgminer.whmulti.conf $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/cgminer.whmulti.conf.tbz2
+    echo "Conf file checks completed..."
+    $THELINE
 	echo "Downloading Neoscrypt profiles for poolmanager..."	
 	case $PIMP_VERSION in 
 	1.5.6-amd-13.12 | 1.5.6-amd-14.4 | 1.5.6-amd-14.6 )
-		download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.1.5.6.tbz2
+		NEOPMVER="1.5.6"
 	;;
 	1.4.8-amd-13.12 | 1.4.9-amd-13.12 | 1.6.0-amd-13.12 | 1.7.0-amd-13.12 )
-    	download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.1.6.0-13.12.tbz2
+	   	NEOPMVER="1.6.0-13.12"
     ;; 
 	1.4.8-amd-14.4 | 1.4.8-amd-14.6 | 1.4.9-amd-14.4 | 1.4.9-amd-14.6 | 1.7.0-amd-14.6 | 1.7.0-amd-14.9 | 1.6.0-amd-14.6 | 1.6.0-amd-14.9 | 1.5.61-amd-14.6 | 1.5.61-amd-14.9 | 1.5.62-amd-14.6 | 1.5.62-amd-14.9 )
-		download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.1.6.0-14.6.tbz2
+		NEOPMVER="1.6.0-14.6"
 	;;
+	download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.$NEOPMVER.tbz2
 	esac
 	echo "Backing up old poolmanager.conf to $BACKUPDIR"
 	cp /opt/ifmi/poolmanager.conf $BACKUPDIR/poolmanager.conf.$DATESTAMP
