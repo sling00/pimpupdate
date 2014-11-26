@@ -55,8 +55,8 @@ function doinstall.neoscrypt() {
 	1.4.8-amd-14.4 | 1.4.8-amd-14.6 | 1.4.9-amd-14.4 | 1.4.9-amd-14.6 | 1.7.0-amd-14.6 | 1.7.0-amd-14.9 | 1.6.0-amd-14.6 | 1.6.0-amd-14.9 | 1.5.61-amd-14.6 | 1.5.61-amd-14.9 | 1.5.62-amd-14.6 | 1.5.62-amd-14.9 )
 		NEOPMVER="1.6.0-14.6"
 	;;
-	download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.$NEOPMVER.tbz2
 	esac
+	download /tmp/poolmanager.conf.neoscrypt.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/poolmanager.conf.neoscrypt.$NEOPMVER.tbz2
 	echo "Backing up old poolmanager.conf to $BACKUPDIR"
 	cp /opt/ifmi/poolmanager.conf $BACKUPDIR/poolmanager.conf.$DATESTAMP
 	echo "Download finished, extracting...."
