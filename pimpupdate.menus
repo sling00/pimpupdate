@@ -1,7 +1,18 @@
 #!/bin/bash
 #This file is an include to pimpupdate and will not run standalone.
+if [ "$DEV" != 0 ];
+	then
+		source /root/pimpupdate/pimpupdate.minermenu
+		source /root/pimpupdate/pimpupdate.menus
+		source /root/pimpupdate/pimpupdate.updates.1
+		source /root/pimpupdate/pimpupdate.updates.1.6-1.7
+	else
+		source /opt/pimp/pimpupdate.minermenu
+		source /opt/pimp/pimpupdate.menus
+		source /opt/pimp/pimpupdate.updates.1
+		source /opt/pimp/pimpupdate.updates.1.6-1.7
+fi
 #Menu function for pimp 1.7.0 (64bit)
-
 function pimpmenu170() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
