@@ -119,6 +119,8 @@ function checkinstall.conffile() {
 			echo "Backing up $FILE2 to $BACKUPDIR"
 			mv $FILE1 $BACKUPDIR/$FILE2.$DATESTAMP
 			echo "Downloading config file $FILE1 from PiMP Update server..."
+			#DEBUG
+			echo $FILE1 $FILE2 $URL $DESTIN $CLEANURL
 			download $DESTIN $URL
 			echo "Download completed, extracting..."
 			tar xvjpf $DESTIN -C $FILE1
