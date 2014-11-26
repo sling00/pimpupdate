@@ -122,7 +122,7 @@ function checkinstall.conffile() {
 			echo "Downloading config file $FILE1 from PiMP Update server..."
 			download $DESTIN $URL
 			echo "Download completed, extracting..."
-			tar xjpf $DESTIN -C $FILEPATH/
+			tar xvjpf $DESTIN -C $FILEPATH/
 			echo "Done, Continuing installation..."
 		else #Else2
 			echo "Keeping existing $FILE1"
@@ -132,7 +132,7 @@ function checkinstall.conffile() {
 		echo "Downloading config file $FILE1 from PiMP Update server..."
 		download $DESTIN $URL
 		echo "Download completed, extracting..."
-		tar xjpf $DESTIN -C $FILEPATH/
+		tar xvjpf $DESTIN -C $FILEPATH/
 		echo "Done, Continuing installation..."
 	fi #FI 1
 }
