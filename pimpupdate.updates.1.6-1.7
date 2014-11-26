@@ -3,6 +3,8 @@
 
 function doinstall.neoscrypt.upgsg5() {
 	echo "Preparing to upgrade sgminer5-develop"
+	echo "Stopping mining...."
+	f.minestop
  	case $PIMP_VERSION2 in 
  	1.5.6-amd | 1.5.61-amd | 1.5.62-amd )
 		echo "Downloading SGMiner5-develop for pimp 1.5.6/1.6.0/32bit..."
