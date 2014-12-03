@@ -1,6 +1,17 @@
 #!/bin/bash
 #This file is an include to pimpupdate and will not run standalone.
 #Menu function for pimp 1.7.0 (64bit)
+
+function pimpmenu.new() {
+HEADER1="What would you like to do?"
+MO1="1. Update Poolmanager"
+MO2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+MO3="3. Update Seedmanager"
+MO4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+
+
+}
+
 function pimpmenu170() {
 local PMSELECT_1="1. Update Poolmanager"
 local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
@@ -8,7 +19,7 @@ local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
-local PMSELECT_7="7. Install neoscrypt profile and update sgminer5-develop"
+local PMSELECT_7="7. (NEW) Install Neoscrypt profile and update sgminer5-develop"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -23,7 +34,7 @@ echo -n "Which one? 1-7: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -67,7 +78,7 @@ local PMSELECT_3="3. Update Seedmanager"
 local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
-local PMSELECT_7="7. Install neoscrypt profile and update sgminer5-develop"
+local PMSELECT_7="7. (NEW) Install Neoscrypt profile and update sgminer5-develop"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -82,7 +93,7 @@ echo -n "Which one? 1-7: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -129,7 +140,7 @@ local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmana
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
 local PMSELECT_7="7. (NEW) Install Nicehash/Westhash Profit based Autoswitching multi algorithm profiles"
-local PMSELECT_8="8. Install neoscrypt profile and update sgminer5-develop"
+local PMSELECT_8="8. (NEW) Install Neoscrypt profile and update sgminer5-develop"
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -145,7 +156,7 @@ echo -n "Which one? 1-8: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -209,7 +220,7 @@ echo -n "Which one? 1-8: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -275,7 +286,7 @@ echo -n "Which one? 1-9: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -346,7 +357,7 @@ echo -n "Which one? 1-10: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -421,7 +432,7 @@ echo -n "Which one? 1-10: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -491,7 +502,7 @@ echo -n "Which one? 1-8: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -557,7 +568,7 @@ echo -n "Which one? 1-9: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -626,7 +637,7 @@ echo -n "Which one? 1-9: "
 	if [ $PMSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
@@ -713,7 +724,7 @@ echo -n "Which one? 1-16: "
 	elif [[ $PMSELECTNUM == 5 ]]; then
 		clear; f.minermenu
 	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? Y/N: "
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
 	read PMSELECT_CONTINUE
 	if [ $PMSELECT_CONTINUE == y ];
 	then 
