@@ -28,7 +28,7 @@ then
 else
 	PMUPDATEVERURL="$UPDATESERVER/pimpupdate/version"
 fi
-if [ "$DEV" != 0 ];
+	if [ "$DEV" != 0 ];
 	then
 		source /root/pimpupdate/pimpupdate.minermenu
 		source /root/pimpupdate/pimpupdate.menus
@@ -105,7 +105,7 @@ function checkinstall.conffile() {
 	local FILEPATH=${FILE1%/*}
 	if [ -f $FILE1 ]; then #IF1
 		echo "File $FILE1 already exists, would you like to overwrite it with the PiMP Default for $FILE3 or keep existing?"
-		echo "Y to overwrite, N to keep existing: Y/N?"
+		echo "Y to overwrite, N to keep existing. (y/n):"
 		read OVERWRITE
 		if [ $OVERWRITE = y ]; then #IF2
 			echo "Backing up $FILE3 to $BACKUPDIR"
@@ -153,8 +153,6 @@ function doinstall.seedmanager() {
 	f.return
 }
 
-
-
 #Installer function-Pimp poolmanager upgrader
 function doinstall.poolmanager() {
 	$THELINE
@@ -187,12 +185,11 @@ function doinstall.poolmanager() {
 	f.return
 }
 
-
 #Seedmanager profiles
 function doinstall.smprofiles() {
 echo "Update seedmanager.conf with the latest Seedmanager profile?"
 echo "Note this will reset your email notification settings"
-echo -n "Install updated profile? Y/N:"
+echo -n "Install updated profile? (y/n):"
 	read SMPROFILES
 	if [ $SMPROFILES == y ]; then
 		/opt/ifmi/smcontrol stop 2>/dev/null
@@ -229,7 +226,7 @@ echo "Installer for Nicehash/Westhash multi algorithm mining with auto switching
 echo "Update poolmanager.conf with latest miner profiles and add cgminer.nhmulti.conf / cgminer.whmulti.conf"
 echo "Note this will reset your active mining profile to the default, as well as remove any email notification settings"
 echo "Please read this first!: http://www.getpimp.org/community/blog/165-nicehash.html"
-echo -n "Install New profiles & Tools? Y/N:"
+echo -n "Install New profiles & Tools? (y/n):"
 	read NHPROFILES
 	if [ $NHPROFILES == y ]; then
 		f.minestop
@@ -267,7 +264,7 @@ fi
 function doinstall.pmprofiles2() {
 echo "Update poolmanager.conf with latest miner profiles (DOES NOT REPLACE YOUR CGMINER.CONF FILES)"
 echo "Note this will reset your active mining profile to scrypt, as well as remove any email notification settings"
-echo -n "Install updated profiles? Y/N:"
+echo -n "Install updated profiles? (y/n):"
 	read PMPROFILES
 	if [ $PMPROFILES == y ]; then
 		f.minestop
@@ -374,7 +371,7 @@ function doinstall.farmwatcher() {
 	echo "And also via api, so you can now monitor windows boxen or get more info"
 	echo "From your Pimp/linux boxes!"
 	if [ -z "$1" ]; then
-		echo -n "Continue installation? y/n:"
+		echo -n "Continue installation? (y/n):"
 		read FWCONTINUE
 		if [ $FWCONTINUE = "y" ]; then
 			doinstall.farmwatcher1
@@ -465,14 +462,14 @@ PIMP_VERSION2=`sed -n '2,2p' /etc/version | cut -d "-" -f 1,2`
 
 function f.updatepimpupdate() {
 if [ -z "$1" ]; then 
-	echo -n "Do you wish to continue to the main menu Enter y/n: "
+	echo -n "Do you wish to continue to the main menu Enter (y/n): "
 	read PMPUPDATE_CONTINUE
 	if [ "$PMPUPDATE_CONTINUE" == y ]; then
 	#Is pimpupdate up to date?! Updater code below...
 	echo "Current PiMPUpdate Version: $SCRIPT_VERSION"		
 	echo "Checking if Pimpupdate is up to date........"
 		if [ "$SCRIPT_NEW_VERSION" \> "$SCRIPT_VERSION" ]; then
-			echo -n "pimpupdate script is out of date! Would you like it to update itself to version $SCRIPT_NEW_VERSION? y/n: "
+			echo -n "pimpupdate script is out of date! Would you like it to update itself to version $SCRIPT_NEW_VERSION? (y/n): "
 			read PMPUPDATE_UPDATE
 			if [ "$PMPUPDATE_UPDATE" == y ]; then
 				echo "Getting latest version of PiMPUpdate"
