@@ -171,7 +171,7 @@ echo -n "Which one? 1-8: "
 		doinstall.seedmanager
 		;;
 		4 )
-		doinstall.smprofiles
+		doinstall.smprofilesse 
 		;;
 		5 ) 
 		clear
