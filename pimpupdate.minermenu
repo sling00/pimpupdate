@@ -235,6 +235,19 @@ function dobuild.sgminer5badman74() {
 	MINERGETURL="https://github.com/badman74/sgminer.git"
 	buildminer.2
 }
+function dobuild.sgminer5badman74lyra2re() {
+	MINERNAME="Sgminer"
+	MINERDIRNAME="sgminer5-badman74"
+	MINERDIRNAME2="/opt/sgminer5-develop"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b lyra2re"
+	MINERGETURL="https://github.com/badman74/sgminer.git"
+	buildminer.2
+}
 function dobuild.sgminerdevelop() {
 	MINERNAME="Sgminer"
 	MINERDIRNAME="sgminer5-develop"
@@ -399,6 +412,7 @@ local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Development branch may break stuff, updates -develop profiles.)"
 local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b develop (3rd party fork, may break stuff, replaces -develop profiles miner)"
+local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
 echo "What would you like to do?"
 echo $MSELECT_1
 echo $MSELECT_2 
@@ -412,6 +426,7 @@ echo $MSELECT_9
 echo $MSELECT_10
 echo $MSELECT_11
 echo $MSELECT_12
+echo $MSELECT_13
 echo "or q to exit"
 echo -n "Which one? 1-13: "
 	read MINERSELECTNUM
@@ -458,6 +473,9 @@ echo -n "Which one? 1-13: "
 		;;
 		12 ) 
 		dobuild.sgminer5badman74
+		;;
+		13 )
+		dobuild.sgminer5badman74lyra2re
 		;;
 	  esac
 	else
