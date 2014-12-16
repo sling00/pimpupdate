@@ -231,7 +231,7 @@ function dobuild.sgminer5badman74() {
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS="clone -b develop"
+	MINERGETFLAGS="clone -b master"
 	MINERGETURL="https://github.com/badman74/sgminer.git"
 	buildminer.2
 }
@@ -411,7 +411,7 @@ local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Development branch may break stuff, updates -develop profiles.)"
-local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b develop (3rd party fork, may break stuff, replaces -develop profiles miner)"
+local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b master (3rd party fork, may break stuff, replaces -develop profiles miner)"
 local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
 echo "What would you like to do?"
 echo $MSELECT_1
