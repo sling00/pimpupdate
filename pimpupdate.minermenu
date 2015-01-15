@@ -257,7 +257,7 @@ function dobuild.sgminerspreadcoin() {
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS="clone"
+	MINERGETFLAGS="clone"ok
 	MINERGETURL="https://github.com/spreadcoin-project/spreadcoinx11-sgminer.git"
 	buildminer.2
 }
@@ -424,9 +424,9 @@ local MSELECT_8="8. Update Cgminer-4.3.0-Gridseed (ASIC/Gridseed ONLY)"
 local MSELECT_9="9. Update sgminer-jackpot (Jackpotcoin / ADV Sha3)"
 local MSELECT_10="10. Update sph-sgminer_x11mod (Opensource optimized x11 )"
 local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Development branch may break stuff, updates -develop profiles.)"
-local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b master (3rd party fork, may break stuff, replaces -develop profiles miner)"
-local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
-local MSELECT_14="14. Sgminer-Spreadcoin for spreadcoin mining."
+local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b master (3rd party fork, may break stuff, has lyra2re support, replaces -develop profiles miner)"
+#local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
+local MSELECT_13="13. Sgminer-Spreadcoin for spreadcoin mining."
 echo "What would you like to do?"
 echo $MSELECT_1
 echo $MSELECT_2 
@@ -441,9 +441,9 @@ echo $MSELECT_10
 echo $MSELECT_11
 echo $MSELECT_12
 echo $MSELECT_13
-echo $MSELECT_14
+#echo $MSELECT_14
 echo "or q to exit"
-echo -n "Which one? 1-14 "
+echo -n "Which one? 1-13 "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -490,11 +490,9 @@ echo -n "Which one? 1-14 "
 		dobuild.sgminer5badman74
 		;;
 		13 )
-		dobuild.sgminer5badman74lyra2re
-		;;
-		14 )
 		dobuild.sgminerspreadcoin
 		;;
+ some
 	  esac
 	else
 	$THELINE
