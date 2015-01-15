@@ -257,7 +257,7 @@ function dobuild.sgminerspreadcoin() {
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS="clone"ok
+	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/spreadcoin-project/spreadcoinx11-sgminer.git"
 	buildminer.2
 }
@@ -492,7 +492,6 @@ echo -n "Which one? 1-13 "
 		13 )
 		dobuild.sgminerspreadcoin
 		;;
- some
 	  esac
 	else
 	$THELINE
