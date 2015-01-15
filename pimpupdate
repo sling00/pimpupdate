@@ -87,8 +87,9 @@ function f.pimpupdatenews() {
 	$THELINE
 	echo -e $RED"\tPiMP Updater V. $SCRIPT_VERSION Latest news:$STD"
 	$THELINE
-	echo "Dec. 16: Added badman74 lyra2re branch to minerbuild menu of pimpupdate, replaces -develop profile miner, may break neoscrypt. test at your own risk."
-	echo "Nov. 24: Added neoscrypt profiles.  Check the website for blog entry detailing how to add Nicehash/Westhash neoscrypt capability!"
+	echo "Jan. 15/2015: Added spreadcoin miner to minermenu."
+	echo "Dec. 16/2014: Added badman74 lyra2re branch to minerbuild menu of pimpupdate, replaces -develop profile miner, may break neoscrypt. test at your own risk."
+	echo "Nov. 24/2014: Added neoscrypt profiles.  Check the website for blog entry detailing how to add Nicehash/Westhash neoscrypt capability!"
 	echo "Pimpupdate now accepts command line options, type pimpupdate help to get a list!"
 	echo "Don't forget to visit us on IRC!"
 	echo "irc.freenode.net #PiMP"
