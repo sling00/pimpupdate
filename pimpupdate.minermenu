@@ -45,7 +45,7 @@ if [ '$MINERUSELSOC' = "yes" ];
 				echo "..."
 				fi
 	else
-	    echo "This isn't sgminer, not checking if lsoc kernels need to be put back in place..."
+	    echo "This isn't sgminer 4.x, not checking if lsoc kernels need to be put back in place..."
 fi
 }
 function buildminer.checkarebyp() {
@@ -60,7 +60,7 @@ if [ '$MINERUSELSOC' = "yes" ];
 				echo "..."
 			fi
 	else
-	    echo "This isn't sgminer, not checking if lsoc kernels need to be put back in place..."
+	    echo "This isn't sgminer 4.x, not checking if arebyp kernels need to be put back in place..."
 fi
 }
 function buildminer.4 {
@@ -259,6 +259,12 @@ function dobuild.sgminerspreadcoin() {
 	MINERGETMETHOD="git"
 	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/spreadcoin-project/spreadcoinx11-sgminer.git"
+	if [[ ! -e /opt/ifmi/cgminer.spreadcoin.conf ]]; then
+	    echo "Unpacking spreadcoin miner config example to /opt/ifmi/cgminer.spreadcoin.conf"
+	    tar jxvf /tmp/cgminer.spreadcoin.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log 
+	 	else 
+	    echo "Cgminer.spreadcoin.conf found, not downloading example config file."
+	fi 
 	buildminer.2
 }
 function dobuild.sgminerdevelop() {
@@ -443,12 +449,12 @@ echo $MSELECT_12
 echo $MSELECT_13
 #echo $MSELECT_14
 echo "or q to exit"
-echo -n "Which one? 1-13 "
+echo -n "Which one? 1-13: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
 	else
-	echo -n "You selected $MSELECT_$MINERSELECTNUM Correct? Y/N: "
+	echo -n "You selected $MSELECT_$MINERSELECTNUM Correct? y/n: "
 	read MINERSELECT_CONTINUE
 	if [ $MINERSELECT_CONTINUE == y ];
 	then 
