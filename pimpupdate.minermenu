@@ -264,6 +264,7 @@ function dobuild.sgminerspreadcoin() {
 		download /tmp/cgminer.spreadcoin.conf.tbz2 http://files.getpimp.org/pimpupdate/1.6-spreadcoin/cgminer.spreadcoin.conf.tbz2 
 	    echo "Unpacking spreadcoin miner config example to /opt/ifmi/cgminer.spreadcoin.conf"
 	    tar jxvf /tmp/cgminer.spreadcoin.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log
+	    echo "Done, preparing to build the miner...."
 	    chown -R root.root /opt/ifmi/cgminer.spreadcoin.conf
 	 	else 
 	    echo "Cgminer.spreadcoin.conf found, not downloading example config file."
