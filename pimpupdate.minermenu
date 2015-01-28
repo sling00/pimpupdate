@@ -261,7 +261,7 @@ function dobuild.sgminerspreadcoin() {
 	MINERGETURL="https://github.com/spreadcoin-project/spreadcoinx11-sgminer.git"
 	if [[ ! -e /opt/ifmi/cgminer.spreadcoin.conf ]]; then
 		echo "Spreadcoin config file not present, downloading example config..."
-		download /tmp/poolmanager.conf.tbz2 http://files.getpimp.org/pimpupdate/1.6.x-spreadcoin/cgminer.spreadcoin.conf.tbz2 
+		download /tmp/cgminer.spreadcoin.conf.tbz2 http://files.getpimp.org/pimpupdate/1.6.x-spreadcoin/cgminer.spreadcoin.conf.tbz2 
 	    echo "Unpacking spreadcoin miner config example to /opt/ifmi/cgminer.spreadcoin.conf"
 	    tar jxvf /tmp/cgminer.spreadcoin.conf.tbz2 -C /opt/ifmi/ > /tmp/pmprofile.log 
 	 	else 
