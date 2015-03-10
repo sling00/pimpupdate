@@ -468,7 +468,7 @@ echo $MSELECT_13
 echo $MSELECT_14
 #echo $MSELECT_14
 echo "or q to exit"
-echo -n "Which one? 1-13: "
+echo -n "Which one? 1-14: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -518,7 +518,7 @@ echo -n "Which one? 1-13: "
 		dobuild.sgminerspreadcoin
 		;;
 		14 )
-		dobuild.sgminer5zr5
+		dobuild.sgminerzr5
 		;;
 	  esac
 	else

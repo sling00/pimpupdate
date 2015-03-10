@@ -20,127 +20,7 @@ local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmana
 local PMSELECT_5="5. Update miners using minermenu"
 local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
 local PMSELECT_7="7. (NEW) Install Neoscrypt profile and update sgminer5-develop"
-echo "What would you like to do?"
-echo $PMSELECT_1
-echo $PMSELECT_2 
-echo $PMSELECT_3
-echo $PMSELECT_4
-echo $PMSELECT_5
-echo $PMSELECT_6
-echo $PMSELECT_7
-echo "or q to exit"
-echo -n "Which one? 1-7: "
-	read PMSELECTNUM
-	if [ $PMSELECTNUM == q ];
-		then exit 0
-	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
-	read PMSELECT_CONTINUE
-	if [ $PMSELECT_CONTINUE == y ];
-	then 
-	case $PMSELECTNUM in
-		1 )
-		doinstall.poolmanager
-		;;
-		2 )
-		doinstall.pmprofiles
-		;;
-		3 )
-		doinstall.seedmanager
-		;;
-		4 )
-		doinstall.smprofiles
-		;;
-		5 ) 
-		clear
-		f.minermenu
-		;;
-		6 )
-		doinstall.farmwatcher
-		;;
-		7 )
-		doinstall.neoscrypt
-		;;
-	esac
-	else
-	$THELINE
-	echo "Invalid Selection,"
-	echo "Returning to menu"
-	pimpmenu
-fi
-fi
-} #) ? 
-#Menu function for pimp 1.6.0 (32bit Bigmem)
-function pimpmenu160() {
-local PMSELECT_1="1. Update Poolmanager"
-local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
-local PMSELECT_3="3. Update Seedmanager"
-local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
-local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
-local PMSELECT_7="7. (NEW) Install Neoscrypt profile and update sgminer5-develop"
-echo "What would you like to do?"
-echo $PMSELECT_1
-echo $PMSELECT_2 
-echo $PMSELECT_3
-echo $PMSELECT_4
-echo $PMSELECT_5
-echo $PMSELECT_6
-echo $PMSELECT_7
-echo "or q to exit"
-echo -n "Which one? 1-7: "
-	read PMSELECTNUM
-	if [ $PMSELECTNUM == q ];
-		then exit 0
-	else
-	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
-	read PMSELECT_CONTINUE
-	if [ $PMSELECT_CONTINUE == y ];
-	then 
-	case $PMSELECTNUM in
-		1 )
-		doinstall.poolmanager
-		;;
-		2 )
-		doinstall.pmprofiles
-		;;
-		3 )
-		doinstall.seedmanager
-		;;
-		4 )
-		doinstall.smprofiles
-		;;
-		5 ) 
-		clear
-		f.minermenu
-		;;
-		6 )
-		doinstall.farmwatcher
-		;;
-		7 )
-		doinstall.neoscrypt
-		;;
-	esac
-	else
-	$THELINE
-	echo "Invalid Selection,"
-	echo "Returning to menu"
-	pimpmenu
-fi
-fi
-} 
-
-#Menu function for pimp 1.5.6
-
-function pimpmenu156() {
-local PMSELECT_1="1. Update Poolmanager"
-local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
-local PMSELECT_3="3. Update Seedmanager"
-local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
-local PMSELECT_5="5. Update miners using minermenu"
-local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
-local PMSELECT_7="7. (NEW) Install Nicehash/Westhash Profit based Autoswitching multi algorithm profiles"
-local PMSELECT_8="8. (NEW) Install Neoscrypt profile and update sgminer5-develop"
+local PMSELECT_8="8. (NEW) Install ZR5 (Ziftrcoin) profile and miner."
 echo "What would you like to do?"
 echo $PMSELECT_1
 echo $PMSELECT_2 
@@ -181,10 +61,145 @@ echo -n "Which one? 1-8: "
 		doinstall.farmwatcher
 		;;
 		7 )
+		doinstall.neoscrypt
+		;;
+		8 )
+		doinstall.zr5
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+} #) ? 
+#Menu function for pimp 1.6.0 (32bit Bigmem)
+function pimpmenu160() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+local PMSELECT_7="7. (NEW) Install Neoscrypt profile and update sgminer5-develop"
+local PMSELECT_8="8. (NEW) Install ZR5 (Ziftrcoin) profile and miner."
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo "or q to exit"
+echo -n "Which one? 1-8: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 )
+		doinstall.farmwatcher
+		;;
+		7 )
+		doinstall.neoscrypt
+		;;
+		8 )
+		doinstall.zr5
+		;;
+	esac
+	else
+	$THELINE
+	echo "Invalid Selection,"
+	echo "Returning to menu"
+	pimpmenu
+fi
+fi
+} 
+
+#Menu function for pimp 1.5.6
+
+function pimpmenu156() {
+local PMSELECT_1="1. Update Poolmanager"
+local PMSELECT_2="2. Reinstall Poolmanager profiles (Use if you deleted poolmanager.conf)"
+local PMSELECT_3="3. Update Seedmanager"
+local PMSELECT_4="4. Reinstall seedmanager profiles (Use if you deleted seedmanager.conf)"
+local PMSELECT_5="5. Update miners using minermenu"
+local PMSELECT_6="6. Update FarmWatcher (Farmview replacement!)"
+local PMSELECT_7="7. (NEW) Install Nicehash/Westhash Profit based Autoswitching multi algorithm profiles"
+local PMSELECT_8="8. (NEW) Install Neoscrypt profile and update sgminer5-develop"
+local PMSELECT_9="9. (NEW) Install ZR5 (Ziftrcoin) profile and miner."
+echo "What would you like to do?"
+echo $PMSELECT_1
+echo $PMSELECT_2 
+echo $PMSELECT_3
+echo $PMSELECT_4
+echo $PMSELECT_5
+echo $PMSELECT_6
+echo $PMSELECT_7
+echo $PMSELECT_8
+echo $PMSELECT_9
+echo "or q to exit"
+echo -n "Which one? 1-9: "
+	read PMSELECTNUM
+	if [ $PMSELECTNUM == q ];
+		then exit 0
+	else
+	echo -n "You selected $PMSELECT_$PMSELECTNUM Correct? (y/n): "
+	read PMSELECT_CONTINUE
+	if [ $PMSELECT_CONTINUE == y ];
+	then 
+	case $PMSELECTNUM in
+		1 )
+		doinstall.poolmanager
+		;;
+		2 )
+		doinstall.pmprofiles
+		;;
+		3 )
+		doinstall.seedmanager
+		;;
+		4 )
+		doinstall.smprofiles
+		;;
+		5 ) 
+		clear
+		f.minermenu
+		;;
+		6 )
+		doinstall.farmwatcher
+		;;
+		7 )
 		doinstall.nhprofiles
 		;;
 		8 )
 		doinstall.neoscrypt
+		;;
+		9 )
+		doinstall.zr5
 		;;
 	esac
 	else
