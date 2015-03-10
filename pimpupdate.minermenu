@@ -222,6 +222,19 @@ function dobuild.sgminer() {
 	MINERGETURL="https://github.com/sgminer-dev/sgminer.git"
 	buildminer.2
 }
+function dobuild.sgminerzr5() {
+	MINERNAME="Sgminer"
+	MINERDIRNAME="sgminer5-zr5"
+	MINERDIRNAME2="/opt/sgminer-zr5"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone"
+	MINERGETURL="https://github.com/ziftr/sgminer.git"
+	buildminer.2
+}
 function dobuild.sgminer5badman74() {
 	MINERNAME="Sgminer"
 	MINERDIRNAME="sgminer5-badman74"
@@ -437,6 +450,7 @@ local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Developme
 local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b master (3rd party fork, may break stuff, has lyra2re support, replaces -develop profiles miner)"
 #local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
 local MSELECT_13="13. Sgminer-Spreadcoin for spreadcoin mining."
+local MSELECT_14="14. Sgminer5-ZR5 (Ziftrcoin)"
 echo "What would you like to do?"
 echo $MSELECT_1
 echo $MSELECT_2 
@@ -451,6 +465,7 @@ echo $MSELECT_10
 echo $MSELECT_11
 echo $MSELECT_12
 echo $MSELECT_13
+echo $MSELECT_14
 #echo $MSELECT_14
 echo "or q to exit"
 echo -n "Which one? 1-13: "
@@ -501,6 +516,9 @@ echo -n "Which one? 1-13: "
 		;;
 		13 )
 		dobuild.sgminerspreadcoin
+		;;
+		14 )
+		dobuild.sgminer5zr5
 		;;
 	  esac
 	else
