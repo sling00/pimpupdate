@@ -68,25 +68,25 @@ function doinstall.neoscrypt() {
 
 ##ZR5 Ziftrcoin
 function doinstall.zr5.upgsg5() {
-	echo "Preparing to upgrade sgminer5-develop"
+	echo "Preparing to install sgminer-zr5 (Ziftrcoin)"
 	echo "Stopping mining...."
 	f.minestop
  	case $PIMP_VERSION2 in 
  	1.5.6-amd | 1.5.61-amd | 1.5.62-amd )
 		PIMPARCH=i386
-		SG5DEVFOLDER=/opt/sgminer5
+		SG5DEVFOLDER=/opt/sgminer-zr5
 	;;
 	1.6.0-amd )
 		PIMPARCH=i386
-		SG5DEVFOLDER=/opt/sgminer5-develop
+		SG5DEVFOLDER=/opt/sgminer-zr5
 	;;
 	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
 		PIMPARCH=amd64
-		SG5DEVFOLDER=/opt/sgminer5-develop
+		SG5DEVFOLDER=/opt/sgminer-zr5
 	;;
 	esac
-	echo "Downloading SGMiner5-develop for pimp $PIMP_VERSION/$PIMPARCH"
-	download /tmp/sgminer5-develop.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-neoscrypt/sgminer5-develop.$PIMPARCH.tbz2
+	echo "Downloading SGMiner5-ziftr for pimp $PIMP_VERSION/$PIMPARCH"
+	download /tmp/sgminer5-zr5.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-zr5/sgminer5-zr5.$PIMPARCH.tbz2
 	echo "Download finished, removing old sgminer5-develop and extracting replacement...."
 	rm -rf $SG5DEVFOLDER
     tar xjpf /tmp/sgminer5-develop.tbz2 -C /opt/
@@ -107,19 +107,19 @@ function doinstall.zr5() {
     checkinstall.conffile /opt/ifmi/cgminer.zr5.conf cgminer.neoscrypt.conf $UPDATESERVER/pimpupdate/1.6-1.7-zr5/cgminer.zr5.conf.tbz2
     echo "Conf file checks completed..."
     $THELINE
-	echo "Downloading Neoscrypt profiles for poolmanager..."	
+	echo "Downloading ZR5 profiles for poolmanager..."	
 	case $PIMP_VERSION in 
 	1.5.6-amd-13.12 | 1.5.6-amd-14.4 | 1.5.6-amd-14.6 )
-		NEOPMVER="1.5.6"
+		ZR5PMVER="1.5.6"
 	;;
 	1.4.8-amd-13.12 | 1.4.9-amd-13.12 | 1.6.0-amd-13.12 | 1.7.0-amd-13.12 )
-	   	NEOPMVER="1.6.0-13.12"
+	   	ZR5PMVER="1.6.0-13.12"
     ;; 
 	1.4.8-amd-14.4 | 1.4.8-amd-14.6 | 1.4.9-amd-14.4 | 1.4.9-amd-14.6 | 1.7.0-amd-14.6 | 1.7.0-amd-14.9 | 1.6.0-amd-14.6 | 1.6.0-amd-14.9 | 1.5.61-amd-14.6 | 1.5.61-amd-14.9 | 1.5.62-amd-14.6 | 1.5.62-amd-14.9 )
-		NEOPMVER="1.6.0-14.6"
+		ZR5PMVER="1.6.0-14.6"
 	;;
 	esac
-	download /tmp/poolmanager.conf.zr5.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-zr5/poolmanager.conf.zr5.$NEOPMVER.tbz2
+	download /tmp/poolmanager.conf.zr5.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-zr5/poolmanager.conf.zr5.$ZR5PMVER.tbz2
 	echo "Backing up old poolmanager.conf to $BACKUPDIR"
 	cp /opt/ifmi/poolmanager.conf $BACKUPDIR/poolmanager.conf.$DATESTAMP
 	echo "Download finished, extracting...."
