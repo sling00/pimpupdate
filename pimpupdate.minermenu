@@ -236,12 +236,25 @@ function dobuild.sgminerzr5() {
 	MINERCONFIGFLAGS=" "
 	MINERCONFIGCOMMAND="configure"
 	MINERGETMETHOD="git"
-	MINERGETFLAGS="clone -b wolf"
+	MINERGETFLAGS="clone"
 	MINERGETURL="https://github.com/ziftrcoin/sgminer.git"
-	dobuild.sgminerzr5.updatebins
 	buildminer.2
 }
-function dobuild.sgminerzr5.updatebins() {
+function dobuild.sgminerzr5wolf() {
+	MINERNAME="Sgminer-zr5"
+	MINERDIRNAME="sgminer-zr5"
+	MINERDIRNAME2="/opt/sgminer-zr5"
+	MINEREXECNAME="sgminer"
+	MINERUSELSOC="yes"
+	MINERCONFIGFLAGS=" "
+	MINERCONFIGCOMMAND="configure"
+	MINERGETMETHOD="git"
+	MINERGETFLAGS="clone -b wolf"
+	MINERGETURL="https://github.com/ziftrcoin/sgminer.git"
+	dobuild.sgminerzr5.updatewolfbins
+	buildminer.2
+}
+function dobuild.sgminerzr5.updatewolfbins() {
 	echo "Downloading/Installing Wolf ZR5 Bins to /opt/ifmi ...."
 	git clone -b pimp https://www.github.com/Ziftrcoin/sgminer /tmp/zr5bins/
 	cp /tmp/zr5bins/*.bin /opt/ifmi/
@@ -461,7 +474,8 @@ local MSELECT_11="11. Sgminer5-develop sgminer-dev/sgminer -b develop (Developme
 local MSELECT_12="12. Sgminer5-develop badman74/sgminer -b master (3rd party fork, may break stuff, has lyra2re support, replaces -develop profiles miner)"
 #local MSELECT_13="13. Sgminer5-develop badman74/sgminer -b lyra2re (3rd party fork, has LYRA2RE support for new vertcoin algorithm."
 local MSELECT_13="13. Sgminer-Spreadcoin for spreadcoin mining."
-local MSELECT_14="14. Sgminer5-ZR5 (Ziftrcoin)"
+local MSELECT_14="14. Sgminer5-ZR5 (Ziftrcoin) (Works on all driver versions, but slower than wolf miner below)"
+local MSELECT_15="15. Sgminer5-ZR5-Wolf (Ziftrcoin) Replaces sgminer-zr5, faster but needs 14.12 drivers for best performance."
 echo "What would you like to do?"
 echo $MSELECT_1
 echo $MSELECT_2 
@@ -477,9 +491,9 @@ echo $MSELECT_11
 echo $MSELECT_12
 echo $MSELECT_13
 echo $MSELECT_14
-#echo $MSELECT_14
+echo $MSELECT_15
 echo "or q to exit"
-echo -n "Which one? 1-14: "
+echo -n "Which one? 1-15: "
 	read MINERSELECTNUM
 	if [ $MINERSELECTNUM == q ];
 		then exit 0
@@ -530,6 +544,9 @@ echo -n "Which one? 1-14: "
 		;;
 		14 )
 		dobuild.sgminerzr5
+		;;
+		15 )
+		dobuild.sgminerzr5wolf
 		;;
 	  esac
 	else
