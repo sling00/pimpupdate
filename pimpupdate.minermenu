@@ -83,6 +83,11 @@ function buildminer.4 {
 		git submodule init 
 		git submodule update
 	fi
+	if [ "$MINERDIRNAME2" = "/opt/sgminer-zr5" ]; then
+		echo "Checking out jansson library"
+		git submodule init 
+		git submodule update
+	fi
 	if [ "$MINEREXECNAME" = "sgminer" ]; then
 		echo "Running autoreconf -ivf"
 		autoreconf -ivf
