@@ -7,6 +7,12 @@ Installation: cp pimpupdate/pimpupdate /opt/pimp
 
 Usage: pimpupdate
 
+or for command line options: 
+
+Usage: pimpupdate help
+
+This will give the list of applicable command line options.
+
 ==========
 What does it do?
 This script allows you to update integral parts of PiMP mining platform, 
@@ -16,6 +22,6 @@ This allows for fixes to be rolled out without requiring a total reflash of the 
 
 What's Next?
 ============
-1. Add support for changing installed miners to different versions (Most pressing is rolling sgminer back to 4.1.153 to fix api issue in newest release.)
-2. Integrate mine start/stop functions. where needed.
-3. Integrate logging.
+1. Add support for changing installed miners to different versions (restore the shipped version, change between incremental milestones etc.)
+2. Integrate mine start/stop functions. where needed. (Mostly done)
+3. Integrate logging. ( /tmp/pimpupdate.log )
