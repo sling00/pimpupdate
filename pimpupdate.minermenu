@@ -245,7 +245,6 @@ function dobuild.sgminerzr5.updatebins() {
 	echo "Downloading/Installing Wolf ZR5 Bins to /opt/ifmi ...."
 	git clone -b pimp https://www.github.com/Ziftrcoin/sgminer /tmp/zr5bins/
 	cp /tmp/zr5bins/*.bin /opt/ifmi/
-	buildminer.2
 }
 function dobuild.sgminer5badman74() {
 	MINERNAME="Sgminer"
