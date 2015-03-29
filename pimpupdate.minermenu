@@ -228,7 +228,7 @@ function dobuild.sgminer() {
 	buildminer.2
 }
 function dobuild.sgminerzr5() {
-	MINERNAME="Sgminer"
+	MINERNAME="Sgminer-zr5"
 	MINERDIRNAME="sgminer-zr5"
 	MINERDIRNAME2="/opt/sgminer-zr5"
 	MINEREXECNAME="sgminer"
