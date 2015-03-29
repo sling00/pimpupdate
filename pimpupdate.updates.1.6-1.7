@@ -74,22 +74,22 @@ function doinstall.zr5.upgsg5() {
  	case $PIMP_VERSION2 in 
  	1.5.6-amd | 1.5.61-amd | 1.5.62-amd )
 		PIMPARCH=i386
-		SG5DEVFOLDER=/opt/sgminer-zr5
+		SGZR5FOLDER=/opt/sgminer-zr5
 	;;
 	1.6.0-amd )
 		PIMPARCH=i386
-		SG5DEVFOLDER=/opt/sgminer-zr5
+		SGZR5FOLDER=/opt/sgminer-zr5
 	;;
 	1.4.8-amd | 1.4.9-amd | 1.7.0-amd )
 		PIMPARCH=amd64
-		SG5DEVFOLDER=/opt/sgminer-zr5
+		SG5ZR5FOLDER=/opt/sgminer-zr5
 	;;
 	esac
 	echo "Downloading SGMiner5-ziftr for pimp $PIMP_VERSION/$PIMPARCH"
-	download /tmp/sgminer5-zr5.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-zr5/sgminer5-zr5.$PIMPARCH.tbz2
+	download /tmp/sgminer-zr5.tbz2 $UPDATESERVER/pimpupdate/1.6-1.7-zr5/sgminer-zr5.$PIMPARCH.tbz2
 	echo "Download finished, removing old sgminer5-develop and extracting replacement...."
-	rm -rf $SG5DEVFOLDER
-    tar xjpf /tmp/sgminer5-develop.tbz2 -C /opt/
+	rm -rf $SGZR5FOLDER
+    tar xjpf /tmp/sgminer-zr5.tbz2 -C /opt/
     echo "Done extracting, restarting mining... Remember to use poolmanager profiles ending in -develop!"
     f.minestart
     echo "Installation finished, Enjoy!"
