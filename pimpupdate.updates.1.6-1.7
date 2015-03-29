@@ -104,7 +104,7 @@ function doinstall.zr5() {
 	echo "PiMP $PIMP_VERSION detected, Continuing installation."
 	$THELINE
 	echo "Checking for existing files."
-    checkinstall.conffile /opt/ifmi/cgminer.zr5.conf cgminer.neoscrypt.conf $UPDATESERVER/pimpupdate/1.6-1.7-zr5/cgminer.zr5.conf.tbz2
+    checkinstall.conffile /opt/ifmi/cgminer.zr5.conf cgminer.zr5.conf $UPDATESERVER/pimpupdate/1.6-1.7-zr5/cgminer.zr5.conf.tbz2
     echo "Conf file checks completed..."
     $THELINE
 	echo "Downloading ZR5 profiles for poolmanager..."	
@@ -115,7 +115,7 @@ function doinstall.zr5() {
 	1.4.8-amd-13.12 | 1.4.9-amd-13.12 | 1.6.0-amd-13.12 | 1.7.0-amd-13.12 )
 	   	ZR5PMVER="1.6.0-13.12"
     ;; 
-	1.4.8-amd-14.4 | 1.4.8-amd-14.6 | 1.4.9-amd-14.4 | 1.4.9-amd-14.6 | 1.7.0-amd-14.6 | 1.7.0-amd-14.9 | 1.6.0-amd-14.6 | 1.6.0-amd-14.9 | 1.5.61-amd-14.6 | 1.5.61-amd-14.9 | 1.5.62-amd-14.6 | 1.5.62-amd-14.9 )
+	1.4.8-amd-14.4 | 1.4.8-amd-14.6 | 1.4.9-amd-14.4 | 1.4.9-amd-14.6 | 1.7.0-amd-14.6 | 1.7.0-amd-14.9 | 1.7.0-amd-14.12| 1.6.0-amd-14.6 | 1.6.0-amd-14.9 | 1.6.0-amd-14.12 | 1.5.61-amd-14.6 | 1.5.61-amd-14.9 | 1.5.62-amd-14.6 | 1.5.62-amd-14.9 )
 		ZR5PMVER="1.6.0-14.6"
 	;;
 	esac
